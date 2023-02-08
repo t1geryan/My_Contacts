@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/contacts"
+        android:enabled="true"
+        android:title="@string/contacts"
+        android:icon="@drawable/ic_contact"/>
+    <item
+        android:id="@+id/favorites"
+        android:enabled="true"
+        android:title="@string/favorites"
+        android:icon="@drawable/ic_favorite_white"/>
+    <item
+        android:id="@+id/account"
+        android:enabled="true"
+        android:title="@string/account"
+        android:icon="@drawable/ic_face"/>
+</menu>
