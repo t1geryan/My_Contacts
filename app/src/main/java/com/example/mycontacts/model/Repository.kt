@@ -1,6 +1,7 @@
 package com.example.mycontacts.model
 
 import com.github.javafaker.Faker
+import kotlin.random.Random
 
 object Repository {
     private var contactList = mutableListOf<Contact>()
@@ -31,9 +32,12 @@ object Repository {
             Contact(
                 name = faker.name().fullName(),
                 number = faker.phoneNumber().phoneNumber(),
-                photo = photos.random()
+                photo = photos.random(),
+                isFavorite = Random.nextBoolean()
             )
         }.toMutableList()
+        contactList.add(0, Contact("Ivan", "+79507345"))
+        contactList.add(0, Contact("Aboba", "3453454"))
     }
 
     fun getContact(position: Int): Contact {

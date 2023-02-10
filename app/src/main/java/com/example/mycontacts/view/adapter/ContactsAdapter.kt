@@ -37,15 +37,16 @@ class ContactsAdapter : RecyclerView.Adapter<ContactsAdapter.ContactsViewHolder>
                 Glide.with(root.context)
                     .load(contact.photo)
                     .centerCrop()
-                    .error(R.drawable.base_contact_avatar)
-                    .placeholder(R.drawable.base_contact_avatar)
+                    .error(R.drawable.base_avatar_daynight)
+                    .placeholder(R.drawable.base_avatar_daynight)
                     .into(avatarImageView)
             } else
-                avatarImageView.setImageResource(R.drawable.base_contact_avatar)
+                avatarImageView.setImageResource(R.drawable.base_avatar_daynight)
 
-            addToFavoriteButton.setImageResource(
-                if (contact.isFavorite) R.drawable.ic_favorite_red
-                else R.drawable.ic_favorite_daynight)
+            if (contact.isFavorite)
+                isFavoriteImageView.setImageResource(R.drawable.ic_favorite_daynight)
+            else
+                isFavoriteImageView.setImageResource(R.drawable.ic_favorite_border_daynight)
         }
 
     }
