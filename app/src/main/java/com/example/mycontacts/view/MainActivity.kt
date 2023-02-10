@@ -1,8 +1,7 @@
 package com.example.mycontacts.view
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.mycontacts.R
+import androidx.appcompat.app.AppCompatActivity
 import com.example.mycontacts.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
