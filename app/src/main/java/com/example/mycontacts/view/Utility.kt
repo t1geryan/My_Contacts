@@ -1,8 +1,7 @@
-package com.example.mycontacts.view.utils
+package com.example.mycontacts.view
 
 import android.content.Context
 import android.util.DisplayMetrics
-
 
 object Utility {
     fun calculateNoOfColumns(
