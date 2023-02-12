@@ -10,12 +10,9 @@ import com.example.mycontacts.R
 import com.example.mycontacts.databinding.FragmentContactListBinding
 import com.example.mycontacts.model.Contact
 import com.example.mycontacts.model.Repository
-import com.example.mycontacts.view.utils.Action
-import com.example.mycontacts.view.utils.ContactsAdapter
-import com.example.mycontacts.view.utils.HasCustomActionToolbar
-import com.example.mycontacts.view.utils.Utility
+import com.example.mycontacts.view.utils.*
 
-class ContactListFragment : Fragment(), HasCustomActionToolbar {
+class ContactListFragment : Fragment(), HasCustomActionToolbar, HasCustomTitleToolbar {
 
     private lateinit var binding: FragmentContactListBinding
     private lateinit var adapter: ContactsAdapter
@@ -49,5 +46,9 @@ class ContactListFragment : Fragment(), HasCustomActionToolbar {
         return Action(R.drawable.ic_add_contact_white, R.string.add_contact) {
             Repository.addContact(Contact("Test", "Test"))
         }
+    }
+
+    override fun getTitle(): Int {
+        return R.string.contacts
     }
 }

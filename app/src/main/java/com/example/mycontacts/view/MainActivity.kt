@@ -14,6 +14,7 @@ import com.example.mycontacts.R
 import com.example.mycontacts.databinding.ActivityMainBinding
 import com.example.mycontacts.view.utils.Action
 import com.example.mycontacts.view.utils.HasCustomActionToolbar
+import com.example.mycontacts.view.utils.HasCustomTitleToolbar
 
 
 class MainActivity : AppCompatActivity() {
@@ -48,6 +49,10 @@ class MainActivity : AppCompatActivity() {
         when(val fragment = currentFragment) {
             is HasCustomActionToolbar -> createCustomToolbarAction(fragment.getCustomAction())
             else -> binding.materialToolbar.menu.clear()
+        }
+
+        when (val fragment = currentFragment) {
+            is HasCustomTitleToolbar -> binding.materialToolbar.setTitle(fragment.getTitle())
         }
     }
     private fun createCustomToolbarAction(action: Action) {
