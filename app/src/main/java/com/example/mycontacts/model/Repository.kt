@@ -4,9 +4,17 @@ import com.github.javafaker.Faker
 import kotlin.random.Random
 
 object Repository {
+    class ContactListChangeListener(private val block: (List<Contact>) -> Unit) : Runnable {
+        override fun run() {
+            block.invoke(contacts)
+        }
+    }
+
     private var contactList = mutableListOf<Contact>()
     val contacts: List<Contact>
         get() = contactList
+
+    private val listeners = mutableListOf<ContactListChangeListener>()
 
     private val photos = listOf(
         "https://images.unsplash.com/photo-1499996860823-5214fcc65f8f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=766&q=80",
@@ -32,27 +40,44 @@ object Repository {
             Contact(
                 name = faker.name().fullName(),
                 number = faker.phoneNumber().phoneNumber(),
-                photo = photos.random(),
+                photo = if (Random.nextBoolean()) photos.random() else "",
                 isFavorite = Random.nextBoolean()
             )
         }.toMutableList()
-        contactList.add(0, Contact("Ivan", "+79507345"))
-        contactList.add(0, Contact("Aboba", "3453454"))
     }
 
     fun getContact(position: Int): Contact {
         return contactList[position]
     }
 
-    fun findContact(contact: Contact): Contact {
+    fun findFirst(contact: Contact): Int {
         val index = contactList.indexOfFirst { it == contact }
         if (index != -1)
-            return contactList[index]
+            return index
         else
             throw Exception("ContactNotExistException")
     }
 
+    fun addContact(contact: Contact) {
+        contactList.add(0, contact)
+        notifyChanges()
+    }
 
+    fun deleteContact(contact: Contact) {
+        contactList.remove(contact)
+    }
 
+    fun addListener(listener: ContactListChangeListener) {
+        listeners.add(listener)
+    }
 
+    fun removeListener(listener: ContactListChangeListener) {
+        listeners.remove(listener)
+    }
+
+    private fun notifyChanges() {
+        listeners.forEach {
+            it.run()
+        }
+    }
 }
