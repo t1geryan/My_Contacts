@@ -1,4 +1,4 @@
-package com.example.mycontacts.view.adapter
+package com.example.mycontacts.view.utils
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
