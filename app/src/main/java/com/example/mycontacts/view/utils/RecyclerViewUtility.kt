@@ -3,7 +3,7 @@ package com.example.mycontacts.view.utils
 import android.content.Context
 import android.util.DisplayMetrics
 
-object Utility {
+object RecyclerViewUtility {
     fun calculateNoOfColumns(
         context: Context,
         columnWidthDp: Float
