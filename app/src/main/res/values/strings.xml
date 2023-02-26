@@ -6,4 +6,6 @@
     <string name="avatar">avatar</string>
     <string name="add_to_favorites">add to favorites</string>
     <string name="add_contact">Add Contact</string>
+    <string name="enter_contacts_name_hint">Enter Contact\'s Name</string>
+    <string name="enter_contacts_number_hint">Enter Contact\'s Number</string>
 </resources>
