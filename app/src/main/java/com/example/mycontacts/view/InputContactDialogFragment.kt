@@ -11,6 +11,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentResultListener
 import androidx.lifecycle.LifecycleOwner
+import com.example.mycontacts.R
 import com.example.mycontacts.databinding.ItemInputContactBinding
 import com.example.mycontacts.model.Contact
 
@@ -33,10 +34,10 @@ class InputContactDialogFragment : DialogFragment() {
 
     private fun createDialog() : AlertDialog {
         return AlertDialog.Builder(requireContext())
-            .setTitle("Input Contact")
+            .setTitle(R.string.input_contact)
             .setView(dialogBinding.root)
-            .setPositiveButton("Confirm", null)
-            .setNeutralButton("Cancel", null)
+            .setPositiveButton(R.string.confirm, null)
+            .setNeutralButton(R.string.cancel, null)
             .create()
             .apply {
                 setCanceledOnTouchOutside(false)
@@ -53,18 +54,20 @@ class InputContactDialogFragment : DialogFragment() {
                 val enteredTextName = dialogBinding.inputNameEditText.text.toString()
                 val enteredTextNumber = dialogBinding.inputNumberEditText.text.toString()
 
-                var isRightInput = true
+                var isBadInput = false
+                val emptyValueError = getString(R.string.empty_value)
                 if (enteredTextName.isBlank()) {
-                    dialogBinding.inputNameEditText.error = "Value is empty"
-                    isRightInput = false
+                    dialogBinding.inputNameEditText.error = emptyValueError
+                    isBadInput = true
                 }
                 if (enteredTextNumber.isBlank()) {
-                    dialogBinding.inputNumberEditText.error = "Value is empty"
-                    isRightInput = false
+                    dialogBinding.inputNumberEditText.error = emptyValueError
+                    isBadInput = true
                 }
 
-                if (!isRightInput)
+                if (isBadInput)
                     return@setOnClickListener
+
                 Log.d("Test", "Right Input")
                 val contact = Contact(enteredTextName, enteredTextNumber)
                 parentFragmentManager.setFragmentResult(REQUEST_KEY, bundleOf( Pair(RESPONSE_KEY,  contact)))
