@@ -3,6 +3,7 @@ package com.example.mycontacts.view.utils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.mycontacts.R
@@ -18,8 +19,10 @@ class ContactsAdapter(private val listener: OnContactChangeListener) : RecyclerV
 
     var contacts : List<Contact> = emptyList()
         set(value) {
+            val diffCallback = ContactsDiffCallback(field, value)
+            val diffResult = DiffUtil.calculateDiff(diffCallback)
             field = value
-            notifyDataSetChanged()
+            diffResult.dispatchUpdatesTo(this)
         }
 
     override fun onClick(view: View) {
