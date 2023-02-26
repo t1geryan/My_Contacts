@@ -2,9 +2,10 @@ package com.example.mycontacts.model
 
 import com.github.javafaker.Faker
 import kotlin.random.Random
+import kotlin.random.nextULong
 
 object Repository {
-    class ContactListChangeListener(private val block: (List<Contact>) -> Unit) : Runnable {
+    class OnContactListChangeListener(private val block: (List<Contact>) -> Unit) : Runnable {
         override fun run() {
             block.invoke(contacts)
         }
@@ -14,9 +15,9 @@ object Repository {
     val contacts: List<Contact>
         get() = contactList
 
-    private val listeners = mutableListOf<ContactListChangeListener>()
+    private val listeners = mutableListOf<OnContactListChangeListener>()
 
-    private val photos = listOf(
+    private val photos = mutableListOf(
         "https://images.unsplash.com/photo-1499996860823-5214fcc65f8f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=766&q=80",
         "https://images.unsplash.com/photo-1554151228-14d9def656e4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8aHVtYW58ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60",
         "https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fGh1bWFufGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60",
@@ -36,12 +37,14 @@ object Repository {
 
     init {
         val faker = Faker.instance()
+        photos.shuffle()
         contactList = (1..20).map {
             Contact(
                 name = faker.name().fullName(),
                 number = faker.phoneNumber().phoneNumber(),
-                photo = if (Random.nextBoolean()) photos.random() else "",
-                isFavorite = Random.nextBoolean()
+                photo = if(Random.nextBoolean()) photos[it % photos.size] else "",
+                isFavorite = Random.nextBoolean(),
+                id = it.toULong()
             )
         }.toMutableList()
     }
@@ -59,19 +62,31 @@ object Repository {
     }
 
     fun addContact(contact: Contact) {
+        if (contact.id == 0UL)
+            while (contactList.find {it.id == contact.id} != null )
+                contact.id = Random.nextULong()
+        else if (contactList.find { it.id == contact.id } != null)
+            throw Exception("RecurringPrimaryKey")
         contactList.add(0, contact)
         notifyChanges()
     }
 
     fun deleteContact(contact: Contact) {
         contactList.remove(contact)
+        notifyChanges()
     }
 
-    fun addListener(listener: ContactListChangeListener) {
+    fun changeContactFavoriteStatus(contact: Contact) {
+        val index = findFirst(contact)
+        contactList[index].isFavorite = !contactList[index].isFavorite
+        notifyChanges()
+    }
+
+    fun addListener(listener: OnContactListChangeListener) {
         listeners.add(listener)
     }
 
-    fun removeListener(listener: ContactListChangeListener) {
+    fun removeListener(listener: OnContactListChangeListener) {
         listeners.remove(listener)
     }
 
