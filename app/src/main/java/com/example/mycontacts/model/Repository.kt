@@ -1,10 +1,12 @@
 package com.example.mycontacts.model
 
+import android.app.Application
 import com.github.javafaker.Faker
 import kotlin.random.Random
 import kotlin.random.nextULong
 
 object Repository {
+
     class OnContactListChangeListener(private val block: (List<Contact>) -> Unit) : Runnable {
         override fun run() {
             block.invoke(contacts)
@@ -67,18 +69,22 @@ object Repository {
                 contact.id = Random.nextULong()
         else if (contactList.find { it.id == contact.id } != null)
             throw Exception("RecurringPrimaryKey")
+        contactList = ArrayList(contacts)
         contactList.add(0, contact)
         notifyChanges()
     }
 
     fun deleteContact(contact: Contact) {
+        contactList = ArrayList(contacts)
         contactList.remove(contact)
         notifyChanges()
     }
 
     fun changeContactFavoriteStatus(contact: Contact) {
         val index = findFirst(contact)
-        contactList[index].isFavorite = !contactList[index].isFavorite
+        val newContact = contact.copy(isFavorite = !contact.isFavorite)
+        contactList = ArrayList(contacts)
+        contactList[index] = newContact
         notifyChanges()
     }
 
