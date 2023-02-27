@@ -6,18 +6,6 @@ import kotlin.random.nextULong
 
 object ContactListLocalService : ContactListRepository() {
 
-    class OnContactListChangeListener(private val block: (List<Contact>) -> Unit) : Runnable {
-        override fun run() {
-            block.invoke(contacts)
-        }
-    }
-
-    private var contactList = mutableListOf<Contact>()
-    val contacts: List<Contact>
-        get() = contactList
-
-    private val listeners = mutableListOf<OnContactListChangeListener>()
-
     private val photos = mutableListOf(
         "https://images.unsplash.com/photo-1499996860823-5214fcc65f8f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=766&q=80",
         "https://images.unsplash.com/photo-1554151228-14d9def656e4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8aHVtYW58ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60",
@@ -87,17 +75,4 @@ object ContactListLocalService : ContactListRepository() {
         notifyChanges()
     }
 
-    fun addListener(listener: OnContactListChangeListener) {
-        listeners.add(listener)
-    }
-
-    fun removeListener(listener: OnContactListChangeListener) {
-        listeners.remove(listener)
-    }
-
-    private fun notifyChanges() {
-        listeners.forEach {
-            it.run()
-        }
-    }
 }
