@@ -1,11 +1,10 @@
 package com.example.mycontacts.model
 
-import android.app.Application
 import com.github.javafaker.Faker
 import kotlin.random.Random
 import kotlin.random.nextULong
 
-object Repository {
+object ContactListLocalService : ContactListRepository() {
 
     class OnContactListChangeListener(private val block: (List<Contact>) -> Unit) : Runnable {
         override fun run() {
@@ -51,11 +50,11 @@ object Repository {
         }.toMutableList()
     }
 
-    fun getContact(position: Int): Contact {
+    override fun getContact(position: Int): Contact {
         return contactList[position]
     }
 
-    fun findFirst(contact: Contact): Int {
+    override fun findFirst(contact: Contact): Int {
         val index = contactList.indexOfFirst { it == contact }
         if (index != -1)
             return index
@@ -63,7 +62,7 @@ object Repository {
             throw Exception("ContactNotExistException")
     }
 
-    fun addContact(contact: Contact) {
+    override fun addContact(contact: Contact) {
         if (contact.id == 0UL)
             while (contactList.find {it.id == contact.id} != null )
                 contact.id = Random.nextULong()
@@ -74,13 +73,13 @@ object Repository {
         notifyChanges()
     }
 
-    fun deleteContact(contact: Contact) {
+    override fun deleteContact(contact: Contact) {
         contactList = ArrayList(contacts)
         contactList.remove(contact)
         notifyChanges()
     }
 
-    fun changeContactFavoriteStatus(contact: Contact) {
+    override fun changeContactFavoriteStatus(contact: Contact) {
         val index = findFirst(contact)
         val newContact = contact.copy(isFavorite = !contact.isFavorite)
         contactList = ArrayList(contacts)
