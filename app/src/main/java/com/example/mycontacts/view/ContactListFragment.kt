@@ -10,14 +10,14 @@ import com.example.mycontacts.R
 import com.example.mycontacts.databinding.FragmentContactListBinding
 import com.example.mycontacts.model.Contact
 import com.example.mycontacts.model.OnContactChangeListener
-import com.example.mycontacts.model.Repository
+import com.example.mycontacts.model.ContactListLocalService
 import com.example.mycontacts.view.utils.*
 
 class ContactListFragment : Fragment(), HasCustomActionToolbar, HasCustomTitleToolbar {
 
     private lateinit var binding: FragmentContactListBinding
     private lateinit var adapter: ContactsAdapter
-    private val listener = Repository.OnContactListChangeListener {
+    private val listener = ContactListLocalService.OnContactListChangeListener {
         adapter.contacts = it
     }
     override fun onCreateView(
@@ -37,24 +37,24 @@ class ContactListFragment : Fragment(), HasCustomActionToolbar, HasCustomTitleTo
             }
 
             override fun onDeleteContact(contact: Contact) {
-                Repository.deleteContact(contact)
+                ContactListLocalService.deleteContact(contact)
             }
 
             override fun onChangeFavoriteStatus(contact: Contact) {
-                Repository.changeContactFavoriteStatus(contact)
+                ContactListLocalService.changeContactFavoriteStatus(contact)
             }
 
         })
         binding.recyclerView.layoutManager = GridLayoutManager(requireContext(),
             RecyclerViewUtility.calculateNoOfColumns(requireContext(), 136F))
         binding.recyclerView.adapter = adapter
-        adapter.contacts = Repository.contacts
-        Repository.addListener(listener)
+        adapter.contacts = ContactListLocalService.contacts
+        ContactListLocalService.addListener(listener)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        Repository.removeListener(listener)
+        ContactListLocalService.removeListener(listener)
     }
 
     override fun getCustomAction(): Action {
@@ -62,7 +62,7 @@ class ContactListFragment : Fragment(), HasCustomActionToolbar, HasCustomTitleTo
             InputContactDialogFragment.newInstance().show(parentFragmentManager, InputContactDialogFragment.TAG)
         }
         InputContactDialogFragment.setupResultListener(parentFragmentManager, viewLifecycleOwner) { contact ->
-            Repository.addContact(contact)
+            ContactListLocalService.addContact(contact)
         }
 
         return Action(R.drawable.ic_add_contact_white, R.string.add_contact, onAction)
