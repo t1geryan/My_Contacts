@@ -46,7 +46,6 @@ class ContactListFragment : Fragment(), HasCustomActionToolbar, HasCustomTitleTo
             override fun onChangeFavoriteStatus(contact: Contact) {
                 viewModel.changeContactFavoriteStatus(contact)
             }
-
         })
 
         viewModel.contacts.observe(viewLifecycleOwner) {

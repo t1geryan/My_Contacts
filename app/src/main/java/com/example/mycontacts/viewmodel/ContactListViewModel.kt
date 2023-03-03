@@ -11,7 +11,7 @@ class ContactListViewModel(
     private val contactListRepository: ContactListRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    private val _contacts = MutableLiveData<List<Contact>>()
+    private val _contacts = savedStateHandle.getLiveData(KEY_CONTACT_LIST, contactListRepository.contacts)
     val contacts : LiveData<List<Contact>>
         get() = _contacts
 
@@ -20,10 +20,7 @@ class ContactListViewModel(
     }
 
     init {
-        _contacts.value = contactListRepository.contacts
-
         contactListRepository.addListener(listener)
-
     }
 
     override fun onCleared() {
@@ -43,5 +40,8 @@ class ContactListViewModel(
         contactListRepository.changeContactFavoriteStatus(contact)
     }
 
-
+    companion object {
+        @JvmStatic
+        private val KEY_CONTACT_LIST = "KEY_CONTACT_LIST"
+    }
 }
