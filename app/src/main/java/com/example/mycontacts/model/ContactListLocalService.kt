@@ -4,7 +4,7 @@ import com.github.javafaker.Faker
 import kotlin.random.Random
 import kotlin.random.nextULong
 
-object ContactListLocalService : ContactListRepository() {
+class ContactListLocalService : ContactListRepository() {
 
     class OnContactListChangeListener(private val block: (List<Contact>) -> Unit) : Runnable {
         override fun run() {
