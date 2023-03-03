@@ -1,10 +1,12 @@
 package com.example.mycontacts.model
 
 import com.github.javafaker.Faker
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlin.random.Random
 import kotlin.random.nextULong
-
-class ContactListLocalService : ContactListRepository() {
+@Singleton
+class ContactListLocalService @Inject constructor(): ContactListRepository() {
 
     class OnContactListChangeListener(private val block: (List<Contact>) -> Unit) : Runnable {
         override fun run() {
