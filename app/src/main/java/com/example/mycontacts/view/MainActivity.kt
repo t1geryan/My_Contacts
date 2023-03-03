@@ -15,8 +15,9 @@ import com.example.mycontacts.databinding.ActivityMainBinding
 import com.example.mycontacts.view.utils.Action
 import com.example.mycontacts.view.utils.HasCustomActionToolbar
 import com.example.mycontacts.view.utils.HasCustomTitleToolbar
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
@@ -29,6 +30,7 @@ class MainActivity : AppCompatActivity() {
             updateToolbarUI()
         }
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater).also { setContentView(it.root) }
@@ -45,6 +47,7 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
         supportFragmentManager.unregisterFragmentLifecycleCallbacks(fragmentCreateListener)
     }
+
     fun updateToolbarUI() {
         when(val fragment = currentFragment) {
             is HasCustomActionToolbar -> createCustomToolbarAction(fragment.getCustomAction())
@@ -55,8 +58,9 @@ class MainActivity : AppCompatActivity() {
             is HasCustomTitleToolbar -> binding.materialToolbar.setTitle(fragment.getTitle())
         }
     }
+
     private fun createCustomToolbarAction(action: Action) {
-        val iconDrawable = DrawableCompat.wrap(ContextCompat.getDrawable(this, action.icon)!!)
+        val iconDrawable = DrawableCompat.wrap(ContextCompat.getDrawable(this, action.icon) ?: return)
 
         val typedValue = TypedValue()
         theme.resolveAttribute(com.google.android.material.R.attr.colorOnPrimary, typedValue, true)
@@ -71,5 +75,4 @@ class MainActivity : AppCompatActivity() {
             true
         }
     }
-
 }

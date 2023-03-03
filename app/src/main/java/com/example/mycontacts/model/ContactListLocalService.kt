@@ -1,10 +1,12 @@
 package com.example.mycontacts.model
 
 import com.github.javafaker.Faker
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlin.random.Random
 import kotlin.random.nextULong
-
-class ContactListLocalService : ContactListRepository() {
+@Singleton
+class ContactListLocalService @Inject constructor(): ContactListRepository() {
 
     private val photos = mutableListOf(
         "https://images.unsplash.com/photo-1499996860823-5214fcc65f8f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=766&q=80",
