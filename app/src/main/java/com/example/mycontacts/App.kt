@@ -1,9 +1,7 @@
 package com.example.mycontacts
 
 import android.app.Application
-import com.example.mycontacts.model.ContactListLocalService
+import dagger.hilt.android.HiltAndroidApp
 
-class App : Application() {
-
-    val contactListLocalService = ContactListLocalService()
-}
+@HiltAndroidApp
+class App : Application()

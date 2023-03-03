@@ -1,16 +1,18 @@
 package com.example.mycontacts.viewmodel
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.example.mycontacts.model.Contact
 import com.example.mycontacts.model.ContactListRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class ContactListViewModel(
+@HiltViewModel
+class ContactListViewModel @Inject constructor(
     private val contactListRepository: ContactListRepository,
     savedStateHandle: SavedStateHandle
-) : ViewModel() {
+) : ViewModel(){
     private val _contacts = savedStateHandle.getLiveData(KEY_CONTACT_LIST, contactListRepository.contacts)
     val contacts : LiveData<List<Contact>>
         get() = _contacts

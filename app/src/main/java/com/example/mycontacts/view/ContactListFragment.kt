@@ -10,17 +10,22 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.mycontacts.R
 import com.example.mycontacts.databinding.FragmentContactListBinding
 import com.example.mycontacts.model.Contact
-import com.example.mycontacts.model.OnContactChangeListener
 import com.example.mycontacts.view.utils.*
 import com.example.mycontacts.viewmodel.ContactListViewModel
-import com.example.mycontacts.viewmodel.factory
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ContactListFragment : Fragment(), HasCustomActionToolbar, HasCustomTitleToolbar {
 
     private lateinit var binding: FragmentContactListBinding
+
+    /*
+        Can't be injected
+        Because nobody implements the onContactChangeListener interface (only anonymous object)
+     */
     private lateinit var adapter: ContactsAdapter
 
-    private val viewModel by viewModels<ContactListViewModel> { factory() }
+    private val viewModel by viewModels<ContactListViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,10 +40,6 @@ class ContactListFragment : Fragment(), HasCustomActionToolbar, HasCustomTitleTo
         super.onViewCreated(view, savedInstanceState)
 
         adapter = ContactsAdapter(object : OnContactChangeListener {
-            override fun onDetails(contact: Contact) {
-                InputContactDialogFragment.newInstance(contact.name, contact.number).show(parentFragmentManager, InputContactDialogFragment.TAG)
-            }
-
             override fun onDeleteContact(contact: Contact) {
                 viewModel.deleteContact(contact)
             }

@@ -9,7 +9,6 @@ import com.bumptech.glide.Glide
 import com.example.mycontacts.R
 import com.example.mycontacts.databinding.ItemContactBinding
 import com.example.mycontacts.model.Contact
-import com.example.mycontacts.model.OnContactChangeListener
 
 class ContactsAdapter(private val listener: OnContactChangeListener) : RecyclerView.Adapter<ContactsAdapter.ContactsViewHolder>(), View.OnClickListener {
 
