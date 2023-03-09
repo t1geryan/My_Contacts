@@ -1,4 +1,4 @@
-package com.example.mycontacts.view.utils
+package com.example.mycontacts.ui.contact_list_screen.utils
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.mycontacts.R
 import com.example.mycontacts.databinding.ItemContactBinding
-import com.example.mycontacts.model.Contact
+import com.example.mycontacts.domain.model.Contact
+import com.example.mycontacts.domain.model.OnContactChangeListener
 
 class ContactsAdapter(private val listener: OnContactChangeListener) : RecyclerView.Adapter<ContactsAdapter.ContactsViewHolder>(), View.OnClickListener {
 

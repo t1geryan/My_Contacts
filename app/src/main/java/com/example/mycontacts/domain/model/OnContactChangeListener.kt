@@ -1,6 +1,4 @@
-package com.example.mycontacts.view.utils
-
-import com.example.mycontacts.model.Contact
+package com.example.mycontacts.domain.model
 
 interface OnContactChangeListener {
     fun onDeleteContact(contact: Contact)

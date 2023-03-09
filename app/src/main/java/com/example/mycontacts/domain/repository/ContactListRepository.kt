@@ -1,4 +1,6 @@
-package com.example.mycontacts.model
+package com.example.mycontacts.domain.repository
+
+import com.example.mycontacts.domain.model.Contact
 
 abstract class ContactListRepository {
 

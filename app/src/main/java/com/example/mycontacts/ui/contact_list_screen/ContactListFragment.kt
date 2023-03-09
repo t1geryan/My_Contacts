@@ -1,4 +1,4 @@
-package com.example.mycontacts.view
+package com.example.mycontacts.ui.contact_list_screen
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,9 +9,14 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.mycontacts.R
 import com.example.mycontacts.databinding.FragmentContactListBinding
-import com.example.mycontacts.model.Contact
-import com.example.mycontacts.view.utils.*
-import com.example.mycontacts.viewmodel.ContactListViewModel
+import com.example.mycontacts.domain.model.Contact
+import com.example.mycontacts.domain.model.OnContactChangeListener
+import com.example.mycontacts.ui.contact_list_screen.utils.ContactsAdapter
+import com.example.mycontacts.ui.details.Action
+import com.example.mycontacts.ui.details.HasCustomActionToolbar
+import com.example.mycontacts.ui.details.HasCustomTitleToolbar
+import com.example.mycontacts.ui.details.RecyclerViewUtility
+import com.example.mycontacts.ui.input_contact_screen.InputContactDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -60,9 +65,13 @@ class ContactListFragment : Fragment(), HasCustomActionToolbar, HasCustomTitleTo
 
     override fun getCustomAction(): Action {
         val onAction  = Runnable {
-            InputContactDialogFragment.newInstance().show(parentFragmentManager, InputContactDialogFragment.TAG)
+            InputContactDialogFragment.newInstance()
+                .show(parentFragmentManager, InputContactDialogFragment.TAG)
         }
-        InputContactDialogFragment.setupResultListener(parentFragmentManager, viewLifecycleOwner) { contact ->
+        InputContactDialogFragment.setupResultListener(
+            parentFragmentManager,
+            viewLifecycleOwner
+        ) { contact ->
             viewModel.addContact(contact)
         }
 

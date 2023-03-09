@@ -1,4 +1,4 @@
-package com.example.mycontacts.view
+package com.example.mycontacts.ui.main_activity
 
 import android.os.Bundle
 import android.util.TypedValue
@@ -12,9 +12,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.example.mycontacts.R
 import com.example.mycontacts.databinding.ActivityMainBinding
-import com.example.mycontacts.view.utils.Action
-import com.example.mycontacts.view.utils.HasCustomActionToolbar
-import com.example.mycontacts.view.utils.HasCustomTitleToolbar
+import com.example.mycontacts.ui.contact_list_screen.ContactListFragment
+import com.example.mycontacts.ui.details.Action
+import com.example.mycontacts.ui.details.HasCustomActionToolbar
+import com.example.mycontacts.ui.details.HasCustomTitleToolbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

@@ -1,4 +1,4 @@
-package com.example.mycontacts.view.utils
+package com.example.mycontacts.ui.details
 
 import androidx.annotation.StringRes
 

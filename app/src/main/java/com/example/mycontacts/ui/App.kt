@@ -1,4 +1,4 @@
-package com.example.mycontacts
+package com.example.mycontacts.ui
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

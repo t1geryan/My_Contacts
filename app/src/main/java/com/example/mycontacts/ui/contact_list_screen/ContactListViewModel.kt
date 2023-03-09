@@ -1,10 +1,10 @@
-package com.example.mycontacts.viewmodel
+package com.example.mycontacts.ui.contact_list_screen
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import com.example.mycontacts.model.Contact
-import com.example.mycontacts.model.ContactListRepository
+import com.example.mycontacts.domain.model.Contact
+import com.example.mycontacts.domain.repository.ContactListRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
