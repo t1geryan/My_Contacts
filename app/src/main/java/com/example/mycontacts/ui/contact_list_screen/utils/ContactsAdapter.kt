@@ -33,6 +33,7 @@ class ContactsAdapter(private val listener: OnContactChangeListener) : RecyclerV
         }
     }
 
+    // single viewType
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactsViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemContactBinding.inflate(inflater, parent, false)

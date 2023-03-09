@@ -1,5 +1,6 @@
 package com.example.mycontacts.ui.main_activity
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.MenuItem
@@ -16,11 +17,16 @@ import com.example.mycontacts.ui.contact_list_screen.ContactListFragment
 import com.example.mycontacts.ui.details.Action
 import com.example.mycontacts.ui.details.HasCustomActionToolbar
 import com.example.mycontacts.ui.details.HasCustomTitleToolbar
+import com.example.mycontacts.ui.onboarding_screen.OnBoardingFragment
+import com.example.mycontacts.utils.Constants
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityMainBinding
+
+    private lateinit var preferences: SharedPreferences
 
     private val currentFragment : Fragment
         get() = supportFragmentManager.findFragmentById(R.id.fragmentContainer)!!
@@ -36,11 +42,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater).also { setContentView(it.root) }
 
+        preferences = getSharedPreferences(Constants.APP_PREFERENCES, MODE_PRIVATE)
+
         if (savedInstanceState == null)
-            supportFragmentManager
-                .beginTransaction()
-                .add(binding.fragmentContainer.id, ContactListFragment())
-                .commit()
+            launchFirstFragment()
 
         supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentCreateListener, false)
     }
@@ -49,7 +54,21 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.unregisterFragmentLifecycleCallbacks(fragmentCreateListener)
     }
 
-    fun updateToolbarUI() {
+    private fun launchFirstFragment() {
+        val isFirstLaunch = preferences.getBoolean(Constants.FIRST_LAUNCH_KEY, true)
+
+        val transaction = supportFragmentManager.beginTransaction()
+
+        if (isFirstLaunch) {
+            transaction.add(binding.fragmentContainer.id, OnBoardingFragment())
+            preferences.edit().putBoolean(Constants.FIRST_LAUNCH_KEY, false).apply()
+        } else
+            transaction.add(binding.fragmentContainer.id, ContactListFragment())
+
+        transaction.commit()
+    }
+
+    private fun updateToolbarUI() {
         when(val fragment = currentFragment) {
             is HasCustomActionToolbar -> createCustomToolbarAction(fragment.getCustomAction())
             else -> binding.materialToolbar.menu.clear()
