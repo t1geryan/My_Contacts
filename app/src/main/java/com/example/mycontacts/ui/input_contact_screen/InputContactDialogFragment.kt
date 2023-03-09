@@ -1,4 +1,4 @@
-package com.example.mycontacts.view
+package com.example.mycontacts.ui.input_contact_screen
 
 import android.app.Dialog
 import android.content.DialogInterface
@@ -13,7 +13,7 @@ import androidx.fragment.app.FragmentResultListener
 import androidx.lifecycle.LifecycleOwner
 import com.example.mycontacts.R
 import com.example.mycontacts.databinding.ItemInputContactBinding
-import com.example.mycontacts.model.Contact
+import com.example.mycontacts.domain.model.Contact
 
 
 class InputContactDialogFragment : DialogFragment() {
@@ -27,7 +27,8 @@ class InputContactDialogFragment : DialogFragment() {
         dialogBinding = ItemInputContactBinding.inflate(layoutInflater)
 
         prevName = savedInstanceState?.getString(ARG_NAME) ?: requireArguments().getString(ARG_NAME, "")
-        prevNumber = savedInstanceState?.getString(ARG_NUMBER) ?: requireArguments().getString(ARG_NUMBER, "")
+        prevNumber = savedInstanceState?.getString(ARG_NUMBER) ?: requireArguments().getString(
+            ARG_NUMBER, "")
 
         return createDialog()
     }
