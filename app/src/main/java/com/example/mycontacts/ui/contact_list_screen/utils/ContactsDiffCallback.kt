@@ -1,7 +1,7 @@
-package com.example.mycontacts.view.utils
+package com.example.mycontacts.ui.contact_list_screen.utils
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.mycontacts.model.Contact
+import com.example.mycontacts.domain.model.Contact
 
 class ContactsDiffCallback(
     private val oldList: List<Contact>,
