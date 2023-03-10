@@ -22,13 +22,15 @@ import com.example.mycontacts.ui.navigation.Navigator
 import com.example.mycontacts.ui.onboarding_screen.OnBoardingFragment
 import com.example.mycontacts.utils.Constants
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), Navigator {
 
     private lateinit var binding: ActivityMainBinding
 
-    private lateinit var preferences: SharedPreferences
+    @Inject
+    lateinit var preferences: SharedPreferences
 
     private val currentFragment : Fragment
         get() = supportFragmentManager.findFragmentById(R.id.fragmentContainer)!!
@@ -43,8 +45,6 @@ class MainActivity : AppCompatActivity(), Navigator {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater).also { setContentView(it.root) }
-
-        preferences = getSharedPreferences(Constants.APP_PREFERENCES, MODE_PRIVATE)
 
         if (savedInstanceState == null)
             launchFirstScreen()
