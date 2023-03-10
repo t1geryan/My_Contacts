@@ -8,13 +8,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
+import androidx.viewpager2.widget.ViewPager2
+import com.example.mycontacts.R
 import com.example.mycontacts.databinding.FragmentOnboardingBinding
 import com.example.mycontacts.ui.onboarding_screen.utils.CarouselRVAdapter
 import kotlin.math.abs
 
-// todo
-// hide bottom navigation bar
-// by creating HasNotBottomNavigationBar interface
 class OnBoardingFragment : Fragment() {
 
     private lateinit var binding: FragmentOnboardingBinding
@@ -33,20 +32,20 @@ class OnBoardingFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val demoData = arrayListOf(
-            "Приложение My Contacts позволит вам хранить список своих контактов в удобном виде",
-            "Вы можете добавлять контакты вручную или синхронизировать со списком ваших контактов на телефоне",
-            "Вы можете добавлять контакты в избранные",
-            "Вы можете легко осуществить звонок, нажав на номер контакта",
-            "В разделе Me вы можете посмотреть статистику о себе",
+            getString(R.string.onboarding1),
+            getString(R.string.onboarding2),
+            getString(R.string.onboarding3),
+            getString(R.string.onboarding4),
+            getString(R.string.onboarding5),
         )
 
-        binding.carousel.adapter = CarouselRVAdapter(demoData)
+        setupCarousel(binding.carousel, demoData)
+    }
 
-        binding.carousel.apply {
-            clipChildren = false  // No clipping the left and right items
-            clipToPadding = false  // Show the viewpager in full width without clipping the padding
-            offscreenPageLimit = 3  // Render the left and right items
-        }
+    private fun setupCarousel(carousel: ViewPager2, data: ArrayList<String>) {
+        carousel.adapter = CarouselRVAdapter(data)
+
+        carousel.offscreenPageLimit = 3
 
         val compositePageTransformer = CompositePageTransformer()
         compositePageTransformer.addTransformer(MarginPageTransformer((20 * Resources.getSystem().displayMetrics.density).toInt()))
@@ -54,6 +53,6 @@ class OnBoardingFragment : Fragment() {
             val r = 1 - abs(position)
             page.scaleY = (0.80f + r * 0.20f)
         }
-        binding.carousel.setPageTransformer(compositePageTransformer)
+        carousel.setPageTransformer(compositePageTransformer)
     }
 }

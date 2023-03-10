@@ -9,9 +9,11 @@
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/carousel"
         android:layout_width="280dp"
-        android:layout_height="120dp"
+        android:layout_height="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        android:clipToPadding="false"
+        android:clipChildren="false"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
