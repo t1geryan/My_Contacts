@@ -78,7 +78,5 @@ class ContactListFragment : Fragment(), HasCustomActionToolbar, HasCustomTitleTo
         return Action(R.drawable.ic_add_contact_white, R.string.add_contact, onAction)
     }
 
-    override fun getTitle(): Int {
-        return R.string.contacts
-    }
+    override fun getTitle(): Int = R.string.contact_list_title
 }

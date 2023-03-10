@@ -5,9 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mycontacts.databinding.ItemCarouselBinding
 
-class CarouselRVAdapter(
+class CarouselVPAdapter(
     private val carouselDataList: ArrayList<String>,
-) : RecyclerView.Adapter<CarouselRVAdapter.CarouselItemViewHolder>() {
+) : RecyclerView.Adapter<CarouselVPAdapter.CarouselItemViewHolder>() {
 
     class CarouselItemViewHolder(
         val binding: ItemCarouselBinding

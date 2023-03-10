@@ -1,10 +1,15 @@
 <resources>
     <string name="app_name">My Contacts</string>
+    <string name="contact_list_title">Contacts</string>
+    <string name="onboarding_title">Hello!</string>
+
     <string name="contacts">Contacts</string>
     <string name="account">Me</string>
     <string name="favorites">Favorites</string>
+
     <string name="avatar">avatar</string>
     <string name="add_to_favorites">add to favorites</string>
+
     <string name="add_contact">Add Contact</string>
     <string name="enter_contacts_name_hint">Enter Contact\'s Name</string>
     <string name="enter_contacts_number_hint">Enter Contact\'s Number</string>
@@ -12,9 +17,13 @@
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
     <string name="empty_value">Value is empty</string>
+
+
     <string name="onboarding1">Приложение My Contacts позволит вам хранить список своих контактов в удобном виде</string>
     <string name="onboarding2">Вы можете добавлять контакты вручную или синхронизировать со списком ваших контактов на телефоне</string>
     <string name="onboarding3">Вы можете добавлять контакты в избранные</string>
     <string name="onboarding4">Вы можете легко осуществить звонок, нажав на номер контакта</string>
     <string name="onboarding5">В разделе Me вы можете посмотреть статистику о себе</string>
+
+    <string name="next">next</string>
 </resources>

@@ -17,12 +17,14 @@ import com.example.mycontacts.ui.contact_list_screen.ContactListFragment
 import com.example.mycontacts.ui.details.Action
 import com.example.mycontacts.ui.details.HasCustomActionToolbar
 import com.example.mycontacts.ui.details.HasCustomTitleToolbar
+import com.example.mycontacts.ui.details.HasNotBottomNavigationBar
+import com.example.mycontacts.ui.navigation.Navigator
 import com.example.mycontacts.ui.onboarding_screen.OnBoardingFragment
 import com.example.mycontacts.utils.Constants
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), Navigator {
 
     private lateinit var binding: ActivityMainBinding
 
@@ -34,7 +36,7 @@ class MainActivity : AppCompatActivity() {
     private val fragmentCreateListener = object  : FragmentManager.FragmentLifecycleCallbacks() {
         override fun onFragmentViewCreated(fm: FragmentManager, f: Fragment, v: View, savedInstanceState: Bundle?) {
             super.onFragmentViewCreated(fm, f, v, savedInstanceState)
-            updateToolbarUI()
+            updateUI()
         }
     }
 
@@ -45,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         preferences = getSharedPreferences(Constants.APP_PREFERENCES, MODE_PRIVATE)
 
         if (savedInstanceState == null)
-            launchFirstFragment()
+            launchFirstScreen()
 
         supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentCreateListener, false)
     }
@@ -54,28 +56,46 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.unregisterFragmentLifecycleCallbacks(fragmentCreateListener)
     }
 
-    private fun launchFirstFragment() {
+    private fun launchFirstScreen() {
         val isFirstLaunch = preferences.getBoolean(Constants.FIRST_LAUNCH_KEY, true)
 
         val transaction = supportFragmentManager.beginTransaction()
 
         if (isFirstLaunch) {
-            transaction.add(binding.fragmentContainer.id, OnBoardingFragment())
+            transaction.replace(binding.fragmentContainer.id, OnBoardingFragment())
             preferences.edit().putBoolean(Constants.FIRST_LAUNCH_KEY, false).apply()
         } else
-            transaction.add(binding.fragmentContainer.id, ContactListFragment())
+            transaction.replace(binding.fragmentContainer.id, ContactListFragment())
 
         transaction.commit()
     }
 
-    private fun updateToolbarUI() {
-        when(val fragment = currentFragment) {
-            is HasCustomActionToolbar -> createCustomToolbarAction(fragment.getCustomAction())
-            else -> binding.materialToolbar.menu.clear()
+    override fun launchContactListScreen() {
+        supportFragmentManager.beginTransaction()
+            .replace(binding.fragmentContainer.id, ContactListFragment())
+            .commit()
+    }
+
+    override fun launchFavoriteContactsScreen() {
+        TODO("Not yet implemented")
+    }
+
+    private fun updateUI() {
+        val fragment = currentFragment
+
+        binding.materialToolbar.menu.clear()
+        if (fragment is HasCustomActionToolbar) {
+            createCustomToolbarAction(fragment.getCustomAction())
         }
 
-        when (val fragment = currentFragment) {
+        when (fragment) {
             is HasCustomTitleToolbar -> binding.materialToolbar.setTitle(fragment.getTitle())
+            else -> binding.materialToolbar.setTitle(R.string.app_name)
+        }
+
+        binding.bottomNavigationView.visibility = when (currentFragment) {
+            is HasNotBottomNavigationBar -> View.INVISIBLE
+            else -> View.VISIBLE
         }
     }
 

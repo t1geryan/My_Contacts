@@ -11,10 +11,17 @@ import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.example.mycontacts.R
 import com.example.mycontacts.databinding.FragmentOnboardingBinding
-import com.example.mycontacts.ui.onboarding_screen.utils.CarouselRVAdapter
+import com.example.mycontacts.ui.details.Action
+import com.example.mycontacts.ui.details.HasCustomActionToolbar
+import com.example.mycontacts.ui.details.HasCustomTitleToolbar
+import com.example.mycontacts.ui.details.HasNotBottomNavigationBar
+import com.example.mycontacts.ui.navigation.navigator
+import com.example.mycontacts.ui.onboarding_screen.utils.CarouselVPAdapter
+import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.abs
 
-class OnBoardingFragment : Fragment() {
+@AndroidEntryPoint
+class OnBoardingFragment : Fragment(), HasCustomTitleToolbar, HasCustomActionToolbar, HasNotBottomNavigationBar {
 
     private lateinit var binding: FragmentOnboardingBinding
 
@@ -43,7 +50,7 @@ class OnBoardingFragment : Fragment() {
     }
 
     private fun setupCarousel(carousel: ViewPager2, data: ArrayList<String>) {
-        carousel.adapter = CarouselRVAdapter(data)
+        carousel.adapter = CarouselVPAdapter(data)
 
         carousel.offscreenPageLimit = 3
 
@@ -55,4 +62,17 @@ class OnBoardingFragment : Fragment() {
         }
         carousel.setPageTransformer(compositePageTransformer)
     }
+
+    override fun getCustomAction(): Action {
+        return Action(R.drawable.ic_next_white, R.string.next) {
+            with(binding.carousel) {
+                if (currentItem ==  (adapter?.itemCount ?: 0) - 1)
+                    navigator().launchContactListScreen()
+                else
+                    setCurrentItem(++currentItem, true)
+            }
+        }
+    }
+
+    override fun getTitle(): Int = R.string.onboarding_title
 }
