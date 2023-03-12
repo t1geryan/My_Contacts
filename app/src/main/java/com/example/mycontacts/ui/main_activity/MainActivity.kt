@@ -18,6 +18,7 @@ import com.example.mycontacts.ui.details.Action
 import com.example.mycontacts.ui.details.HasCustomActionToolbar
 import com.example.mycontacts.ui.details.HasCustomTitleToolbar
 import com.example.mycontacts.ui.details.HasNotBottomNavigationBar
+import com.example.mycontacts.ui.favorite_contacts_screen.FavoriteContactsListFragment
 import com.example.mycontacts.ui.navigation.Navigator
 import com.example.mycontacts.ui.onboarding_screen.OnBoardingFragment
 import com.example.mycontacts.utils.Constants
@@ -49,8 +50,19 @@ class MainActivity : AppCompatActivity(), Navigator {
         if (savedInstanceState == null)
             launchFirstScreen()
 
+        binding.bottomNavigationView.setOnItemSelectedListener {
+            when (it.itemId) {
+                R.id.contacts_btn -> launchContactListScreen()
+                R.id.favorites_btn -> launchFavoriteContactsScreen()
+                R.id.account_btn -> return@setOnItemSelectedListener false // todo add account screen
+                else -> throw Exception("IllegalMenuItemException")
+            }
+            true
+        }
+
         supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentCreateListener, false)
     }
+
     override fun onDestroy() {
         super.onDestroy()
         supportFragmentManager.unregisterFragmentLifecycleCallbacks(fragmentCreateListener)
@@ -59,26 +71,27 @@ class MainActivity : AppCompatActivity(), Navigator {
     private fun launchFirstScreen() {
         val isFirstLaunch = preferences.getBoolean(Constants.FIRST_LAUNCH_KEY, true)
 
-        val transaction = supportFragmentManager.beginTransaction()
-
         if (isFirstLaunch) {
-            transaction.replace(binding.fragmentContainer.id, OnBoardingFragment())
+            launchScreen(OnBoardingFragment())
             preferences.edit().putBoolean(Constants.FIRST_LAUNCH_KEY, false).apply()
         } else
-            transaction.replace(binding.fragmentContainer.id, ContactListFragment())
-
-        transaction.commit()
+            launchContactListScreen()
     }
 
-    override fun launchContactListScreen() {
+    private fun launchScreen(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
-            .replace(binding.fragmentContainer.id, ContactListFragment())
+            .replace(binding.fragmentContainer.id, fragment)
             .commit()
     }
 
-    override fun launchFavoriteContactsScreen() {
-        TODO("Not yet implemented")
+    override fun launchContactListScreen() {
+        launchScreen(ContactListFragment())
     }
+
+    override fun launchFavoriteContactsScreen() {
+        launchScreen(FavoriteContactsListFragment())
+    }
+
 
     private fun updateUI() {
         val fragment = currentFragment

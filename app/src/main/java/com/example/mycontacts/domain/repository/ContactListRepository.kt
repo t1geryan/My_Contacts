@@ -4,9 +4,9 @@ import com.example.mycontacts.domain.model.Contact
 
 abstract class ContactListRepository {
 
-    protected var contactList = mutableListOf<Contact>()
+    protected var _contacts = mutableListOf<Contact>()
     val contacts: List<Contact>
-        get() = contactList
+        get() = _contacts
 
     private val listeners = mutableListOf<OnContactListChangeListener>()
 
@@ -19,6 +19,8 @@ abstract class ContactListRepository {
     abstract fun deleteContact(contact: Contact)
 
     abstract fun changeContactFavoriteStatus(contact: Contact)
+
+    abstract fun getFavoriteContactsList() : List<Contact>
 
     inner class OnContactListChangeListener(private val block: (List<Contact>) -> Unit) : Runnable {
         override fun run() {

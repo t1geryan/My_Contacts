@@ -2,6 +2,7 @@
     <string name="app_name">My Contacts</string>
     <string name="contact_list_title">Contacts</string>
     <string name="onboarding_title">Hello!</string>
+    <string name="favorite_contacts_title">Favorite Contacts</string>
 
     <string name="contacts">Contacts</string>
     <string name="account">Me</string>

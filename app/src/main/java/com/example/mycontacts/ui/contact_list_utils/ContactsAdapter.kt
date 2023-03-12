@@ -1,4 +1,4 @@
-package com.example.mycontacts.ui.contact_list_screen.utils
+package com.example.mycontacts.ui.contact_list_utils
 
 import android.view.LayoutInflater
 import android.view.View

@@ -13,7 +13,7 @@ class ContactListRepositoryImpl @Inject constructor(): ContactListRepository() {
     init {
         val faker = Faker.instance()
         photos.shuffle()
-        contactList = (1..20).map {
+        _contacts = (1..20).map {
             Contact(
                 name = faker.name().fullName(),
                 number = faker.phoneNumber().phoneNumber(),
@@ -25,11 +25,11 @@ class ContactListRepositoryImpl @Inject constructor(): ContactListRepository() {
     }
 
     override fun getContact(position: Int): Contact {
-        return contactList[position]
+        return _contacts[position]
     }
 
     override fun findFirst(contact: Contact): Int {
-        val index = contactList.indexOfFirst { it == contact }
+        val index = _contacts.indexOfFirst { it == contact }
         if (index != -1)
             return index
         else
@@ -38,27 +38,31 @@ class ContactListRepositoryImpl @Inject constructor(): ContactListRepository() {
 
     override fun addContact(contact: Contact) {
         if (contact.id == 0UL)
-            while (contactList.find {it.id == contact.id} != null )
+            while (_contacts.find {it.id == contact.id} != null )
                 contact.id = Random.nextULong()
-        else if (contactList.find { it.id == contact.id } != null)
+        else if (_contacts.find { it.id == contact.id } != null)
             throw Exception("RecurringPrimaryKey")
-        contactList = ArrayList(contacts)
-        contactList.add(0, contact)
+        _contacts = ArrayList(contacts)
+        _contacts.add(0, contact)
         notifyChanges()
     }
 
     override fun deleteContact(contact: Contact) {
-        contactList = ArrayList(contacts)
-        contactList.remove(contact)
+        _contacts = ArrayList(contacts)
+        _contacts.remove(contact)
         notifyChanges()
     }
 
     override fun changeContactFavoriteStatus(contact: Contact) {
         val index = findFirst(contact)
         val newContact = contact.copy(isFavorite = !contact.isFavorite)
-        contactList = ArrayList(contacts)
-        contactList[index] = newContact
+        _contacts = ArrayList(contacts)
+        _contacts[index] = newContact
         notifyChanges()
+    }
+
+    override fun getFavoriteContactsList(): List<Contact> {
+        return _contacts.filter { it.isFavorite }
     }
 
     companion object {
