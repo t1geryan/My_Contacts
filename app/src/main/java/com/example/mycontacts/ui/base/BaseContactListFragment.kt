@@ -7,6 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.mycontacts.databinding.FragmentContactListBinding
+import com.example.mycontacts.domain.model.Contact
+import com.example.mycontacts.domain.model.OnContactChangeListener
+import com.example.mycontacts.ui.contact_list_utils.ContactsAdapter
 import com.example.mycontacts.ui.details.RecyclerViewUtility
 import com.example.mycontacts.utils.Constants
 import dagger.hilt.android.AndroidEntryPoint
@@ -15,6 +18,14 @@ import dagger.hilt.android.AndroidEntryPoint
 abstract class BaseContactListFragment protected constructor() : Fragment() {
 
     protected lateinit var binding: FragmentContactListBinding
+
+    /*
+        Can't be injected
+        Because nobody implements the onContactChangeListener interface (only anonymous object)
+     */
+    protected lateinit var adapter: ContactsAdapter
+
+    protected abstract val viewModel : BaseContactListViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,7 +39,19 @@ abstract class BaseContactListFragment protected constructor() : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        adapter = ContactsAdapter(object : OnContactChangeListener {
+            override fun onDeleteContact(contact: Contact) {
+                viewModel.deleteContact(contact)
+            }
+
+            override fun onChangeFavoriteStatus(contact: Contact) {
+                viewModel.changeContactFavoriteStatus(contact)
+            }
+        })
+
         binding.recyclerView.layoutManager = GridLayoutManager(requireContext(),
             RecyclerViewUtility.calculateNoOfColumns(requireContext(), Constants.CONTACTS_COLUMN_WIDTH))
+
+        binding.recyclerView.adapter = adapter
     }
 }

@@ -2,18 +2,18 @@ package com.example.mycontacts.ui.favorite_contacts_screen
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import com.example.mycontacts.domain.model.Contact
 import com.example.mycontacts.domain.repository.ContactListRepository
-
+import com.example.mycontacts.ui.base.BaseContactListViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class FavoriteContactsListViewModel @Inject constructor(
-    private val contactListRepository: ContactListRepository,
+    contactListRepository: ContactListRepository,
     savedStateHandle: SavedStateHandle
-) : ViewModel() {
+) : BaseContactListViewModel(contactListRepository) {
+
     private val _contacts = savedStateHandle.getLiveData(KEY_FAVORITE_CONTACT_LIST, contactListRepository.getFavoriteContactsList())
     val contacts : LiveData<List<Contact>>
         get() = _contacts
@@ -29,10 +29,6 @@ class FavoriteContactsListViewModel @Inject constructor(
     override fun onCleared() {
         super.onCleared()
         contactListRepository.removeListener(listener)
-    }
-
-    fun changeContactFavoriteStatus(contact: Contact) {
-        contactListRepository.changeContactFavoriteStatus(contact)
     }
 
     companion object {
