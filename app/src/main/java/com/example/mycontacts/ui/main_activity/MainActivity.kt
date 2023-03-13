@@ -18,7 +18,7 @@ import com.example.mycontacts.ui.details.Action
 import com.example.mycontacts.ui.details.HasCustomActionToolbar
 import com.example.mycontacts.ui.details.HasCustomTitleToolbar
 import com.example.mycontacts.ui.details.HasNotBottomNavigationBar
-import com.example.mycontacts.ui.favorite_contacts_screen.FavoriteContactsListFragment
+import com.example.mycontacts.ui.favorite_contact_list_screen.FavoriteContactListFragment
 import com.example.mycontacts.ui.navigation.Navigator
 import com.example.mycontacts.ui.onboarding_screen.OnBoardingFragment
 import com.example.mycontacts.utils.Constants
@@ -89,7 +89,7 @@ class MainActivity : AppCompatActivity(), Navigator {
     }
 
     override fun launchFavoriteContactsScreen() {
-        launchScreen(FavoriteContactsListFragment())
+        launchScreen(FavoriteContactListFragment())
     }
 
 

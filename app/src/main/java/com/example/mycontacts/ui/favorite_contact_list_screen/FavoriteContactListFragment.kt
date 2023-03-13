@@ -1,4 +1,4 @@
-package com.example.mycontacts.ui.favorite_contacts_screen
+package com.example.mycontacts.ui.favorite_contact_list_screen
 
 import android.os.Bundle
 import android.view.View
@@ -10,14 +10,14 @@ import com.example.mycontacts.ui.details.HasCustomTitleToolbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class FavoriteContactsListFragment : BaseContactListFragment(), HasCustomTitleToolbar {
+class FavoriteContactListFragment : BaseContactListFragment(), HasCustomTitleToolbar {
 
-    override val viewModel: BaseContactListViewModel by viewModels<FavoriteContactsListViewModel>()
+    override val viewModel: BaseContactListViewModel by viewModels<FavoriteContactListViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (viewModel as FavoriteContactsListViewModel).contacts.observe(viewLifecycleOwner) {
+        (viewModel as FavoriteContactListViewModel).contacts.observe(viewLifecycleOwner) {
             adapter.contacts = it
         }
     }

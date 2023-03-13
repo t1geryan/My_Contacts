@@ -1,4 +1,4 @@
-package com.example.mycontacts.ui.favorite_contacts_screen
+package com.example.mycontacts.ui.favorite_contact_list_screen
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.SavedStateHandle
@@ -9,7 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class FavoriteContactsListViewModel @Inject constructor(
+class FavoriteContactListViewModel @Inject constructor(
     contactListRepository: ContactListRepository,
     savedStateHandle: SavedStateHandle
 ) : BaseContactListViewModel(contactListRepository) {

@@ -29,7 +29,7 @@ class ContactsAdapter(private val listener: OnContactChangeListener) : RecyclerV
         val contact = view.tag as Contact
         when(view.id) {
             R.id.isFavoriteImageView -> listener.onChangeFavoriteStatus(contact)
-            else -> listener.onDeleteContact(contact)
+            else -> listener.onDelete(contact)
         }
     }
 

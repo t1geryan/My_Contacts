@@ -40,7 +40,7 @@ abstract class BaseContactListFragment protected constructor() : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         adapter = ContactsAdapter(object : OnContactChangeListener {
-            override fun onDeleteContact(contact: Contact) {
+            override fun onDelete(contact: Contact) {
                 viewModel.deleteContact(contact)
             }
 
