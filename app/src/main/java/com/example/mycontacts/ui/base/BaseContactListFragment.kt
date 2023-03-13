@@ -5,12 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.mycontacts.databinding.FragmentContactListBinding
 import com.example.mycontacts.domain.model.Contact
 import com.example.mycontacts.domain.model.OnContactChangeListener
 import com.example.mycontacts.ui.contact_list_utils.ContactsAdapter
 import com.example.mycontacts.ui.details.RecyclerViewUtility
+import com.example.mycontacts.ui.navigation.navigator
 import com.example.mycontacts.utils.Constants
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -47,10 +49,21 @@ abstract class BaseContactListFragment protected constructor() : Fragment() {
             override fun onChangeFavoriteStatus(contact: Contact) {
                 viewModel.changeContactFavoriteStatus(contact)
             }
+
+            override fun onCall(contact: Contact) {
+                navigator().showToast("Coming Soon")
+            }
+
+            override fun onChangeData(contact: Contact) {
+                navigator().showToast("Coming Soon")
+            }
         })
 
         binding.recyclerView.layoutManager = GridLayoutManager(requireContext(),
             RecyclerViewUtility.calculateNoOfColumns(requireContext(), Constants.CONTACTS_COLUMN_WIDTH))
+        val itemAnimator = binding.recyclerView.itemAnimator
+        if (itemAnimator is DefaultItemAnimator)
+            itemAnimator.supportsChangeAnimations = false
 
         binding.recyclerView.adapter = adapter
     }

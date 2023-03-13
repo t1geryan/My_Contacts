@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.TypedValue
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.annotation.ColorInt
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -90,6 +91,10 @@ class MainActivity : AppCompatActivity(), Navigator {
 
     override fun launchFavoriteContactsScreen() {
         launchScreen(FavoriteContactListFragment())
+    }
+
+    override fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
 

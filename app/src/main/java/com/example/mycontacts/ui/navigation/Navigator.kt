@@ -8,4 +8,6 @@ interface Navigator {
     fun launchContactListScreen()
 
     fun launchFavoriteContactsScreen()
+
+    fun showToast(message : String)
 }
