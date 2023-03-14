@@ -1,6 +1,8 @@
 package com.example.mycontacts.ui.main_activity
 
+import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
@@ -19,6 +21,7 @@ import androidx.fragment.app.FragmentResultListener
 import androidx.lifecycle.LifecycleOwner
 import com.example.mycontacts.R
 import com.example.mycontacts.databinding.ActivityMainBinding
+import com.example.mycontacts.domain.model.Contact
 import com.example.mycontacts.ui.contact_list_screen.ContactListFragment
 import com.example.mycontacts.ui.details.Action
 import com.example.mycontacts.ui.details.HasCustomActionToolbar
@@ -101,6 +104,10 @@ class MainActivity : AppCompatActivity(), Navigator {
 
     override fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun startCall(contact: Contact) {
+        startActivity(Intent(Intent.ACTION_CALL, Uri.parse("tel: ${contact.number}")))
     }
 
     override fun launchContactInputScreen(name: String, number: String) {
