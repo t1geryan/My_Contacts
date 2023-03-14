@@ -2,21 +2,18 @@ package com.example.mycontacts.ui.input_contact_screen
 
 import android.app.Dialog
 import android.content.DialogInterface
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentResultListener
-import androidx.lifecycle.LifecycleOwner
 import com.example.mycontacts.R
 import com.example.mycontacts.databinding.ItemInputContactBinding
 import com.example.mycontacts.domain.model.Contact
+import com.example.mycontacts.ui.navigation.navigator
 
 
-class InputContactDialogFragment : DialogFragment() {
+class ContactInputDialogFragment : DialogFragment() {
 
     private lateinit var dialogBinding: ItemInputContactBinding
 
@@ -71,7 +68,7 @@ class InputContactDialogFragment : DialogFragment() {
 
                 Log.d("Test", "Right Input")
                 val contact = Contact(enteredTextName, enteredTextNumber)
-                parentFragmentManager.setFragmentResult(REQUEST_KEY, bundleOf( Pair(RESPONSE_KEY,  contact)))
+                navigator().publishResult(contact)
                 dismiss()
             }
         }
@@ -85,37 +82,18 @@ class InputContactDialogFragment : DialogFragment() {
 
     companion object {
         @JvmStatic
-        val TAG: String = InputContactDialogFragment::class.java.simpleName
-        @JvmStatic
-        val REQUEST_KEY = "$TAG:defaultRequestKey"
-        @JvmStatic
-        val RESPONSE_KEY = "$TAG:RESPONSE"
+        val TAG: String = ContactInputDialogFragment::class.java.simpleName
         @JvmStatic
         private val ARG_NAME = "ARG_NAME"
         @JvmStatic
         private val ARG_NUMBER = "ARG_NUMBER"
 
         @JvmStatic
-        fun newInstance(previousName: String = "", previousNumber: String = "") : InputContactDialogFragment {
+        fun newInstance(previousName: String = "", previousNumber: String = "") : ContactInputDialogFragment {
             val args = bundleOf(ARG_NAME to previousName, ARG_NUMBER to previousNumber)
-            val fragment = InputContactDialogFragment()
+            val fragment = ContactInputDialogFragment()
             fragment.arguments = args
             return fragment
-        }
-
-        @JvmStatic
-        fun setupResultListener(manager: FragmentManager, lifecycleOwner: LifecycleOwner, listener: (Contact) -> Unit) {
-            val fragmentResultListener = FragmentResultListener { _, result ->
-                val contact: Contact =
-                    if (Build.VERSION.SDK_INT >= 33)
-                        result.getParcelable(RESPONSE_KEY, Contact::class.java) ?: throw Exception("NoFragmentResultException")
-                    else
-                        @Suppress("DEPRECATION")
-                        result.getParcelable(RESPONSE_KEY) ?: throw Exception("NoFragmentResultException")
-                listener.invoke(contact)
-            }
-
-            manager.setFragmentResultListener(REQUEST_KEY, lifecycleOwner, fragmentResultListener)
         }
     }
 

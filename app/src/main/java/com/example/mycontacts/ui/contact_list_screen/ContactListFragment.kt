@@ -4,12 +4,13 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.example.mycontacts.R
+import com.example.mycontacts.domain.model.Contact
 import com.example.mycontacts.ui.base.BaseContactListFragment
 import com.example.mycontacts.ui.base.BaseContactListViewModel
 import com.example.mycontacts.ui.details.Action
 import com.example.mycontacts.ui.details.HasCustomActionToolbar
 import com.example.mycontacts.ui.details.HasCustomTitleToolbar
-import com.example.mycontacts.ui.input_contact_screen.InputContactDialogFragment
+import com.example.mycontacts.ui.navigation.navigator
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -27,13 +28,9 @@ class ContactListFragment : BaseContactListFragment(), HasCustomActionToolbar, H
 
     override fun getCustomAction(): Action {
         val onAction  = Runnable {
-            InputContactDialogFragment.newInstance()
-                .show(parentFragmentManager, InputContactDialogFragment.TAG)
+            navigator().launchContactInputScreen()
         }
-        InputContactDialogFragment.setupResultListener(
-            parentFragmentManager,
-            viewLifecycleOwner
-        ) { contact ->
+        navigator().listenResult(Contact::class.java, viewLifecycleOwner) { contact ->
             viewModel.addContact(contact)
         }
 
