@@ -7,6 +7,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.random.Random
 import kotlin.random.nextULong
+
 @Singleton
 class ContactListRepositoryImpl @Inject constructor(): ContactListRepository() {
 
@@ -21,7 +22,7 @@ class ContactListRepositoryImpl @Inject constructor(): ContactListRepository() {
                 isFavorite = Random.nextBoolean(),
                 id = it.toULong()
             )
-        }.toMutableList()
+        }.toMutableList().apply {sort()}
     }
 
     override fun getContact(position: Int): Contact {
@@ -36,14 +37,25 @@ class ContactListRepositoryImpl @Inject constructor(): ContactListRepository() {
             throw Exception("ContactNotExistException")
     }
 
+    private fun findPlace(contact: Contact) : Int {
+        var index = 0
+        while (index < _contacts.size && _contacts[index] < contact)
+            ++index
+
+        return index
+    }
     override fun addContact(contact: Contact) {
         if (contact.id == 0UL)
-            while (_contacts.find {it.id == contact.id} != null )
+            do {
                 contact.id = Random.nextULong()
+            } while (_contacts.find {it.id == contact.id} != null )
         else if (_contacts.find { it.id == contact.id } != null)
             throw Exception("RecurringPrimaryKey")
-        _contacts = ArrayList(contacts)
-        _contacts.add(0, contact)
+
+
+        _contacts = ArrayList(_contacts)
+        _contacts.add(findPlace(contact), contact)
+
         notifyChanges()
     }
 

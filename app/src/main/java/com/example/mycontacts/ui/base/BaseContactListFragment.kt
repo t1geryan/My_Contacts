@@ -55,7 +55,7 @@ abstract class BaseContactListFragment protected constructor() : Fragment() {
             }
 
             override fun onChangeData(contact: Contact) {
-                navigator().showToast("Coming Soon")
+                navigator().launchContactInputScreen(contact.name, contact.number)
             }
         })
 
