@@ -12,11 +12,13 @@ interface Navigator {
 
     fun launchFavoriteContactsScreen()
 
-    fun showToast(message : String)
-
     fun launchContactInputScreen(contact: Contact = Contact())
 
     fun <T: Parcelable> publishResult(result: T)
 
     fun <T: Parcelable> listenResult(clazz: Class<T>, owner : LifecycleOwner, listener: (T)->Unit)
+
+    fun showToast(message : String)
+
+    fun startCall(contact: Contact)
 }
