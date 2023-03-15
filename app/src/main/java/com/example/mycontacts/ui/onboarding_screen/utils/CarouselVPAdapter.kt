@@ -1,13 +1,18 @@
 package com.example.mycontacts.ui.onboarding_screen.utils
 
 import android.view.LayoutInflater
+import android.view.View
+import android.view.View.OnClickListener
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mycontacts.databinding.ItemCarouselBinding
 
+typealias OnCarouselItemClickListener = () -> Unit
+
 class CarouselVPAdapter(
     private val carouselDataList: ArrayList<String>,
-) : RecyclerView.Adapter<CarouselVPAdapter.CarouselItemViewHolder>() {
+    private val listener : OnCarouselItemClickListener = {}
+) : RecyclerView.Adapter<CarouselVPAdapter.CarouselItemViewHolder>(), OnClickListener {
 
     class CarouselItemViewHolder(
         val binding: ItemCarouselBinding
@@ -17,6 +22,8 @@ class CarouselVPAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CarouselItemViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemCarouselBinding.inflate(inflater, parent, false)
+
+        binding.root.setOnClickListener(this)
 
         return CarouselItemViewHolder(binding)
     }
@@ -28,5 +35,7 @@ class CarouselVPAdapter(
         holder.binding.textView.text = data
     }
 
-
+    override fun onClick(view: View) {
+        listener()
+    }
 }

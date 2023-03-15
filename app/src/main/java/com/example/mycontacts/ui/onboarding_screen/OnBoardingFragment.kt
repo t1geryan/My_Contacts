@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
-import androidx.viewpager2.widget.ViewPager2
 import com.example.mycontacts.R
 import com.example.mycontacts.databinding.FragmentOnboardingBinding
 import com.example.mycontacts.ui.details.Action
@@ -25,6 +24,7 @@ class OnBoardingFragment : Fragment(), HasCustomTitleToolbar, HasCustomActionToo
 
     private lateinit var binding: FragmentOnboardingBinding
 
+    private lateinit var adapter: CarouselVPAdapter
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -46,32 +46,37 @@ class OnBoardingFragment : Fragment(), HasCustomTitleToolbar, HasCustomActionToo
             getString(R.string.onboarding5),
         )
 
-        setupCarousel(binding.carousel, demoData)
+        adapter = CarouselVPAdapter(demoData, ::toNextItem)
+
+        setupCarousel()
     }
 
-    private fun setupCarousel(carousel: ViewPager2, data: ArrayList<String>) {
-        carousel.adapter = CarouselVPAdapter(data)
+    private fun setupCarousel() {
+        with (binding.carousel) {
+            adapter = this@OnBoardingFragment.adapter
 
-        carousel.offscreenPageLimit = 3
+            offscreenPageLimit = 3
 
-        val compositePageTransformer = CompositePageTransformer()
-        compositePageTransformer.addTransformer(MarginPageTransformer((20 * Resources.getSystem().displayMetrics.density).toInt()))
-        compositePageTransformer.addTransformer { page, position ->
-            val r = 1 - abs(position)
-            page.scaleY = (0.80f + r * 0.20f)
-        }
-        carousel.setPageTransformer(compositePageTransformer)
-    }
-
-    override fun getCustomAction(): Action {
-        return Action(R.drawable.ic_next_white, R.string.next) {
-            with(binding.carousel) {
-                if (currentItem ==  (adapter?.itemCount ?: 0) - 1)
-                    navigator().launchContactListScreen()
-                else
-                    setCurrentItem(++currentItem, true)
+            val compositePageTransformer = CompositePageTransformer()
+            compositePageTransformer.addTransformer(MarginPageTransformer((20 * Resources.getSystem().displayMetrics.density).toInt()))
+            compositePageTransformer.addTransformer { page, position ->
+                val r = 1 - abs(position)
+                page.scaleY = (0.80f + r * 0.20f)
             }
+            setPageTransformer(compositePageTransformer)
         }
+    }
+
+    private fun toNextItem() {
+        if (binding.carousel.currentItem != (adapter.itemCount) - 1)
+            binding.carousel.setCurrentItem(++binding.carousel.currentItem, true)
+    }
+
+    override fun getCustomAction(): Action = Action(R.drawable.ic_next_white, R.string.next) {
+        if (binding.carousel.currentItem == adapter.itemCount - 1)
+            navigator().launchContactListScreen()
+        else
+            toNextItem()
     }
 
     override fun getTitle(): Int = R.string.onboarding_title
