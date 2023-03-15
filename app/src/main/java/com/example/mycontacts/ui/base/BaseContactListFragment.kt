@@ -55,7 +55,11 @@ abstract class BaseContactListFragment protected constructor() : Fragment() {
             }
 
             override fun onChangeData(contact: Contact) {
-                navigator().launchContactInputScreen(contact.name, contact.number)
+                navigator().launchContactInputScreen(contact)
+                navigator().listenResult(Contact::class.java, viewLifecycleOwner) { newContact ->
+                    viewModel.deleteContact(contact)
+                    viewModel.addContact(newContact)
+                }
             }
         })
 

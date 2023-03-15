@@ -19,6 +19,7 @@ import androidx.fragment.app.FragmentResultListener
 import androidx.lifecycle.LifecycleOwner
 import com.example.mycontacts.R
 import com.example.mycontacts.databinding.ActivityMainBinding
+import com.example.mycontacts.domain.model.Contact
 import com.example.mycontacts.ui.contact_list_screen.ContactListFragment
 import com.example.mycontacts.ui.details.Action
 import com.example.mycontacts.ui.details.HasCustomActionToolbar
@@ -103,8 +104,8 @@ class MainActivity : AppCompatActivity(), Navigator {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
-    override fun launchContactInputScreen(name: String, number: String) {
-        ContactInputDialogFragment.newInstance(name, number).show(supportFragmentManager, ContactInputDialogFragment.TAG)
+    override fun launchContactInputScreen(contact: Contact) {
+        ContactInputDialogFragment.newInstance(contact).show(supportFragmentManager, ContactInputDialogFragment.TAG)
     }
 
     override fun <T : Parcelable> publishResult(result: T) {

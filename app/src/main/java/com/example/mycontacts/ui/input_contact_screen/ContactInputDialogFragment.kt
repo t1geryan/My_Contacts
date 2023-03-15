@@ -2,6 +2,7 @@ package com.example.mycontacts.ui.input_contact_screen
 
 import android.app.Dialog
 import android.content.DialogInterface
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AlertDialog
@@ -17,17 +18,24 @@ class ContactInputDialogFragment : DialogFragment() {
 
     private lateinit var dialogBinding: ItemInputContactBinding
 
+    private lateinit var prevContact: Contact
     private lateinit var prevName: String
     private lateinit var prevNumber: String
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         dialogBinding = ItemInputContactBinding.inflate(layoutInflater)
 
-        prevName = savedInstanceState?.getString(ARG_NAME) ?: requireArguments().getString(ARG_NAME, "")
-        prevNumber = savedInstanceState?.getString(ARG_NUMBER) ?: requireArguments().getString(
-            ARG_NUMBER, "")
+        prevContact = getContactFromArgs()
+        prevName = savedInstanceState?.getString(ARG_NAME) ?: prevContact.name
+        prevNumber = savedInstanceState?.getString(ARG_NUMBER) ?: prevContact.number
 
         return createDialog()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(ARG_NAME, dialogBinding.inputNameEditText.text.toString())
+        outState.putString(ARG_NUMBER, dialogBinding.inputNumberEditText.text.toString())
     }
 
     private fun createDialog() : AlertDialog {
@@ -67,31 +75,37 @@ class ContactInputDialogFragment : DialogFragment() {
                     return@setOnClickListener
 
                 Log.d("Test", "Right Input")
-                val contact = Contact(enteredTextName, enteredTextNumber)
+                val contact = prevContact.copy(name = enteredTextName, number = enteredTextNumber)
                 navigator().publishResult(contact)
                 dismiss()
             }
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString(ARG_NAME, dialogBinding.inputNameEditText.text.toString())
-        outState.putString(ARG_NUMBER, dialogBinding.inputNumberEditText.text.toString())
-    }
 
+
+    private fun getContactFromArgs() : Contact {
+        return if (Build.VERSION.SDK_INT >= 33)
+            requireArguments().getParcelable(ARG_PREV_CONTACT, Contact::class.java) ?: throw Exception("NoFragmentArgumentException")
+        else
+            @Suppress("DEPRECATION")
+            requireArguments().getParcelable(ARG_PREV_CONTACT) ?: throw Exception("NoFragmentArgumentException")
+
+    }
     companion object {
         @JvmStatic
         val TAG: String = ContactInputDialogFragment::class.java.simpleName
+        @JvmStatic
+        private val ARG_PREV_CONTACT = "ARG_PREV_CONTACT"
         @JvmStatic
         private val ARG_NAME = "ARG_NAME"
         @JvmStatic
         private val ARG_NUMBER = "ARG_NUMBER"
 
         @JvmStatic
-        fun newInstance(previousName: String = "", previousNumber: String = "") : ContactInputDialogFragment {
-            val args = bundleOf(ARG_NAME to previousName, ARG_NUMBER to previousNumber)
+        fun newInstance(prevContact: Contact = Contact()) : ContactInputDialogFragment {
             val fragment = ContactInputDialogFragment()
+            val args = bundleOf(ARG_PREV_CONTACT to prevContact)
             fragment.arguments = args
             return fragment
         }
