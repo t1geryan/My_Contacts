@@ -128,7 +128,7 @@ class MainActivity : AppCompatActivity(), Navigator {
             startActivity(Intent(Intent.ACTION_CALL, Uri.parse("tel: ${contact.number}")))
         } catch (e: SecurityException) {
             showToast(getString(R.string.give_call_permission))
-        } catch (e: java.lang.Exception) {
+        } catch (e: Exception) {
             Log.d("Exception", e.message ?: "CallException")
         }
     }

@@ -4,7 +4,6 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
@@ -74,7 +73,6 @@ class ContactInputDialogFragment : DialogFragment() {
                 if (isBadInput)
                     return@setOnClickListener
 
-                Log.d("Test", "Right Input")
                 val contact = prevContact.copy(name = enteredTextName, number = enteredTextNumber)
                 navigator().publishResult(contact)
                 dismiss()
