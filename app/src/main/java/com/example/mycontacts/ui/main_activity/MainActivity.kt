@@ -2,16 +2,19 @@ package com.example.mycontacts.ui.main_activity
 
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
+import android.util.Log
 import android.util.TypedValue
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.ColorInt
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.os.bundleOf
@@ -32,6 +35,7 @@ import com.example.mycontacts.ui.input_contact_screen.ContactInputDialogFragment
 import com.example.mycontacts.ui.navigation.Navigator
 import com.example.mycontacts.ui.onboarding_screen.OnBoardingFragment
 import com.example.mycontacts.utils.Constants
+import java.lang.Exception
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -71,8 +75,10 @@ class MainActivity : AppCompatActivity(), Navigator {
         }
 
         supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentCreateListener, false)
-    }
 
+        requestCallPermission()
+
+    }
     override fun onDestroy() {
         super.onDestroy()
         supportFragmentManager.unregisterFragmentLifecycleCallbacks(fragmentCreateListener)
@@ -94,6 +100,17 @@ class MainActivity : AppCompatActivity(), Navigator {
             .commit()
     }
 
+    private fun requestCallPermission() {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.CALL_PHONE,
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            val permissions = arrayOf(android.Manifest.permission.CALL_PHONE)
+            ActivityCompat.requestPermissions(this, permissions,0)
+        }
+    }
+
     override fun launchContactListScreen() {
         launchScreen(ContactListFragment())
     }
@@ -107,7 +124,13 @@ class MainActivity : AppCompatActivity(), Navigator {
     }
 
     override fun startCall(contact: Contact) {
-        startActivity(Intent(Intent.ACTION_CALL, Uri.parse("tel: ${contact.number}")))
+        try {
+            startActivity(Intent(Intent.ACTION_CALL, Uri.parse("tel: ${contact.number}")))
+        } catch (e: SecurityException) {
+            showToast(getString(R.string.give_call_permission))
+        } catch (e: Exception) {
+            Log.d("Exception", e.message ?: "CallException")
+        }
     }
 
     override fun launchContactInputScreen(name: String, number: String) {

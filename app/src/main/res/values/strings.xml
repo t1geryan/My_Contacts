@@ -37,4 +37,7 @@
     <string name="change_data">Change Contact Data</string>
     <string name="call_contact">Call Contact</string>
     <string name="delete_contact">Delete Contact</string>
+
+    <!--Toast Messages-->
+    <string name="give_call_permission">Please give permission to make calls</string>
 </resources>
