@@ -1,18 +1,21 @@
 package com.example.mycontacts.ui.main_activity
 
+import android.Manifest
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
-import android.net.Uri
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
-import android.util.Log
+import android.provider.Settings
 import android.util.TypedValue
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.ColorInt
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -35,7 +38,6 @@ import com.example.mycontacts.ui.input_contact_screen.ContactInputDialogFragment
 import com.example.mycontacts.ui.navigation.Navigator
 import com.example.mycontacts.ui.onboarding_screen.OnBoardingFragment
 import com.example.mycontacts.utils.Constants
-import java.lang.Exception
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -75,13 +77,55 @@ class MainActivity : AppCompatActivity(), Navigator {
         }
 
         supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentCreateListener, false)
-
-        requestCallPermission()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         supportFragmentManager.unregisterFragmentLifecycleCallbacks(fragmentCreateListener)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when(requestCode) {
+            CALL_PERMISSION_REQUEST_CODE -> {
+                if (grantResults[0] == PackageManager.PERMISSION_DENIED
+                    && !shouldShowRequestPermissionRationale(Manifest.permission.CALL_PHONE))
+                    if (preferences.getBoolean(SHOULD_REQUEST_CALL_PERMISSION_PREF, true))
+                        askUserToOpenAppSettings(SHOULD_REQUEST_CALL_PERMISSION_PREF)
+                    else
+                        showToast(resources.getString(R.string.no_call_permission))
+            }
+        }
+    }
+
+    private fun askUserToOpenAppSettings(shouldRequestPreferenceKey: String) {
+        val appSettingsIntent = Intent(
+            Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+            Uri.fromParts("package", packageName, null)
+        )
+        val resolveInfoFlags = PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_DEFAULT_ONLY.toLong())
+        if (packageManager.resolveActivity(appSettingsIntent, resolveInfoFlags ) != null) {
+            val listener = DialogInterface.OnClickListener { _, which ->
+                when (which) {
+                    DialogInterface.BUTTON_POSITIVE -> startActivity(appSettingsIntent)
+                    DialogInterface.BUTTON_NEUTRAL -> preferences.edit().putBoolean(shouldRequestPreferenceKey, false).apply()
+                }
+            }
+
+            AlertDialog.Builder(this)
+                .setTitle(resources.getString(R.string.denied_permission_dialog_title))
+                .setMessage(resources.getString(R.string.give_permissions_message, resources.getString(R.string.make_calls)))
+                .setPositiveButton(resources.getString(R.string.open_settings), listener)
+                .setNegativeButton(resources.getString(R.string.close_dialog), null)
+                .setNeutralButton(resources.getString(R.string.dont_ask_again), listener)
+                .create()
+                .show()
+
+        }
     }
 
     private fun launchFirstScreen() {
@@ -100,15 +144,8 @@ class MainActivity : AppCompatActivity(), Navigator {
             .commit()
     }
 
-    private fun requestCallPermission() {
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                android.Manifest.permission.CALL_PHONE,
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            val permissions = arrayOf(android.Manifest.permission.CALL_PHONE)
-            ActivityCompat.requestPermissions(this, permissions,0)
-        }
+    override fun requestPermission(permList: Array<String>, requestCode: Int) {
+        ActivityCompat.requestPermissions(this, permList, requestCode)
     }
 
     override fun launchContactListScreen() {
@@ -124,13 +161,15 @@ class MainActivity : AppCompatActivity(), Navigator {
     }
 
     override fun startCall(contact: Contact) {
-        try {
-            startActivity(Intent(Intent.ACTION_CALL, Uri.parse("tel: ${contact.number}")))
-        } catch (e: SecurityException) {
-            showToast(getString(R.string.give_call_permission))
-        } catch (e: Exception) {
-            Log.d("Exception", e.message ?: "CallException")
-        }
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE)
+            == PackageManager.PERMISSION_GRANTED) {
+            try {
+                startActivity(Intent(Intent.ACTION_CALL, Uri.parse("tel: ${contact.number}")))
+            } catch (e: Exception) {
+                showToast(resources.getString(R.string.cant_call))
+            }
+        } else
+            requestPermission(arrayOf(Manifest.permission.CALL_PHONE), CALL_PERMISSION_REQUEST_CODE)
     }
 
     override fun launchContactInputScreen(contact: Contact) {
@@ -194,5 +233,8 @@ class MainActivity : AppCompatActivity(), Navigator {
 
     companion object {
         private const val KEY_RESULT = "KEY_RESULT"
+
+        private const val CALL_PERMISSION_REQUEST_CODE = 0
+        private const val SHOULD_REQUEST_CALL_PERMISSION_PREF = "CALL_PERM_PREf"
     }
 }

@@ -38,6 +38,15 @@
     <string name="call_contact">Позвонить</string>
     <string name="delete_contact">Удалить</string>
 
-    <!--Toast Messages-->
-    <string name="give_call_permission">Пожалуйста, выдайте разрешение для осуществления звонка</string>
+    <!--Denied Permission Dialog-->
+    <string name="denied_permission_dialog_title">Отсутствуют разрешения</string>
+    <string name="give_permissions_message">Вы запретили %1$s навсегда. Вы можете изменить свое решение в настройках приложения.\n\nВы хотите открыть настройки приложения?</string>
+    <string name="open_settings">Открыть</string>
+    <string name="close_dialog">Закрыть</string>
+    <string name="dont_ask_again">Закрыть и не спрашивать</string>
+    <string name="make_calls">совершать звонки</string>
+    <string name="no_call_permission">Отсутствует разарешение на звонки</string>
+
+    <!--ExceptionMessagesToUser-->
+    <string name="cant_call">Невозможно осуществить звонок</string>
 </resources>

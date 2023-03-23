@@ -14,11 +14,13 @@ interface Navigator {
 
     fun launchContactInputScreen(contact: Contact = Contact())
 
+    fun showToast(message : String)
+
+    fun startCall(contact: Contact)
+
     fun <T: Parcelable> publishResult(result: T)
 
     fun <T: Parcelable> listenResult(clazz: Class<T>, owner : LifecycleOwner, listener: (T)->Unit)
 
-    fun showToast(message : String)
-
-    fun startCall(contact: Contact)
+    fun requestPermission(permList : Array<String>, requestCode : Int)
 }

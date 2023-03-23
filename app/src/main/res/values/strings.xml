@@ -38,6 +38,15 @@
     <string name="call_contact">Call Contact</string>
     <string name="delete_contact">Delete Contact</string>
 
-    <!--Toast Messages-->
-    <string name="give_call_permission">Please give permission to make calls</string>
+    <!--Denied Permission Dialog-->
+    <string name="denied_permission_dialog_title">Permissions denied</string>
+    <string name="give_permissions_message">You have denied %1$s forever. You Can Change your decision in app settings.\n\nWould you like to open app setting?</string>
+    <string name="open_settings">Open</string>
+    <string name="close_dialog">Close</string>
+    <string name="dont_ask_again">Close and don\'t ask again</string>
+    <string name="make_calls">make calls</string>
+    <string name="no_call_permission">No call permission exist</string>
+
+    <!--ExceptionMessagesToUser-->
+    <string name="cant_call">Impossible to call</string>
 </resources>
