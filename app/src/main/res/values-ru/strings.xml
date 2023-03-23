@@ -1,0 +1,43 @@
+<resources>
+    <!--App Name and Screen Titles-->
+    <string name="app_name">My Contacts</string>
+    <string name="contact_list_title">Контакты</string>
+    <string name="onboarding_title">Привет!</string>
+    <string name="favorite_contacts_title">Избранные</string>
+
+    <!--Bottom Navigation Items-->
+    <string name="contacts">Контакты</string>
+    <string name="account">Я</string>
+    <string name="favorites">Избранные</string>
+
+    <!--Image Descriptions-->
+    <string name="avatar">аватар</string>
+    <string name="add_to_favorites">добавить в избранное</string>
+
+    <!--Input Contact Dialog-->
+    <string name="enter_contacts_name_hint">Введите Имя</string>
+    <string name="enter_contacts_number_hint">Введите Номер</string>
+    <string name="input_contact">Ввод Контакта</string>
+    <string name="confirm">Принять</string>
+    <string name="cancel">Отмена</string>
+    <string name="empty_value">Поле пустое!</string>
+
+    <!--OnBoarding Carousel Items-->
+    <string name="onboarding1">Приложение My Contacts позволит вам хранить список своих контактов в удобном виде</string>
+    <string name="onboarding2">Вы можете добавлять контакты вручную или синхронизировать со списком ваших контактов на телефоне</string>
+    <string name="onboarding3">Вы можете добавлять контакты в избранные</string>
+    <string name="onboarding4">Вы можете легко осуществить звонок через это приложение</string>
+    <string name="onboarding5">В разделе Me вы можете посмотреть статистику о себе</string>
+
+    <!--Toolbar Custom Action Descriptions-->
+    <string name="add_contact">Добавить контакт</string>
+    <string name="next">Дальше</string>
+
+    <!--Contact PopupMenu Item Titles-->
+    <string name="change_data">Изменить данные</string>
+    <string name="call_contact">Позвонить</string>
+    <string name="delete_contact">Удалить</string>
+
+    <!--Toast Messages-->
+    <string name="give_call_permission">Пожалуйста, выдайте разрешение для осуществления звонка</string>
+</resources>

@@ -23,11 +23,11 @@
     <string name="empty_value">Value is empty</string>
 
     <!--OnBoarding Carousel Items-->
-    <string name="onboarding1">Приложение My Contacts позволит вам хранить список своих контактов в удобном виде</string>
-    <string name="onboarding2">Вы можете добавлять контакты вручную или синхронизировать со списком ваших контактов на телефоне</string>
-    <string name="onboarding3">Вы можете добавлять контакты в избранные</string>
-    <string name="onboarding4">Вы можете легко осуществить звонок, нажав на номер контакта</string>
-    <string name="onboarding5">В разделе Me вы можете посмотреть статистику о себе</string>
+    <string name="onboarding1">The My Contacts application will allow you to store a list of your contacts in a convenient way</string>
+    <string name="onboarding2">You can add contacts manually or sync with your contacts on your phone</string>
+    <string name="onboarding3">You can add contacts to favorites</string>
+    <string name="onboarding4">You can easily make a call through this application</string>
+    <string name="onboarding5">On the Me screen you can see statistics about yourself</string>
 
     <!--Toolbar Custom Action Descriptions-->
     <string name="add_contact">Add Contact</string>
