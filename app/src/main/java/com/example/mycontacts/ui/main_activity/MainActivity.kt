@@ -93,7 +93,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         when(requestCode) {
             CALL_PERMISSION_REQUEST_CODE -> {
                 if (grantResults[0] == PackageManager.PERMISSION_DENIED
-                    && !shouldShowRequestPermissionRationale(Manifest.permission.CALL_PHONE))
+                    && !ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CALL_PHONE))
                     if (preferences.getBoolean(SHOULD_REQUEST_CALL_PERMISSION_PREF, true))
                         askUserToOpenAppSettings(SHOULD_REQUEST_CALL_PERMISSION_PREF)
                     else
@@ -107,8 +107,14 @@ class MainActivity : AppCompatActivity(), Navigator {
             Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
             Uri.fromParts("package", packageName, null)
         )
-        val resolveInfoFlags = PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_DEFAULT_ONLY.toLong())
-        if (packageManager.resolveActivity(appSettingsIntent, resolveInfoFlags ) != null) {
+        val isSettingsExist: Boolean = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            val resolveInfoFlags = PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_DEFAULT_ONLY.toLong())
+            packageManager.resolveActivity(appSettingsIntent, resolveInfoFlags ) != null
+        } else
+            @Suppress("DEPRECATION")
+            packageManager.resolveActivity(appSettingsIntent, PackageManager.MATCH_DEFAULT_ONLY) != null
+
+        if (isSettingsExist) {
             val listener = DialogInterface.OnClickListener { _, which ->
                 when (which) {
                     DialogInterface.BUTTON_POSITIVE -> startActivity(appSettingsIntent)

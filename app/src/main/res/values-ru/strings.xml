@@ -45,7 +45,7 @@
     <string name="close_dialog">Закрыть</string>
     <string name="dont_ask_again">Закрыть и не спрашивать</string>
     <string name="make_calls">совершать звонки</string>
-    <string name="no_call_permission">Отсутствует разарешение на звонки</string>
+    <string name="no_call_permission">Отсутствует разрешение на звонки</string>
 
     <!--ExceptionMessagesToUser-->
     <string name="cant_call">Невозможно осуществить звонок</string>
