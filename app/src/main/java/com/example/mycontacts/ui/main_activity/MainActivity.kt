@@ -25,64 +25,56 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentResultListener
 import androidx.lifecycle.LifecycleOwner
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import com.example.mycontacts.R
 import com.example.mycontacts.databinding.ActivityMainBinding
 import com.example.mycontacts.domain.model.Contact
-import com.example.mycontacts.ui.contact_list_screen.ContactListFragment
-import com.example.mycontacts.ui.details.Action
-import com.example.mycontacts.ui.details.HasCustomActionToolbar
-import com.example.mycontacts.ui.details.HasCustomTitleToolbar
-import com.example.mycontacts.ui.details.HasNotBottomNavigationBar
-import com.example.mycontacts.ui.favorite_contact_list_screen.FavoriteContactListFragment
-import com.example.mycontacts.ui.input_contact_screen.ContactInputDialogFragment
-import com.example.mycontacts.ui.navigation.Navigator
-import com.example.mycontacts.ui.onboarding_screen.OnBoardingFragment
+import com.example.mycontacts.ui.contract.*
+import com.example.mycontacts.ui.tabs_screen.TabsFragment
 import com.example.mycontacts.utils.Constants
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(), Navigator {
+class MainActivity : AppCompatActivity(), SideEffectsApi, FragmentResultApi {
 
     private lateinit var binding: ActivityMainBinding
 
     @Inject
     lateinit var preferences: SharedPreferences
 
-    private val currentFragment : Fragment
-        get() = supportFragmentManager.findFragmentById(R.id.fragmentContainer)!!
+    private var navController: NavController? = null
 
     private val fragmentCreateListener = object  : FragmentManager.FragmentLifecycleCallbacks() {
         override fun onFragmentViewCreated(fm: FragmentManager, f: Fragment, v: View, savedInstanceState: Bundle?) {
             super.onFragmentViewCreated(fm, f, v, savedInstanceState)
-            updateUI()
+            if (f is NavHostFragment || f is TabsFragment) return
+            changeNavController(f.findNavController())
+            updateUI(f)
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater).also { setContentView(it.root) }
+        setSupportActionBar(binding.materialToolbar)
 
-        if (savedInstanceState == null)
-            launchFirstScreen()
+        val navHost = supportFragmentManager.findFragmentById(R.id.rootFragmentContainer) as NavHostFragment
+        val navController = navHost.navController
+        prepareNavController(navController)
 
-        binding.bottomNavigationView.setOnItemSelectedListener {
-            when (it.itemId) {
-                R.id.contacts_btn -> launchContactListScreen()
-                R.id.favorites_btn -> launchFavoriteContactsScreen()
-                R.id.account_btn -> return@setOnItemSelectedListener false // todo add account screen
-                else -> throw Exception("IllegalMenuItemException")
-            }
-            true
-        }
-
-        supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentCreateListener, false)
+        supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentCreateListener, true)
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         supportFragmentManager.unregisterFragmentLifecycleCallbacks(fragmentCreateListener)
+        navController = null
+        super.onDestroy()
     }
+
+    // Permissions
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -134,32 +126,31 @@ class MainActivity : AppCompatActivity(), Navigator {
         }
     }
 
-    private fun launchFirstScreen() {
+    // Nav Component
+
+    private fun prepareNavController(navController: NavController) {
         val isFirstLaunch = preferences.getBoolean(Constants.FIRST_LAUNCH_KEY, true)
 
-        if (isFirstLaunch) {
-            launchScreen(OnBoardingFragment())
-            preferences.edit().putBoolean(Constants.FIRST_LAUNCH_KEY, false).apply()
-        } else
-            launchContactListScreen()
+        val graph = navController.navInflater.inflate(R.navigation.root_graph)
+        graph.setStartDestination(
+            if (isFirstLaunch) {
+                preferences.edit().putBoolean(Constants.FIRST_LAUNCH_KEY, false).apply()
+                R.id.onBoardingFragment
+             } else
+                 R.id.tabsFragment
+        )
+        navController.graph = graph
+
     }
 
-    private fun launchScreen(fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
-            .replace(binding.fragmentContainer.id, fragment)
-            .commit()
+    private fun changeNavController(newNavController: NavController) {
+        if (navController == newNavController) return
+        navController = newNavController
     }
 
+    //  SideEffectsApi implementation
     override fun requestPermission(permList: Array<String>, requestCode: Int) {
         ActivityCompat.requestPermissions(this, permList, requestCode)
-    }
-
-    override fun launchContactListScreen() {
-        launchScreen(ContactListFragment())
-    }
-
-    override fun launchFavoriteContactsScreen() {
-        launchScreen(FavoriteContactListFragment())
     }
 
     override fun showToast(message: String) {
@@ -178,10 +169,7 @@ class MainActivity : AppCompatActivity(), Navigator {
             requestPermission(arrayOf(Manifest.permission.CALL_PHONE), CALL_PERMISSION_REQUEST_CODE)
     }
 
-    override fun launchContactInputScreen(contact: Contact) {
-        ContactInputDialogFragment.newInstance(contact).show(supportFragmentManager, ContactInputDialogFragment.TAG)
-    }
-
+    // FragmentResultApi implementation
     override fun <T : Parcelable> publishResult(result: T) {
         supportFragmentManager.setFragmentResult(result.javaClass.name, bundleOf(KEY_RESULT to result))
     }
@@ -200,24 +188,18 @@ class MainActivity : AppCompatActivity(), Navigator {
         supportFragmentManager.setFragmentResultListener(clazz.name, owner, fragmentResultListener)
     }
 
+    // UI
 
-    private fun updateUI() {
-        val fragment = currentFragment
+    private fun updateUI(fragment : Fragment) {
+        supportActionBar?.title = navController?.currentDestination?.label ?: getString(R.string.app_name)
 
+        /*
+            todo : fix bug with toolbar custom actions
+            toolbar custom actions appear only on the second creation of the fragment
+         */
         binding.materialToolbar.menu.clear()
-        if (fragment is HasCustomActionToolbar) {
+        if (fragment is HasCustomActionToolbar)
             createCustomToolbarAction(fragment.getCustomAction())
-        }
-
-        when (fragment) {
-            is HasCustomTitleToolbar -> binding.materialToolbar.setTitle(fragment.getTitle())
-            else -> binding.materialToolbar.setTitle(R.string.app_name)
-        }
-
-        binding.bottomNavigationView.visibility = when (currentFragment) {
-            is HasNotBottomNavigationBar -> View.INVISIBLE
-            else -> View.VISIBLE
-        }
     }
 
     private fun createCustomToolbarAction(action: Action) {
@@ -243,4 +225,5 @@ class MainActivity : AppCompatActivity(), Navigator {
         private const val CALL_PERMISSION_REQUEST_CODE = 0
         private const val SHOULD_REQUEST_CALL_PERMISSION_PREF = "CALL_PERM_PREf"
     }
+
 }

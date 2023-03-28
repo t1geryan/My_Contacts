@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/contacts_btn"
+        android:id="@id/contact_list"
         android:enabled="true"
         android:title="@string/contacts"
         android:icon="@drawable/ic_contact_white"/>
     <item
-        android:id="@+id/favorites_btn"
+        android:id="@id/favorite_contact_list"
         android:enabled="true"
         android:title="@string/favorites"
         android:icon="@drawable/ic_favorite_white"/>
     <item
-        android:id="@+id/account_btn"
+        android:id="@id/profile"
         android:enabled="true"
         android:title="@string/account"
         android:icon="@drawable/ic_face_white"/>

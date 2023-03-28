@@ -6,21 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import com.example.mycontacts.R
 import com.example.mycontacts.databinding.FragmentOnboardingBinding
-import com.example.mycontacts.ui.details.Action
-import com.example.mycontacts.ui.details.HasCustomActionToolbar
-import com.example.mycontacts.ui.details.HasCustomTitleToolbar
-import com.example.mycontacts.ui.details.HasNotBottomNavigationBar
-import com.example.mycontacts.ui.navigation.navigator
+import com.example.mycontacts.ui.contract.Action
+import com.example.mycontacts.ui.contract.HasCustomActionToolbar
 import com.example.mycontacts.ui.onboarding_screen.utils.CarouselVPAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.abs
 
 @AndroidEntryPoint
-class OnBoardingFragment : Fragment(), HasCustomTitleToolbar, HasCustomActionToolbar, HasNotBottomNavigationBar {
+class OnBoardingFragment : Fragment(), HasCustomActionToolbar {
 
     private lateinit var binding: FragmentOnboardingBinding
 
@@ -74,10 +72,8 @@ class OnBoardingFragment : Fragment(), HasCustomTitleToolbar, HasCustomActionToo
 
     override fun getCustomAction(): Action = Action(R.drawable.ic_next_white, R.string.next) {
         if (binding.carousel.currentItem == adapter.itemCount - 1)
-            navigator().launchContactListScreen()
+            findNavController().navigate(R.id.action_onBoardingFragment_to_tabsFragment)
         else
             toNextItem()
     }
-
-    override fun getTitle(): Int = R.string.onboarding_title
 }

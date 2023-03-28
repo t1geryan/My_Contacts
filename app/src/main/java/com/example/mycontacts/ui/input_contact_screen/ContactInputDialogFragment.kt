@@ -2,20 +2,20 @@ package com.example.mycontacts.ui.input_contact_screen
 
 import android.app.Dialog
 import android.content.DialogInterface
-import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
-import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
+import androidx.navigation.fragment.navArgs
 import com.example.mycontacts.R
 import com.example.mycontacts.databinding.ItemInputContactBinding
 import com.example.mycontacts.domain.model.Contact
-import com.example.mycontacts.ui.navigation.navigator
-
+import com.example.mycontacts.ui.contract.fragmentResult
 
 class ContactInputDialogFragment : DialogFragment() {
 
     private lateinit var dialogBinding: ItemInputContactBinding
+
+    private val args : ContactInputDialogFragmentArgs by navArgs()
 
     private lateinit var prevContact: Contact
     private lateinit var prevName: String
@@ -74,7 +74,7 @@ class ContactInputDialogFragment : DialogFragment() {
                     return@setOnClickListener
 
                 val contact = prevContact.copy(name = enteredTextName, number = enteredTextNumber)
-                navigator().publishResult(contact)
+                fragmentResult().publishResult(contact)
                 dismiss()
             }
         }
@@ -82,31 +82,13 @@ class ContactInputDialogFragment : DialogFragment() {
 
 
 
-    private fun getContactFromArgs() : Contact {
-        return if (Build.VERSION.SDK_INT >= 33)
-            requireArguments().getParcelable(ARG_PREV_CONTACT, Contact::class.java) ?: throw Exception("NoFragmentArgumentException")
-        else
-            @Suppress("DEPRECATION")
-            requireArguments().getParcelable(ARG_PREV_CONTACT) ?: throw Exception("NoFragmentArgumentException")
-
-    }
+    private fun getContactFromArgs() : Contact = args.prevContact
     companion object {
-        @JvmStatic
-        val TAG: String = ContactInputDialogFragment::class.java.simpleName
-        @JvmStatic
-        private val ARG_PREV_CONTACT = "ARG_PREV_CONTACT"
         @JvmStatic
         private val ARG_NAME = "ARG_NAME"
         @JvmStatic
         private val ARG_NUMBER = "ARG_NUMBER"
 
-        @JvmStatic
-        fun newInstance(prevContact: Contact = Contact()) : ContactInputDialogFragment {
-            val fragment = ContactInputDialogFragment()
-            val args = bundleOf(ARG_PREV_CONTACT to prevContact)
-            fragment.arguments = args
-            return fragment
-        }
     }
 
 }

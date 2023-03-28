@@ -4,6 +4,7 @@
     <string name="contact_list_title">Contacts</string>
     <string name="onboarding_title">Hello!</string>
     <string name="favorite_contacts_title">Favorite Contacts</string>
+    <string name="profile_title">Your Profile</string>
 
     <!--Bottom Navigation Items-->
     <string name="contacts">Contacts</string>

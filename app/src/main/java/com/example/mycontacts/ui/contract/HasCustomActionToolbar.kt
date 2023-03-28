@@ -1,4 +1,4 @@
-package com.example.mycontacts.ui.details
+package com.example.mycontacts.ui.contract
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes

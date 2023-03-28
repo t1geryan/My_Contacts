@@ -4,6 +4,7 @@
     <string name="contact_list_title">Контакты</string>
     <string name="onboarding_title">Привет!</string>
     <string name="favorite_contacts_title">Избранные</string>
+    <string name="profile_title">Ваш профиль</string>
 
     <!--Bottom Navigation Items-->
     <string name="contacts">Контакты</string>

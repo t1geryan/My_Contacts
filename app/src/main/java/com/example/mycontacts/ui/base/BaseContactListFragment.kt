@@ -11,8 +11,9 @@ import com.example.mycontacts.databinding.FragmentContactListBinding
 import com.example.mycontacts.domain.model.Contact
 import com.example.mycontacts.domain.model.OnContactChangeListener
 import com.example.mycontacts.ui.contact_list_utils.ContactsAdapter
+import com.example.mycontacts.ui.contract.fragmentResult
+import com.example.mycontacts.ui.contract.sideEffectsHolder
 import com.example.mycontacts.ui.details.RecyclerViewUtility
-import com.example.mycontacts.ui.navigation.navigator
 import com.example.mycontacts.utils.Constants
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -51,12 +52,12 @@ abstract class BaseContactListFragment protected constructor() : Fragment() {
             }
 
             override fun onCall(contact: Contact) {
-                navigator().startCall(contact)
+                sideEffectsHolder().startCall(contact)
             }
 
             override fun onChangeData(contact: Contact) {
-                navigator().launchContactInputScreen(contact)
-                navigator().listenResult(Contact::class.java, viewLifecycleOwner) { newContact ->
+                showContactInputDialog(contact)
+                fragmentResult().listenResult(Contact::class.java, viewLifecycleOwner) { newContact ->
                     if (contact != newContact) {
                         viewModel.deleteContact(contact)
                         viewModel.addContact(newContact)
@@ -73,4 +74,12 @@ abstract class BaseContactListFragment protected constructor() : Fragment() {
 
         binding.recyclerView.adapter = adapter
     }
+
+
+    /*
+        child classes themselves determine how to launch the contact input dialog
+        (with what direction on action)
+        ((because need arguments)
+     */
+    protected abstract fun showContactInputDialog(contact: Contact)
 }
