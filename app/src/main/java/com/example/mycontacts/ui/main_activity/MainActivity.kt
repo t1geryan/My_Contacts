@@ -59,7 +59,6 @@ class MainActivity : AppCompatActivity(), SideEffectsApi, FragmentResultApi {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater).also { setContentView(it.root) }
-        setSupportActionBar(binding.materialToolbar)
 
         val navHost = supportFragmentManager.findFragmentById(R.id.rootFragmentContainer) as NavHostFragment
         val navController = navHost.navController
@@ -191,12 +190,8 @@ class MainActivity : AppCompatActivity(), SideEffectsApi, FragmentResultApi {
     // UI
 
     private fun updateUI(fragment : Fragment) {
-        supportActionBar?.title = navController?.currentDestination?.label ?: getString(R.string.app_name)
+        binding.materialToolbar.title = navController?.currentDestination?.label ?: getString(R.string.app_name)
 
-        /*
-            todo : fix bug with toolbar custom actions
-            toolbar custom actions appear only on the second creation of the fragment
-         */
         binding.materialToolbar.menu.clear()
         if (fragment is HasCustomActionToolbar)
             createCustomToolbarAction(fragment.getCustomAction())
