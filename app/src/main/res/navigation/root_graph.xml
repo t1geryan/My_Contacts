@@ -18,5 +18,5 @@
         android:id="@+id/tabsFragment"
         android:name="com.example.mycontacts.ui.tabs_screen.TabsFragment"
         android:label="TabsFragment"
-        tools:layout="@layout/fragment_tabs"/>
+        tools:layout="@layout/fragment_tabs" />
 </navigation>

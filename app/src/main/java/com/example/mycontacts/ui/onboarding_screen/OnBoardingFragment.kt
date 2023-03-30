@@ -24,9 +24,7 @@ class OnBoardingFragment : Fragment(), HasCustomActionToolbar {
 
     private lateinit var adapter: CarouselVPAdapter
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
         binding = FragmentOnboardingBinding.inflate(inflater, container, false)
@@ -50,7 +48,7 @@ class OnBoardingFragment : Fragment(), HasCustomActionToolbar {
     }
 
     private fun setupCarousel() {
-        with (binding.carousel) {
+        with(binding.carousel) {
             adapter = this@OnBoardingFragment.adapter
 
             offscreenPageLimit = 3
@@ -66,14 +64,14 @@ class OnBoardingFragment : Fragment(), HasCustomActionToolbar {
     }
 
     private fun toNextItem() {
-        if (binding.carousel.currentItem != (adapter.itemCount) - 1)
-            binding.carousel.setCurrentItem(++binding.carousel.currentItem, true)
+        if (binding.carousel.currentItem != (adapter.itemCount) - 1) binding.carousel.setCurrentItem(
+            ++binding.carousel.currentItem,
+            true
+        )
     }
 
     override fun getCustomAction(): Action = Action(R.drawable.ic_next_white, R.string.next) {
-        if (binding.carousel.currentItem == adapter.itemCount - 1)
-            findNavController().navigate(R.id.action_onBoardingFragment_to_tabsFragment)
-        else
-            toNextItem()
+        if (binding.carousel.currentItem == adapter.itemCount - 1) findNavController().navigate(R.id.action_onBoardingFragment_to_tabsFragment)
+        else toNextItem()
     }
 }

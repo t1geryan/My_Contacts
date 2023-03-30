@@ -5,8 +5,7 @@ import android.util.DisplayMetrics
 
 object RecyclerViewUtility {
     fun calculateNoOfColumns(
-        context: Context,
-        columnWidthDp: Float
+        context: Context, columnWidthDp: Float
     ): Int {
         val displayMetrics: DisplayMetrics = context.resources.displayMetrics
         val screenWidthDp = displayMetrics.widthPixels / displayMetrics.density

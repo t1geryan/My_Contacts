@@ -10,15 +10,16 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FavoriteContactListViewModel @Inject constructor(
-    contactListRepository: ContactListRepository,
-    savedStateHandle: SavedStateHandle
+    contactListRepository: ContactListRepository, savedStateHandle: SavedStateHandle
 ) : BaseContactListViewModel(contactListRepository) {
 
-    private val _contacts = savedStateHandle.getLiveData(KEY_FAVORITE_CONTACT_LIST, contactListRepository.getFavoriteContactsList())
-    val contacts : LiveData<List<Contact>>
+    private val _contacts = savedStateHandle.getLiveData(
+        KEY_FAVORITE_CONTACT_LIST, contactListRepository.getFavoriteContactsList()
+    )
+    val contacts: LiveData<List<Contact>>
         get() = _contacts
 
-    private val listener = contactListRepository.OnContactListChangeListener{
+    private val listener = contactListRepository.OnContactListChangeListener {
         _contacts.value = contactListRepository.getFavoriteContactsList()
     }
 

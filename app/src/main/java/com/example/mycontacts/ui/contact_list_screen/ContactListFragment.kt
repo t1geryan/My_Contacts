@@ -27,13 +27,19 @@ class ContactListFragment : BaseContactListFragment(), HasCustomActionToolbar {
     }
 
     override fun showContactInputDialog(contact: Contact) {
-        val direction = ContactListFragmentDirections.actionContactListFragmentToContactInputDialogFragment(contact)
+        val direction =
+            ContactListFragmentDirections.actionContactListFragmentToContactInputDialogFragment(
+                contact
+            )
         findNavController().navigate(direction)
     }
 
     override fun getCustomAction(): Action {
-        val onAction  = Runnable {
-            val direction = ContactListFragmentDirections.actionContactListFragmentToContactInputDialogFragment(Contact())
+        val onAction = Runnable {
+            val direction =
+                ContactListFragmentDirections.actionContactListFragmentToContactInputDialogFragment(
+                    Contact()
+                )
             findNavController().navigate(direction)
         }
         fragmentResult().listenResult(Contact::class.java, viewLifecycleOwner) { contact ->

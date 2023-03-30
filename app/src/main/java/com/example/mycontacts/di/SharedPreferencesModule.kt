@@ -18,7 +18,7 @@ class SharedPreferencesModule {
     @Provides
     fun provideSharedPreferences(
         @ApplicationContext context: Context
-    ) : SharedPreferences {
+    ): SharedPreferences {
         return context.getSharedPreferences(Constants.APP_PREFERENCES, Context.MODE_PRIVATE)
     }
 }

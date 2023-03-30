@@ -5,11 +5,9 @@ import androidx.annotation.StringRes
 
 interface HasCustomActionToolbar {
 
-    fun getCustomAction() : Action
+    fun getCustomAction(): Action
 }
 
 class Action(
-    @DrawableRes val icon: Int,
-    @StringRes val title: Int,
-    val onAction : Runnable
+    @DrawableRes val icon: Int, @StringRes val title: Int, val onAction: Runnable
 )

@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Contact (
+data class Contact(
     var name: String = "",
     var number: String = "",
     var photo: String = "",
@@ -13,10 +13,8 @@ data class Contact (
 ) : Parcelable, Comparable<Contact> {
     override fun compareTo(other: Contact): Int {
         var result = 1
-        if (name.lowercase() < other.name.lowercase())
-            result = -1
-        else if (id == other.id)
-            result = 0
+        if (name.lowercase() < other.name.lowercase()) result = -1
+        else if (id == other.id) result = 0
         return result
     }
 

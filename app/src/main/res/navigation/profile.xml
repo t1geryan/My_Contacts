@@ -9,5 +9,5 @@
         android:id="@+id/profileFragment"
         android:name="com.example.mycontacts.ui.profile_screen.ProfileFragment"
         android:label="@string/profile_title"
-        tools:layout="@layout/fragment_profile"/>
+        tools:layout="@layout/fragment_profile" />
 </navigation>

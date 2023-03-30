@@ -47,8 +47,10 @@ class MainActivity : AppCompatActivity(), SideEffectsApi, FragmentResultApi {
 
     private var navController: NavController? = null
 
-    private val fragmentCreateListener = object  : FragmentManager.FragmentLifecycleCallbacks() {
-        override fun onFragmentViewCreated(fm: FragmentManager, f: Fragment, v: View, savedInstanceState: Bundle?) {
+    private val fragmentCreateListener = object : FragmentManager.FragmentLifecycleCallbacks() {
+        override fun onFragmentViewCreated(
+            fm: FragmentManager, f: Fragment, v: View, savedInstanceState: Bundle?
+        ) {
             super.onFragmentViewCreated(fm, f, v, savedInstanceState)
             if (f is NavHostFragment || f is TabsFragment) return
             changeNavController(f.findNavController())
@@ -60,7 +62,8 @@ class MainActivity : AppCompatActivity(), SideEffectsApi, FragmentResultApi {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater).also { setContentView(it.root) }
 
-        val navHost = supportFragmentManager.findFragmentById(R.id.rootFragmentContainer) as NavHostFragment
+        val navHost =
+            supportFragmentManager.findFragmentById(R.id.rootFragmentContainer) as NavHostFragment
         val navController = navHost.navController
         prepareNavController(navController)
 
@@ -76,19 +79,20 @@ class MainActivity : AppCompatActivity(), SideEffectsApi, FragmentResultApi {
     // Permissions
 
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
+        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when(requestCode) {
+        when (requestCode) {
             CALL_PERMISSION_REQUEST_CODE -> {
-                if (grantResults[0] == PackageManager.PERMISSION_DENIED
-                    && !ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CALL_PHONE))
-                    if (preferences.getBoolean(SHOULD_REQUEST_CALL_PERMISSION_PREF, true))
-                        askUserToOpenAppSettings(SHOULD_REQUEST_CALL_PERMISSION_PREF)
-                    else
-                        showToast(resources.getString(R.string.no_call_permission))
+                if (grantResults[0] == PackageManager.PERMISSION_DENIED && !ActivityCompat.shouldShowRequestPermissionRationale(
+                        this, Manifest.permission.CALL_PHONE
+                    )
+                ) if (preferences.getBoolean(
+                        SHOULD_REQUEST_CALL_PERMISSION_PREF,
+                        true
+                    )
+                ) askUserToOpenAppSettings(SHOULD_REQUEST_CALL_PERMISSION_PREF)
+                else showToast(resources.getString(R.string.no_call_permission))
             }
         }
     }
@@ -99,27 +103,31 @@ class MainActivity : AppCompatActivity(), SideEffectsApi, FragmentResultApi {
             Uri.fromParts("package", packageName, null)
         )
         val isSettingsExist: Boolean = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            val resolveInfoFlags = PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_DEFAULT_ONLY.toLong())
-            packageManager.resolveActivity(appSettingsIntent, resolveInfoFlags ) != null
-        } else
-            @Suppress("DEPRECATION")
-            packageManager.resolveActivity(appSettingsIntent, PackageManager.MATCH_DEFAULT_ONLY) != null
+            val resolveInfoFlags =
+                PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_DEFAULT_ONLY.toLong())
+            packageManager.resolveActivity(appSettingsIntent, resolveInfoFlags) != null
+        } else @Suppress("DEPRECATION")
+        packageManager.resolveActivity(
+            appSettingsIntent, PackageManager.MATCH_DEFAULT_ONLY
+        ) != null
 
         if (isSettingsExist) {
             val listener = DialogInterface.OnClickListener { _, which ->
                 when (which) {
                     DialogInterface.BUTTON_POSITIVE -> startActivity(appSettingsIntent)
-                    DialogInterface.BUTTON_NEUTRAL -> preferences.edit().putBoolean(shouldRequestPreferenceKey, false).apply()
+                    DialogInterface.BUTTON_NEUTRAL -> preferences.edit()
+                        .putBoolean(shouldRequestPreferenceKey, false).apply()
                 }
             }
 
             AlertDialog.Builder(this)
-                .setTitle(resources.getString(R.string.denied_permission_dialog_title))
-                .setMessage(resources.getString(R.string.give_permissions_message, resources.getString(R.string.make_calls)))
-                .setPositiveButton(resources.getString(R.string.open_settings), listener)
+                .setTitle(resources.getString(R.string.denied_permission_dialog_title)).setMessage(
+                    resources.getString(
+                        R.string.give_permissions_message, resources.getString(R.string.make_calls)
+                    )
+                ).setPositiveButton(resources.getString(R.string.open_settings), listener)
                 .setNegativeButton(resources.getString(R.string.close_dialog), null)
-                .setNeutralButton(resources.getString(R.string.dont_ask_again), listener)
-                .create()
+                .setNeutralButton(resources.getString(R.string.dont_ask_again), listener).create()
                 .show()
 
         }
@@ -135,8 +143,7 @@ class MainActivity : AppCompatActivity(), SideEffectsApi, FragmentResultApi {
             if (isFirstLaunch) {
                 preferences.edit().putBoolean(Constants.FIRST_LAUNCH_KEY, false).apply()
                 R.id.onBoardingFragment
-             } else
-                 R.id.tabsFragment
+            } else R.id.tabsFragment
         )
         navController.graph = graph
 
@@ -157,48 +164,57 @@ class MainActivity : AppCompatActivity(), SideEffectsApi, FragmentResultApi {
     }
 
     override fun startCall(contact: Contact) {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE)
-            == PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.CALL_PHONE
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
             try {
                 startActivity(Intent(Intent.ACTION_CALL, Uri.parse("tel: ${contact.number}")))
             } catch (e: Exception) {
                 showToast(resources.getString(R.string.cant_call))
             }
-        } else
-            requestPermission(arrayOf(Manifest.permission.CALL_PHONE), CALL_PERMISSION_REQUEST_CODE)
+        } else requestPermission(
+            arrayOf(Manifest.permission.CALL_PHONE),
+            CALL_PERMISSION_REQUEST_CODE
+        )
     }
 
     // FragmentResultApi implementation
     override fun <T : Parcelable> publishResult(result: T) {
-        supportFragmentManager.setFragmentResult(result.javaClass.name, bundleOf(KEY_RESULT to result))
+        supportFragmentManager.setFragmentResult(
+            result.javaClass.name, bundleOf(KEY_RESULT to result)
+        )
     }
 
     override fun <T : Parcelable> listenResult(
-        clazz: Class<T>,
-        owner: LifecycleOwner,
-        listener: (T) -> Unit ) {
+        clazz: Class<T>, owner: LifecycleOwner, listener: (T) -> Unit
+    ) {
         val fragmentResultListener = FragmentResultListener { _, bundle ->
-            if (Build.VERSION.SDK_INT >= 33)
-                listener.invoke(bundle.getParcelable(KEY_RESULT, clazz) ?: throw Exception("NoFragmentResultException"))
-            else
-                @Suppress("DEPRECATION")
-                listener.invoke(bundle.getParcelable(KEY_RESULT) ?: throw Exception("NoFragmentResultException"))
+            if (Build.VERSION.SDK_INT >= 33) listener.invoke(
+                bundle.getParcelable(KEY_RESULT, clazz)
+                    ?: throw Exception("NoFragmentResultException")
+            )
+            else @Suppress("DEPRECATION") listener.invoke(
+                bundle.getParcelable(KEY_RESULT) ?: throw Exception("NoFragmentResultException")
+            )
         }
         supportFragmentManager.setFragmentResultListener(clazz.name, owner, fragmentResultListener)
     }
 
     // UI
 
-    private fun updateUI(fragment : Fragment) {
-        binding.materialToolbar.title = navController?.currentDestination?.label ?: getString(R.string.app_name)
+    private fun updateUI(fragment: Fragment) {
+        binding.materialToolbar.title =
+            navController?.currentDestination?.label ?: getString(R.string.app_name)
 
         binding.materialToolbar.menu.clear()
-        if (fragment is HasCustomActionToolbar)
-            createCustomToolbarAction(fragment.getCustomAction())
+        if (fragment is HasCustomActionToolbar) createCustomToolbarAction(fragment.getCustomAction())
     }
 
     private fun createCustomToolbarAction(action: Action) {
-        val iconDrawable = DrawableCompat.wrap(ContextCompat.getDrawable(this, action.icon) ?: return)
+        val iconDrawable =
+            DrawableCompat.wrap(ContextCompat.getDrawable(this, action.icon) ?: return)
 
         val typedValue = TypedValue()
         theme.resolveAttribute(com.google.android.material.R.attr.colorOnPrimary, typedValue, true)

@@ -4,8 +4,7 @@ import androidx.recyclerview.widget.DiffUtil
 import com.example.mycontacts.domain.model.Contact
 
 class ContactsDiffCallback(
-    private val oldList: List<Contact>,
-    private val newList: List<Contact>
+    private val oldList: List<Contact>, private val newList: List<Contact>
 ) : DiffUtil.Callback() {
     override fun getOldListSize(): Int = oldList.size
 

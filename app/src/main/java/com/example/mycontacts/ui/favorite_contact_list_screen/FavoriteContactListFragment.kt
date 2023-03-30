@@ -23,7 +23,10 @@ class FavoriteContactListFragment : BaseContactListFragment() {
     }
 
     override fun showContactInputDialog(contact: Contact) {
-        val direction = FavoriteContactListFragmentDirections.actionFavoriteContactListFragmentToContactInputDialogFragment(contact)
+        val direction =
+            FavoriteContactListFragmentDirections.actionFavoriteContactListFragmentToContactInputDialogFragment(
+                contact
+            )
         findNavController().navigate(direction)
     }
 }

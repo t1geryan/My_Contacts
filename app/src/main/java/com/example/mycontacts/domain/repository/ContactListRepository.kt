@@ -20,7 +20,7 @@ abstract class ContactListRepository {
 
     abstract fun changeContactFavoriteStatus(contact: Contact)
 
-    abstract fun getFavoriteContactsList() : List<Contact>
+    abstract fun getFavoriteContactsList(): List<Contact>
 
     inner class OnContactListChangeListener(private val block: (List<Contact>) -> Unit) : Runnable {
         override fun run() {

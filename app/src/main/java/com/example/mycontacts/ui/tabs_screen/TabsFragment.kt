@@ -15,9 +15,7 @@ class TabsFragment : Fragment() {
     private lateinit var binding: FragmentTabsBinding
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentTabsBinding.inflate(inflater, container, false)
         return binding.root
@@ -26,9 +24,9 @@ class TabsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val navHost = childFragmentManager.findFragmentById(R.id.tabsFragmentContainer) as NavHostFragment
+        val navHost =
+            childFragmentManager.findFragmentById(R.id.tabsFragmentContainer) as NavHostFragment
         val navController = navHost.navController
         NavigationUI.setupWithNavController(binding.bottomNavigationView, navController)
-
     }
 }

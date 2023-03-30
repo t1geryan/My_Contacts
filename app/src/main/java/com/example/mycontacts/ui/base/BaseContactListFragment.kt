@@ -28,7 +28,7 @@ abstract class BaseContactListFragment protected constructor() : Fragment() {
      */
     protected lateinit var adapter: ContactsAdapter
 
-    protected abstract val viewModel : BaseContactListViewModel
+    protected abstract val viewModel: BaseContactListViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,6 +39,7 @@ abstract class BaseContactListFragment protected constructor() : Fragment() {
         binding = FragmentContactListBinding.inflate(inflater, container, false)
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -57,7 +58,10 @@ abstract class BaseContactListFragment protected constructor() : Fragment() {
 
             override fun onChangeData(contact: Contact) {
                 showContactInputDialog(contact)
-                fragmentResult().listenResult(Contact::class.java, viewLifecycleOwner) { newContact ->
+                fragmentResult().listenResult(
+                    Contact::class.java,
+                    viewLifecycleOwner
+                ) { newContact ->
                     if (contact != newContact) {
                         viewModel.deleteContact(contact)
                         viewModel.addContact(newContact)
@@ -66,8 +70,13 @@ abstract class BaseContactListFragment protected constructor() : Fragment() {
             }
         })
 
-        binding.recyclerView.layoutManager = GridLayoutManager(requireContext(),
-            RecyclerViewUtility.calculateNoOfColumns(requireContext(), Constants.CONTACTS_COLUMN_WIDTH))
+        binding.recyclerView.layoutManager = GridLayoutManager(
+            requireContext(),
+            RecyclerViewUtility.calculateNoOfColumns(
+                requireContext(),
+                Constants.CONTACTS_COLUMN_WIDTH
+            )
+        )
         val itemAnimator = binding.recyclerView.itemAnimator
         if (itemAnimator is DefaultItemAnimator)
             itemAnimator.supportsChangeAnimations = false

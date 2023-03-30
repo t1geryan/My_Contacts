@@ -9,7 +9,7 @@ import kotlin.random.Random
 import kotlin.random.nextULong
 
 @Singleton
-class ContactListRepositoryImpl @Inject constructor(): ContactListRepository() {
+class ContactListRepositoryImpl @Inject constructor() : ContactListRepository() {
 
     init {
         val faker = Faker.instance()
@@ -18,11 +18,11 @@ class ContactListRepositoryImpl @Inject constructor(): ContactListRepository() {
             Contact(
                 name = faker.name().fullName(),
                 number = faker.phoneNumber().phoneNumber(),
-                photo = if(Random.nextBoolean()) photos[it % photos.size] else "",
+                photo = if (Random.nextBoolean()) photos[it % photos.size] else "",
                 isFavorite = Random.nextBoolean(),
                 id = it.toULong()
             )
-        }.toMutableList().apply {sort()}
+        }.toMutableList().apply { sort() }
     }
 
     override fun getContact(position: Int): Contact {
@@ -31,26 +31,22 @@ class ContactListRepositoryImpl @Inject constructor(): ContactListRepository() {
 
     override fun findFirst(contact: Contact): Int {
         val index = _contacts.indexOfFirst { it == contact }
-        if (index != -1)
-            return index
-        else
-            throw Exception("ContactNotExistException")
+        if (index != -1) return index
+        else throw Exception("ContactNotExistException")
     }
 
-    private fun findPlace(contact: Contact) : Int {
+    private fun findPlace(contact: Contact): Int {
         var index = 0
-        while (index < _contacts.size && _contacts[index] < contact)
-            ++index
+        while (index < _contacts.size && _contacts[index] < contact) ++index
 
         return index
     }
+
     override fun addContact(contact: Contact) {
-        if (contact.id == 0UL)
-            do {
-                contact.id = Random.nextULong()
-            } while (_contacts.find {it.id == contact.id} != null )
-        else if (_contacts.find { it.id == contact.id } != null)
-            throw Exception("RecurringPrimaryKey")
+        if (contact.id == 0UL) do {
+            contact.id = Random.nextULong()
+        } while (_contacts.find { it.id == contact.id } != null)
+        else if (_contacts.find { it.id == contact.id } != null) throw Exception("RecurringPrimaryKey")
 
 
         _contacts = ArrayList(_contacts)

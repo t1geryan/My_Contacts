@@ -15,7 +15,7 @@ class ContactInputDialogFragment : DialogFragment() {
 
     private lateinit var dialogBinding: ItemInputContactBinding
 
-    private val args : ContactInputDialogFragmentArgs by navArgs()
+    private val args: ContactInputDialogFragmentArgs by navArgs()
 
     private lateinit var prevContact: Contact
     private lateinit var prevName: String
@@ -37,7 +37,7 @@ class ContactInputDialogFragment : DialogFragment() {
         outState.putString(ARG_NUMBER, dialogBinding.inputNumberEditText.text.toString())
     }
 
-    private fun createDialog() : AlertDialog {
+    private fun createDialog(): AlertDialog {
         return AlertDialog.Builder(requireContext())
             .setTitle(R.string.input_contact)
             .setView(dialogBinding.root)
@@ -81,14 +81,13 @@ class ContactInputDialogFragment : DialogFragment() {
     }
 
 
+    private fun getContactFromArgs(): Contact = args.prevContact
 
-    private fun getContactFromArgs() : Contact = args.prevContact
     companion object {
         @JvmStatic
         private val ARG_NAME = "ARG_NAME"
+
         @JvmStatic
         private val ARG_NUMBER = "ARG_NUMBER"
-
     }
-
 }

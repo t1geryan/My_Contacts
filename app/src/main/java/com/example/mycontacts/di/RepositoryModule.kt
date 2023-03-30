@@ -14,5 +14,5 @@ abstract class RepositoryModule {
     @Binds
     abstract fun bindsContactListRepository(
         contactListLocalService: ContactListRepositoryImpl
-    ) : ContactListRepository
+    ): ContactListRepository
 }

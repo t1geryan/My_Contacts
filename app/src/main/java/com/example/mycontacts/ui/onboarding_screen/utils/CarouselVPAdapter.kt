@@ -11,7 +11,7 @@ typealias OnCarouselItemClickListener = () -> Unit
 
 class CarouselVPAdapter(
     private val carouselDataList: ArrayList<String>,
-    private val listener : OnCarouselItemClickListener = {}
+    private val listener: OnCarouselItemClickListener = {}
 ) : RecyclerView.Adapter<CarouselVPAdapter.CarouselItemViewHolder>(), OnClickListener {
 
     class CarouselItemViewHolder(
