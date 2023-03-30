@@ -18,7 +18,7 @@
         android:id="@+id/contactInputDialogFragment"
         android:name="com.example.mycontacts.ui.input_contact_screen.ContactInputDialogFragment"
         android:label="ContactInputDialogFragment"
-        tools:layout="@layout/item_input_contact">
+        tools:layout="@layout/dialog_input_contact">
         <argument
             android:name="prevContact"
             app:argType="com.example.mycontacts.domain.model.Contact" />

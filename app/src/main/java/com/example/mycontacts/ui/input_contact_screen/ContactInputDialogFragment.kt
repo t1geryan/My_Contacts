@@ -7,13 +7,13 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.navArgs
 import com.example.mycontacts.R
-import com.example.mycontacts.databinding.ItemInputContactBinding
+import com.example.mycontacts.databinding.DialogInputContactBinding
 import com.example.mycontacts.domain.model.Contact
 import com.example.mycontacts.ui.contract.fragmentResult
 
 class ContactInputDialogFragment : DialogFragment() {
 
-    private lateinit var dialogBinding: ItemInputContactBinding
+    private lateinit var dialogBinding: DialogInputContactBinding
 
     private val args: ContactInputDialogFragmentArgs by navArgs()
 
@@ -22,7 +22,7 @@ class ContactInputDialogFragment : DialogFragment() {
     private lateinit var prevNumber: String
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        dialogBinding = ItemInputContactBinding.inflate(layoutInflater)
+        dialogBinding = DialogInputContactBinding.inflate(layoutInflater)
 
         prevContact = getContactFromArgs()
         prevName = savedInstanceState?.getString(ARG_NAME) ?: prevContact.name
@@ -84,10 +84,8 @@ class ContactInputDialogFragment : DialogFragment() {
     private fun getContactFromArgs(): Contact = args.prevContact
 
     companion object {
-        @JvmStatic
-        private val ARG_NAME = "ARG_NAME"
+        private const val ARG_NAME = "ARG_NAME"
 
-        @JvmStatic
-        private val ARG_NUMBER = "ARG_NUMBER"
+        private const val ARG_NUMBER = "ARG_NUMBER"
     }
 }

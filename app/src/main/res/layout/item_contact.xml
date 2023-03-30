@@ -40,6 +40,7 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:textColor="?android:attr/textColorPrimary"
+        android:textSize="16sp"
         tools:text="Ivan Ivanov" />
 
     <TextView
@@ -50,5 +51,6 @@
         android:background="?android:attr/selectableItemBackground"
         android:ellipsize="end"
         android:maxLines="1"
+        android:textSize="12sp"
         tools:text="+7 800 555-35-35" />
 </LinearLayout>

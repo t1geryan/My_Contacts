@@ -31,7 +31,6 @@ class ContactListViewModel @Inject constructor(
     }
 
     companion object {
-        @JvmStatic
         private val KEY_CONTACT_LIST = "KEY_CONTACT_LIST"
     }
 }

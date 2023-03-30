@@ -33,7 +33,6 @@ class FavoriteContactListViewModel @Inject constructor(
     }
 
     companion object {
-        @JvmStatic
-        private val KEY_FAVORITE_CONTACT_LIST = "KEY_FAVORITE_CONTACT_LIST"
+        private const val KEY_FAVORITE_CONTACT_LIST = "KEY_FAVORITE_CONTACT_LIST"
     }
 }

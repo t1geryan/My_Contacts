@@ -222,7 +222,7 @@ class MainActivity : AppCompatActivity(), SideEffectsApi, FragmentResultApi {
         iconDrawable.setTint(color)
 
         val menuItem = binding.materialToolbar.menu.add(action.title)
-        menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+        menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM)
         menuItem.icon = iconDrawable
         menuItem.setOnMenuItemClickListener {
             action.onAction.run()
