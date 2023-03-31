@@ -1,44 +1,18 @@
 package com.example.mycontacts.domain.repository
 
 import com.example.mycontacts.domain.model.Contact
+import kotlinx.coroutines.flow.Flow
 
-abstract class ContactListRepository {
+interface ContactListRepository {
+    fun getContacts(): Flow<List<Contact>>
 
-    protected var _contacts = mutableListOf<Contact>()
-    val contacts: List<Contact>
-        get() = _contacts
+    fun getFavoriteContacts(): Flow<List<Contact>>
 
-    private val listeners = mutableListOf<OnContactListChangeListener>()
+    fun addContact(contact: Contact)
 
-    abstract fun getContact(position: Int): Contact
+    fun deleteContact(contact: Contact)
 
-    abstract fun findFirst(contact: Contact): Int
+    fun changeContactFavoriteStatus(contact: Contact)
 
-    abstract fun addContact(contact: Contact)
-
-    abstract fun deleteContact(contact: Contact)
-
-    abstract fun changeContactFavoriteStatus(contact: Contact)
-
-    abstract fun getFavoriteContactsList(): List<Contact>
-
-    inner class OnContactListChangeListener(private val block: (List<Contact>) -> Unit) : Runnable {
-        override fun run() {
-            block.invoke(contacts)
-        }
-    }
-
-    fun addListener(listener: OnContactListChangeListener) {
-        listeners.add(listener)
-    }
-
-    fun removeListener(listener: OnContactListChangeListener) {
-        listeners.remove(listener)
-    }
-
-    protected fun notifyChanges() {
-        listeners.forEach {
-            it.run()
-        }
-    }
+    fun changeContactData(oldContact: Contact, newContact: Contact)
 }

@@ -9,11 +9,17 @@ interface ContactDao {
     @Query("SELECT * FROM contacts")
     suspend fun getAllContacts() : Array<ContactEntity>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addContact(contactEntity: ContactEntity)
+    @Query("SELECT * FROM contacts WHERE is_favorite = 1")
+    suspend fun getFavoriteContacts() : Array<ContactEntity>
+
+    @Query("Select * From contacts WHERE number = :number")
+    suspend fun getContactByNumber(number: String) : ContactEntity
 
     @Query("DELETE FROM contacts WHERE number = :number")
-    suspend fun deleteContact(number: String)
+    suspend fun deleteContactByNumber(number: String)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun addContact(contactEntity: ContactEntity)
 
     @Update
     suspend fun updateContact(contactEntity: ContactEntity)

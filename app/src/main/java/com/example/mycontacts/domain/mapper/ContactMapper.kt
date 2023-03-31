@@ -3,27 +3,21 @@ package com.example.mycontacts.domain.mapper
 import com.example.mycontacts.data.database.contact_database.entities.ContactEntity
 import com.example.mycontacts.domain.model.Contact
 import com.example.mycontacts.utils.Mapper
+import javax.inject.Inject
 
-class ContactMapper : Mapper<Contact, ContactEntity> {
+class ContactMapper @Inject constructor() : Mapper<Contact, ContactEntity> {
     override fun domainToEntity(domain: Contact): ContactEntity = with(domain) {
         ContactEntity(
-            0,
-            name,
-            number,
-            photo,
-            isFavorite
+            id = 0, name = name, number = number, photo = photo, isFavorite = isFavorite
         )
     }
 
     override fun entityToDomain(entity: ContactEntity): Contact = with(entity) {
         Contact(
-            name,
-            number,
-            photo ?: "",
-            isFavorite,
-            id.toULong()
+            name = name,
+            number = number,
+            photo = photo ?: "",
+            isFavorite = isFavorite,
         )
     }
-
-
 }
