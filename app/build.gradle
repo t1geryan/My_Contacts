@@ -66,6 +66,17 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
     // Feature module Support
     implementation "androidx.navigation:navigation-dynamic-features-fragment:$nav_version"
+
+    //Coroutines
+    // Coroutines
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
+
+    // Room
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    // Room + Coroutines
+    implementation "androidx.room.rooom-ktx:$room_version"
 }
 
 kapt {
