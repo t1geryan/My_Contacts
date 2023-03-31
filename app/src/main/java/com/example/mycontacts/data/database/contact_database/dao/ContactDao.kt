@@ -7,7 +7,7 @@ import com.example.mycontacts.data.database.contact_database.entities.ContactEnt
 interface ContactDao {
 
     @Query("SELECT * FROM contacts")
-    suspend fun getAll() : List<ContactEntity>
+    suspend fun getAllContacts() : Array<ContactEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addContact(contactEntity: ContactEntity)
