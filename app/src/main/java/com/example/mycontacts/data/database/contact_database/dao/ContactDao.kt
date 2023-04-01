@@ -12,9 +12,6 @@ interface ContactDao {
     @Query("SELECT * FROM contacts WHERE is_favorite = 1")
     suspend fun getFavoriteContacts() : Array<ContactEntity>
 
-    @Query("Select * From contacts WHERE number = :number")
-    suspend fun getContactByNumber(number: String) : ContactEntity
-
     @Query("DELETE FROM contacts WHERE number = :number")
     suspend fun deleteContactByNumber(number: String)
 

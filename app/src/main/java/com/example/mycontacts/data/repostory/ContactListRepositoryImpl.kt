@@ -5,6 +5,7 @@ import com.example.mycontacts.domain.mapper.ContactMapper
 import com.example.mycontacts.domain.model.Contact
 import com.example.mycontacts.domain.repository.ContactListRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -14,28 +15,39 @@ class ContactListRepositoryImpl @Inject constructor(
     private val contactMapper: ContactMapper,
     private val contactDao: ContactDao,
 ) : ContactListRepository {
-    override fun getContacts(): Flow<List<Contact>> {
-        TODO("Not yet implemented: get all contacts from DB and make from Array<ContactEntity> Flow<List<Contact>>")
+    override suspend fun getAllContacts(): Flow<List<Contact>> = flow {
+        val allContactsList = contactDao.getAllContacts().asList().map {
+            contactMapper.entityToDomain(it)
+        }
+        emit(allContactsList)
     }
 
-    override fun getFavoriteContacts(): Flow<List<Contact>> {
-        TODO("Not yet implemented: get all favorite contacts from DB and make from Array<ContactEntity> Flow<List<Contact>>")
+    override suspend fun getFavoriteContacts(): Flow<List<Contact>> = flow {
+        val favoriteContactsList = contactDao.getFavoriteContacts().asList().map {
+            contactMapper.entityToDomain(it)
+        }
+        emit(favoriteContactsList)
     }
 
-    override fun addContact(contact: Contact) {
-        TODO("Not yet implemented : add contact to DB")
+    override suspend fun addContact(contact: Contact) {
+        val contactEntity = contactMapper.domainToEntity(contact)
+        contactDao.addContact(contactEntity)
     }
 
-    override fun deleteContact(contact: Contact) {
-        TODO("Not yet implemented : delete contact from DB")
+    override suspend fun deleteContact(contact: Contact) {
+        val contactEntity = contactMapper.domainToEntity(contact)
+        contactDao.deleteContactByNumber(contactEntity.number)
     }
 
-    override fun changeContactFavoriteStatus(contact: Contact) {
-        TODO("Not yet implemented : change contact favorite status")
+    override suspend fun changeContactFavoriteStatus(contact: Contact) {
+        val newContact = contact.copy(isFavorite = !contact.isFavorite)
+        val contactEntity = contactMapper.domainToEntity(newContact)
+        contactDao.updateContact(contactEntity)
     }
 
-    override fun changeContactData(oldContact: Contact, newContact: Contact) {
-        TODO("Not yet implemented: change contact data")
+    override suspend fun changeContactData(newContact: Contact) {
+        val contactEntity = contactMapper.domainToEntity(newContact)
+        contactDao.updateContact(contactEntity)
     }
 
 }

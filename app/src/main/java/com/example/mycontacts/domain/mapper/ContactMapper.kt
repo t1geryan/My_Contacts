@@ -8,12 +8,13 @@ import javax.inject.Inject
 class ContactMapper @Inject constructor() : Mapper<Contact, ContactEntity> {
     override fun domainToEntity(domain: Contact): ContactEntity = with(domain) {
         ContactEntity(
-            id = 0, name = name, number = number, photo = photo, isFavorite = isFavorite
+            id = id, name = name, number = number, photo = photo, isFavorite = isFavorite
         )
     }
 
     override fun entityToDomain(entity: ContactEntity): Contact = with(entity) {
         Contact(
+            id = id,
             name = name,
             number = number,
             photo = photo ?: "",

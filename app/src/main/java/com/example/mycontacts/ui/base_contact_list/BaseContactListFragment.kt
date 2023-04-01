@@ -1,10 +1,11 @@
-package com.example.mycontacts.ui.base
+package com.example.mycontacts.ui.base_contact_list
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.mycontacts.databinding.FragmentContactListBinding
@@ -20,15 +21,15 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 abstract class BaseContactListFragment protected constructor() : Fragment() {
 
-    protected lateinit var binding: FragmentContactListBinding
+    private lateinit var binding: FragmentContactListBinding
 
     /*
         Can't be injected
         Because nobody implements the onContactChangeListener interface (only anonymous object)
      */
-    protected lateinit var adapter: ContactsAdapter
+    protected open lateinit var adapter: ContactsAdapter
 
-    protected abstract val viewModel: BaseContactListViewModel
+    abstract val viewModel: BaseContactListViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,6 +38,14 @@ abstract class BaseContactListFragment protected constructor() : Fragment() {
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
         binding = FragmentContactListBinding.inflate(inflater, container, false)
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.fetchCurrentContactsList()
+            viewModel.contacts.collect {
+                adapter.contacts = it
+            }
+        }
+
         return binding.root
     }
 
@@ -83,12 +92,9 @@ abstract class BaseContactListFragment protected constructor() : Fragment() {
 
         binding.recyclerView.adapter = adapter
     }
-
-
     /*
         child classes themselves determine how to launch the contact input dialog
-        (with what direction on action)
-        ((because need arguments)
+        (with what direction or action)
      */
     protected abstract fun showContactInputDialog(contact: Contact)
 }

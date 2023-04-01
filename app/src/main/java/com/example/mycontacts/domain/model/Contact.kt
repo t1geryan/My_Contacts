@@ -5,6 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Contact(
+    val id: Long = 0,
     var name: String = "",
     var number: String = "",
     var photo: String = "",
@@ -13,7 +14,7 @@ data class Contact(
     override fun compareTo(other: Contact): Int {
         var result = 1
         if (name.lowercase() < other.name.lowercase()) result = -1
-        else if (number == other.number) result = 0
+        else if (id == other.id) result = 0
         return result
     }
 

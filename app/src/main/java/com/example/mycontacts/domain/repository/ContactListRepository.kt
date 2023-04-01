@@ -4,15 +4,16 @@ import com.example.mycontacts.domain.model.Contact
 import kotlinx.coroutines.flow.Flow
 
 interface ContactListRepository {
-    fun getContacts(): Flow<List<Contact>>
+    suspend fun getAllContacts(): Flow<List<Contact>>
 
-    fun getFavoriteContacts(): Flow<List<Contact>>
+    suspend fun getFavoriteContacts(): Flow<List<Contact>>
 
-    fun addContact(contact: Contact)
+    suspend fun addContact(contact: Contact)
 
-    fun deleteContact(contact: Contact)
+    suspend fun deleteContact(contact: Contact)
 
-    fun changeContactFavoriteStatus(contact: Contact)
+    suspend fun changeContactFavoriteStatus(contact: Contact)
 
-    fun changeContactData(oldContact: Contact, newContact: Contact)
+    // modified contact saves previous id
+    suspend fun changeContactData(newContact: Contact)
 }
