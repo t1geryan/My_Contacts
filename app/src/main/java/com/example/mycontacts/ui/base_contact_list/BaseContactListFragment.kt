@@ -32,15 +32,12 @@ abstract class BaseContactListFragment protected constructor() : Fragment() {
     abstract val viewModel: BaseContactListViewModel
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
         binding = FragmentContactListBinding.inflate(inflater, container, false)
 
         lifecycleScope.launchWhenStarted {
-            viewModel.fetchCurrentContactsList()
             viewModel.contacts.collect {
                 adapter.contacts = it
             }
@@ -68,8 +65,7 @@ abstract class BaseContactListFragment protected constructor() : Fragment() {
             override fun onChangeData(contact: Contact) {
                 showContactInputDialog(contact)
                 fragmentResult().listenResult(
-                    Contact::class.java,
-                    viewLifecycleOwner
+                    Contact::class.java, viewLifecycleOwner
                 ) { newContact ->
                     if (contact != newContact) {
                         viewModel.deleteContact(contact)
@@ -80,18 +76,16 @@ abstract class BaseContactListFragment protected constructor() : Fragment() {
         })
 
         binding.recyclerView.layoutManager = GridLayoutManager(
-            requireContext(),
-            RecyclerViewUtility.calculateNoOfColumns(
-                requireContext(),
-                Constants.CONTACTS_COLUMN_WIDTH
+            requireContext(), RecyclerViewUtility.calculateNoOfColumns(
+                requireContext(), Constants.CONTACTS_COLUMN_WIDTH
             )
         )
         val itemAnimator = binding.recyclerView.itemAnimator
-        if (itemAnimator is DefaultItemAnimator)
-            itemAnimator.supportsChangeAnimations = false
+        if (itemAnimator is DefaultItemAnimator) itemAnimator.supportsChangeAnimations = false
 
         binding.recyclerView.adapter = adapter
     }
+
     /*
         child classes themselves determine how to launch the contact input dialog
         (with what direction or action)

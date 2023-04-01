@@ -5,7 +5,7 @@ import com.example.mycontacts.domain.mapper.ContactMapper
 import com.example.mycontacts.domain.model.Contact
 import com.example.mycontacts.domain.repository.ContactListRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -15,19 +15,22 @@ class ContactListRepositoryImpl @Inject constructor(
     private val contactMapper: ContactMapper,
     private val contactDao: ContactDao,
 ) : ContactListRepository {
-    override suspend fun getAllContacts(): Flow<List<Contact>> = flow {
-        val allContactsList = contactDao.getAllContacts().asList().map {
-            contactMapper.entityToDomain(it)
+
+    /*  Nested map not really good
+        Make DAO returns Flow<ContactEntity> and collect them into ContactList?
+     */
+    override suspend fun getAllContacts(): Flow<List<Contact>> = contactDao.getAllContacts().map {
+        it.map { contactEntity ->
+            contactMapper.entityToDomain(contactEntity)
         }
-        emit(allContactsList)
     }
 
-    override suspend fun getFavoriteContacts(): Flow<List<Contact>> = flow {
-        val favoriteContactsList = contactDao.getFavoriteContacts().asList().map {
-            contactMapper.entityToDomain(it)
+    override suspend fun getFavoriteContacts(): Flow<List<Contact>> =
+        contactDao.getFavoriteContacts().map {
+            it.map { contactEntity ->
+                contactMapper.entityToDomain(contactEntity)
+            }
         }
-        emit(favoriteContactsList)
-    }
 
     override suspend fun addContact(contact: Contact) {
         val contactEntity = contactMapper.domainToEntity(contact)
