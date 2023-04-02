@@ -20,24 +20,21 @@ abstract class BaseContactListViewModel(
 
     init {
         viewModelScope.launch(Dispatchers.Default) {
-            fetchCurrentContactsList()
+            fetchCurrentContactList()
         }
     }
 
     fun addContact(contact: Contact) = viewModelScope.launch(Dispatchers.Default) {
         contactListRepository.addContact(contact)
-        fetchCurrentContactsList()
     }
 
     fun deleteContact(contact: Contact) = viewModelScope.launch(Dispatchers.Default) {
         contactListRepository.deleteContact(contact)
-        fetchCurrentContactsList()
     }
 
     fun changeContactFavoriteStatus(contact: Contact) = viewModelScope.launch(Dispatchers.Default) {
         contactListRepository.changeContactFavoriteStatus(contact)
-        fetchCurrentContactsList()
     }
 
-    abstract suspend fun fetchCurrentContactsList()
+    abstract suspend fun fetchCurrentContactList()
 }
