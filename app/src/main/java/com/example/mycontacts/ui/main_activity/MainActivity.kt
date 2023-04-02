@@ -88,10 +88,10 @@ class MainActivity : AppCompatActivity(), SideEffectsApi, FragmentResultApi {
                         this, Manifest.permission.CALL_PHONE
                     )
                 ) if (preferences.getBoolean(
-                        SHOULD_REQUEST_CALL_PERMISSION_PREF,
+                        Constants.SHOULD_REQUEST_CALL_PERMISSION_PREF,
                         true
                     )
-                ) askUserToOpenAppSettings(SHOULD_REQUEST_CALL_PERMISSION_PREF)
+                ) askUserToOpenAppSettings(Constants.SHOULD_REQUEST_CALL_PERMISSION_PREF)
                 else showToast(resources.getString(R.string.no_call_permission))
             }
         }
@@ -136,12 +136,12 @@ class MainActivity : AppCompatActivity(), SideEffectsApi, FragmentResultApi {
     // Nav Component
 
     private fun prepareNavController(navController: NavController) {
-        val isFirstLaunch = preferences.getBoolean(Constants.FIRST_LAUNCH_KEY, true)
+        val isFirstLaunch = preferences.getBoolean(Constants.FIRST_LAUNCH_PREF, true)
 
         val graph = navController.navInflater.inflate(R.navigation.root_graph)
         graph.setStartDestination(
             if (isFirstLaunch) {
-                preferences.edit().putBoolean(Constants.FIRST_LAUNCH_KEY, false).apply()
+                preferences.edit().putBoolean(Constants.FIRST_LAUNCH_PREF, false).apply()
                 R.id.onBoardingFragment
             } else R.id.tabsFragment
         )
@@ -234,7 +234,6 @@ class MainActivity : AppCompatActivity(), SideEffectsApi, FragmentResultApi {
         private const val KEY_RESULT = "KEY_RESULT"
 
         private const val CALL_PERMISSION_REQUEST_CODE = 0
-        private const val SHOULD_REQUEST_CALL_PERMISSION_PREF = "CALL_PERM_PREf"
     }
 
 }
