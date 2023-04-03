@@ -13,8 +13,8 @@ interface ContactDao {
     @Query("SELECT * FROM contacts WHERE is_favorite = 1")
     fun getFavoriteContacts(): Flow<List<ContactEntity>>
 
-    @Query("DELETE FROM contacts WHERE number = :number")
-    suspend fun deleteContactByNumber(number: String)
+    @Query("DELETE FROM contacts WHERE id = :id")
+    suspend fun deleteContactById(id: Long)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addContact(contactEntity: ContactEntity)

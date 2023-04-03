@@ -22,14 +22,14 @@ class ContactListRepositoryImpl @Inject constructor(
     override suspend fun getAllContacts(): Flow<List<Contact>> = contactDao.getAllContacts().map {
         it.map { contactEntity ->
             contactMapper.entityToDomain(contactEntity)
-        }
+        }.sorted()
     }
 
     override suspend fun getFavoriteContacts(): Flow<List<Contact>> =
         contactDao.getFavoriteContacts().map {
             it.map { contactEntity ->
                 contactMapper.entityToDomain(contactEntity)
-            }
+            }.sorted()
         }
 
     override suspend fun addContact(contact: Contact) {
@@ -39,7 +39,7 @@ class ContactListRepositoryImpl @Inject constructor(
 
     override suspend fun deleteContact(contact: Contact) {
         val contactEntity = contactMapper.domainToEntity(contact)
-        contactDao.deleteContactByNumber(contactEntity.number)
+        contactDao.deleteContactById(contactEntity.id)
     }
 
     override suspend fun changeContactFavoriteStatus(contact: Contact) {
