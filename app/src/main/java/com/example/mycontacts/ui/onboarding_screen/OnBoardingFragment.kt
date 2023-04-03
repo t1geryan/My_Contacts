@@ -65,13 +65,16 @@ class OnBoardingFragment : Fragment(), HasCustomActionToolbar {
 
     private fun toNextItem() {
         if (binding.carousel.currentItem != (adapter.itemCount) - 1) binding.carousel.setCurrentItem(
-            ++binding.carousel.currentItem,
-            true
+            ++binding.carousel.currentItem, true
         )
     }
 
-    override fun getCustomAction(): Action = Action(R.drawable.ic_next_white, R.string.next) {
-        if (binding.carousel.currentItem == adapter.itemCount - 1) findNavController().navigate(R.id.action_onBoardingFragment_to_tabsFragment)
-        else toNextItem()
-    }
+    override fun getCustomActionsList(): List<Action> =
+        listOf(Action(R.drawable.ic_next_white, R.string.next) {
+            if (binding.carousel.currentItem == adapter.itemCount - 1) findNavController().navigate(
+                R.id.action_onBoardingFragment_to_tabsFragment
+            )
+            else toNextItem()
+        })
+
 }

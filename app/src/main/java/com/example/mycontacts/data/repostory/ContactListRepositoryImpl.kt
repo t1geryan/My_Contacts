@@ -42,6 +42,10 @@ class ContactListRepositoryImpl @Inject constructor(
         contactDao.deleteContactById(contactEntity.id)
     }
 
+    override suspend fun deleteAllContacts() {
+        contactDao.deleteAllContacts()
+    }
+
     override suspend fun changeContactFavoriteStatus(contact: Contact) {
         val newContact = contact.copy(isFavorite = !contact.isFavorite)
         val contactEntity = contactMapper.domainToEntity(newContact)

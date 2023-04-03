@@ -88,8 +88,7 @@ class MainActivity : AppCompatActivity(), SideEffectsApi, FragmentResultApi {
                         this, Manifest.permission.CALL_PHONE
                     )
                 ) if (preferences.getBoolean(
-                        Constants.SHOULD_REQUEST_CALL_PERMISSION_PREF,
-                        true
+                        Constants.SHOULD_REQUEST_CALL_PERMISSION_PREF, true
                     )
                 ) askUserToOpenAppSettings(Constants.SHOULD_REQUEST_CALL_PERMISSION_PREF)
                 else showToast(resources.getString(R.string.no_call_permission))
@@ -110,6 +109,7 @@ class MainActivity : AppCompatActivity(), SideEffectsApi, FragmentResultApi {
         packageManager.resolveActivity(
             appSettingsIntent, PackageManager.MATCH_DEFAULT_ONLY
         ) != null
+
 
         if (isSettingsExist) {
             val listener = DialogInterface.OnClickListener { _, which ->
@@ -165,8 +165,7 @@ class MainActivity : AppCompatActivity(), SideEffectsApi, FragmentResultApi {
 
     override fun startCall(contact: Contact) {
         if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.CALL_PHONE
+                this, Manifest.permission.CALL_PHONE
             ) == PackageManager.PERMISSION_GRANTED
         ) {
             try {
@@ -174,10 +173,11 @@ class MainActivity : AppCompatActivity(), SideEffectsApi, FragmentResultApi {
             } catch (e: Exception) {
                 showToast(resources.getString(R.string.cant_call))
             }
-        } else requestPermission(
-            arrayOf(Manifest.permission.CALL_PHONE),
-            CALL_PERMISSION_REQUEST_CODE
-        )
+        } else {
+            requestPermission(
+                arrayOf(Manifest.permission.CALL_PHONE), CALL_PERMISSION_REQUEST_CODE
+            )
+        }
     }
 
     // FragmentResultApi implementation
@@ -191,13 +191,16 @@ class MainActivity : AppCompatActivity(), SideEffectsApi, FragmentResultApi {
         clazz: Class<T>, owner: LifecycleOwner, listener: (T) -> Unit
     ) {
         val fragmentResultListener = FragmentResultListener { _, bundle ->
-            if (Build.VERSION.SDK_INT >= 33) listener.invoke(
-                bundle.getParcelable(KEY_RESULT, clazz)
-                    ?: throw Exception("NoFragmentResultException")
-            )
-            else @Suppress("DEPRECATION") listener.invoke(
-                bundle.getParcelable(KEY_RESULT) ?: throw Exception("NoFragmentResultException")
-            )
+            if (Build.VERSION.SDK_INT >= 33) {
+                listener.invoke(
+                    bundle.getParcelable(KEY_RESULT, clazz)
+                        ?: throw Exception("NoFragmentResultException")
+                )
+            } else @Suppress("DEPRECATION") {
+                listener.invoke(
+                    bundle.getParcelable(KEY_RESULT) ?: throw Exception("NoFragmentResultException")
+                )
+            }
         }
         supportFragmentManager.setFragmentResultListener(clazz.name, owner, fragmentResultListener)
     }
@@ -209,7 +212,11 @@ class MainActivity : AppCompatActivity(), SideEffectsApi, FragmentResultApi {
             navController?.currentDestination?.label ?: getString(R.string.app_name)
 
         binding.materialToolbar.menu.clear()
-        if (fragment is HasCustomActionToolbar) createCustomToolbarAction(fragment.getCustomAction())
+        if (fragment is HasCustomActionToolbar) {
+            fragment.getCustomActionsList().forEach {
+                createCustomToolbarAction(it)
+            }
+        }
     }
 
     private fun createCustomToolbarAction(action: Action) {
@@ -222,7 +229,7 @@ class MainActivity : AppCompatActivity(), SideEffectsApi, FragmentResultApi {
         iconDrawable.setTint(color)
 
         val menuItem = binding.materialToolbar.menu.add(action.title)
-        menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM)
+        menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS) // todo: use SHOW_AS_ACTION_IF_ROOM (broke when use)
         menuItem.icon = iconDrawable
         menuItem.setOnMenuItemClickListener {
             action.onAction.run()

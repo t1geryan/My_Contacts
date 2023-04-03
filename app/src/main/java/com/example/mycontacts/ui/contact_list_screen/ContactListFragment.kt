@@ -1,5 +1,7 @@
 package com.example.mycontacts.ui.contact_list_screen
 
+import android.content.DialogInterface
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.mycontacts.R
@@ -24,8 +26,8 @@ class ContactListFragment : BaseContactListFragment(), HasCustomActionToolbar {
         findNavController().navigate(direction)
     }
 
-    override fun getCustomAction(): Action {
-        val onAction = Runnable {
+    override fun getCustomActionsList(): List<Action> {
+        val onAction1 = Runnable {
             val direction =
                 ContactListFragmentDirections.actionContactListFragmentToContactInputDialogFragment(
                     Contact()
@@ -36,6 +38,21 @@ class ContactListFragment : BaseContactListFragment(), HasCustomActionToolbar {
             viewModel.addContact(contact)
         }
 
-        return Action(R.drawable.ic_add_contact_white, R.string.add_contact, onAction)
+        val listener = DialogInterface.OnClickListener { _, which ->
+            when (which) {
+                DialogInterface.BUTTON_POSITIVE -> (viewModel as ContactListViewModel).deleteAllContacts()
+            }
+        }
+        val onAction2 = Runnable {
+            AlertDialog.Builder(requireContext()).setTitle(R.string.confirm_dialog_title)
+                .setMessage(R.string.confirm_dialog_clear_contacts_message)
+                .setPositiveButton(R.string.confirm_dialog_positive, listener)
+                .setNegativeButton(R.string.confirm_dialog_negative, listener).show()
+        }
+
+        return listOf(
+            Action(R.drawable.ic_add_contact_white, R.string.add_contact, onAction1),
+            Action(R.drawable.ic_clear_white, R.string.clear_all, onAction2)
+        )
     }
 }

@@ -5,7 +5,7 @@ import androidx.annotation.StringRes
 
 interface HasCustomActionToolbar {
 
-    fun getCustomAction(): Action
+    fun getCustomActionsList(): List<Action>
 }
 
 class Action(

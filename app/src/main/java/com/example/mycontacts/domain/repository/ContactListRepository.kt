@@ -12,6 +12,8 @@ interface ContactListRepository {
 
     suspend fun deleteContact(contact: Contact)
 
+    suspend fun deleteAllContacts()
+
     suspend fun changeContactFavoriteStatus(contact: Contact)
 
     // modified contact saves previous id

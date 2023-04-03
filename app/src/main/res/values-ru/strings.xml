@@ -32,6 +32,7 @@
 
     <!--Toolbar Custom Action Descriptions-->
     <string name="add_contact">Добавить контакт</string>
+    <string name="clear_all">Удалить все контакты"</string>
     <string name="next">Дальше</string>
 
     <!--Contact PopupMenu Item Titles-->
@@ -47,6 +48,12 @@
     <string name="dont_ask_again">Закрыть и не спрашивать</string>
     <string name="make_calls">совершать звонки</string>
     <string name="no_call_permission">Отсутствует разрешение на звонки</string>
+
+    <!--Confirmation Dialog-->
+    <string name="confirm_dialog_title">Вы уверены?</string>
+    <string name="confirm_dialog_positive">Да</string>
+    <string name="confirm_dialog_negative">Нет</string>
+    <string name="confirm_dialog_clear_contacts_message">Все контакты будут удалены</string>
 
     <!--ExceptionMessagesToUser-->
     <string name="cant_call">Невозможно осуществить звонок</string>
