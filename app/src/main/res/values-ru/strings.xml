@@ -33,7 +33,8 @@
     <!--Toolbar Custom Action Descriptions-->
     <string name="add_contact">Добавить контакт</string>
     <string name="clear_all">Удалить все контакты"</string>
-    <string name="next">Дальше</string>
+    <string name="next">Далее</string>
+    <string name="sync_contacts">Синхронизировать контакты</string>
 
     <!--Contact PopupMenu Item Titles-->
     <string name="change_data">Изменить данные</string>
@@ -46,15 +47,19 @@
     <string name="open_settings">Открыть</string>
     <string name="close_dialog">Закрыть</string>
     <string name="dont_ask_again">Закрыть и не спрашивать</string>
-    <string name="make_calls">совершать звонки</string>
+    <string name="denied_permission_call">совершать звонки</string>
+    <string name="denied_permission_sync_contacts">синхронизировать контакты</string>
     <string name="no_call_permission">Отсутствует разрешение на звонки</string>
+    <string name="no_read_contact_permission">Отсутствует разрешение на чтение контактов</string>
 
     <!--Confirmation Dialog-->
     <string name="confirm_dialog_title">Вы уверены?</string>
     <string name="confirm_dialog_positive">Да</string>
     <string name="confirm_dialog_negative">Нет</string>
     <string name="confirm_dialog_clear_contacts_message">Все контакты будут удалены</string>
+    <string name="confirm_dialog_sync_message">В приложение будут добавлены все контакты из телефона</string>
 
-    <!--ExceptionMessagesToUser-->
-    <string name="cant_call">Невозможно осуществить звонок</string>
+    <!--ExceptionMessages-->
+    <string name="call_failed">Невозможно осуществить звонок</string>
+    <string name="sync_failed">Синхронизация неудачна</string>
 </resources>

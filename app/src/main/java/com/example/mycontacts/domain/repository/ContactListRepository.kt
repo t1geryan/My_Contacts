@@ -18,4 +18,6 @@ interface ContactListRepository {
 
     // modified contact saves previous id
     suspend fun changeContactData(newContact: Contact)
+
+    suspend fun syncContacts()
 }

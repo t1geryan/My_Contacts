@@ -15,6 +15,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.ColorInt
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -87,21 +88,56 @@ class MainActivity : AppCompatActivity(), SideEffectsApi, FragmentResultApi {
                 if (grantResults[0] == PackageManager.PERMISSION_DENIED && !ActivityCompat.shouldShowRequestPermissionRationale(
                         this, Manifest.permission.CALL_PHONE
                     )
-                ) if (preferences.getBoolean(
-                        Constants.SHOULD_REQUEST_CALL_PERMISSION_PREF, true
+                ) askUserToOpenAppSettings(
+                    Constants.SHOULD_REQUEST_CALL_PERMISSION_PREF,
+                    R.string.no_call_permission,
+                    R.string.denied_permission_call
+                )
+            }
+            SYNC_PERMISSION_REQUEST_CODE -> {
+                if (grantResults[0] == PackageManager.PERMISSION_DENIED && !ActivityCompat.shouldShowRequestPermissionRationale(
+                        this, Manifest.permission.READ_CONTACTS
                     )
-                ) askUserToOpenAppSettings(Constants.SHOULD_REQUEST_CALL_PERMISSION_PREF)
-                else showToast(resources.getString(R.string.no_call_permission))
+                ) askUserToOpenAppSettings(
+                    Constants.SHOULD_REQUEST_READ_CONTACTS_PERMISSION_PREF,
+                    R.string.no_call_permission,
+                    R.string.denied_permission_sync_contacts
+                )
             }
         }
     }
 
-    private fun askUserToOpenAppSettings(shouldRequestPreferenceKey: String) {
+    private fun askUserToOpenAppSettings(
+        shouldRequestPreferenceKey: String,
+        @StringRes denialMessage: Int,
+        @StringRes dialogMessage: Int
+    ) {
+        if (preferences.getBoolean(shouldRequestPreferenceKey, true)) {
+            val appSettingsIntent = checkForAppSettings()
+            appSettingsIntent?.let {
+                AlertDialog.Builder(this)
+                    .setTitle(resources.getString(R.string.denied_permission_dialog_title))
+                    .setMessage(
+                        resources.getString(
+                            R.string.give_permissions_message, resources.getString(dialogMessage)
+                        )
+                    ).setPositiveButton(resources.getString(R.string.open_settings)) { _, _ ->
+                        startActivity(appSettingsIntent)
+                    }.setNegativeButton(resources.getString(R.string.close_dialog), null)
+                    .setNeutralButton(resources.getString(R.string.dont_ask_again)) { _, _ ->
+                        preferences.edit().putBoolean(shouldRequestPreferenceKey, false).apply()
+                    }.create().show()
+            }
+        } else showToast(getString(denialMessage))
+    }
+
+    private fun checkForAppSettings(): Intent? {
         val appSettingsIntent = Intent(
             Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
             Uri.fromParts("package", packageName, null)
         )
-        val isSettingsExist: Boolean = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+
+        val isSettingsExist = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             val resolveInfoFlags =
                 PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_DEFAULT_ONLY.toLong())
             packageManager.resolveActivity(appSettingsIntent, resolveInfoFlags) != null
@@ -110,29 +146,8 @@ class MainActivity : AppCompatActivity(), SideEffectsApi, FragmentResultApi {
             appSettingsIntent, PackageManager.MATCH_DEFAULT_ONLY
         ) != null
 
-
-        if (isSettingsExist) {
-            val listener = DialogInterface.OnClickListener { _, which ->
-                when (which) {
-                    DialogInterface.BUTTON_POSITIVE -> startActivity(appSettingsIntent)
-                    DialogInterface.BUTTON_NEUTRAL -> preferences.edit()
-                        .putBoolean(shouldRequestPreferenceKey, false).apply()
-                }
-            }
-
-            AlertDialog.Builder(this)
-                .setTitle(resources.getString(R.string.denied_permission_dialog_title)).setMessage(
-                    resources.getString(
-                        R.string.give_permissions_message, resources.getString(R.string.make_calls)
-                    )
-                ).setPositiveButton(resources.getString(R.string.open_settings), listener)
-                .setNegativeButton(resources.getString(R.string.close_dialog), null)
-                .setNeutralButton(resources.getString(R.string.dont_ask_again), listener).create()
-                .show()
-
-        }
+        return if (isSettingsExist) appSettingsIntent else null
     }
-
     // Nav Component
 
     private fun prepareNavController(navController: NavController) {
@@ -146,12 +161,17 @@ class MainActivity : AppCompatActivity(), SideEffectsApi, FragmentResultApi {
             } else R.id.tabsFragment
         )
         navController.graph = graph
-
     }
 
     private fun changeNavController(newNavController: NavController) {
         if (navController == newNavController) return
         navController = newNavController
+    }
+
+    override fun hasPermission(permission: String): Boolean {
+        return ActivityCompat.checkSelfPermission(
+            this, permission
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
     //  SideEffectsApi implementation
@@ -163,20 +183,58 @@ class MainActivity : AppCompatActivity(), SideEffectsApi, FragmentResultApi {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
-    override fun startCall(contact: Contact) {
-        if (ActivityCompat.checkSelfPermission(
-                this, Manifest.permission.CALL_PHONE
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
+    override fun showConfirmDialog(
+        @StringRes message: Int,
+        negativeButtonListener: DialogInterface.OnClickListener?,
+        positiveButtonListener: DialogInterface.OnClickListener?
+    ) {
+        AlertDialog.Builder(this).setTitle(R.string.confirm_dialog_title)
+            .setMessage(message)
+            .setPositiveButton(R.string.confirm_dialog_positive, positiveButtonListener)
+            .setNegativeButton(R.string.confirm_dialog_negative, negativeButtonListener).show()
+    }
+
+    private fun startSideEffectOrRequestPermission(
+        permissions: Array<String>,
+        requestCode: Int,
+        @StringRes failMessage: Int?,
+        sideEffect: () -> Unit
+    ) {
+        val canStartSideEffect = permissions.all {
+            hasPermission(it)
+        }
+        if (canStartSideEffect) {
             try {
-                startActivity(Intent(Intent.ACTION_CALL, Uri.parse("tel: ${contact.number}")))
+                sideEffect()
             } catch (e: Exception) {
-                showToast(resources.getString(R.string.cant_call))
+                failMessage?.let {
+                    showToast(getString(it))
+                }
             }
         } else {
             requestPermission(
-                arrayOf(Manifest.permission.CALL_PHONE), CALL_PERMISSION_REQUEST_CODE
+                permissions, requestCode
             )
+        }
+    }
+
+    override fun startCall(contact: Contact) {
+        startSideEffectOrRequestPermission(
+            arrayOf(Manifest.permission.CALL_PHONE),
+            CALL_PERMISSION_REQUEST_CODE,
+            R.string.call_failed
+        ) {
+            startActivity(Intent(Intent.ACTION_CALL, Uri.parse("tel: ${contact.number}")))
+        }
+    }
+
+    override fun syncContacts(block: () -> Unit) {
+        startSideEffectOrRequestPermission(
+            arrayOf(Manifest.permission.READ_CONTACTS),
+            SYNC_PERMISSION_REQUEST_CODE,
+            R.string.sync_failed
+        ) {
+            block()
         }
     }
 
@@ -240,7 +298,7 @@ class MainActivity : AppCompatActivity(), SideEffectsApi, FragmentResultApi {
     companion object {
         private const val KEY_RESULT = "KEY_RESULT"
 
-        private const val CALL_PERMISSION_REQUEST_CODE = 0
+        private const val SYNC_PERMISSION_REQUEST_CODE = 54523
+        private const val CALL_PERMISSION_REQUEST_CODE = 65343
     }
-
 }

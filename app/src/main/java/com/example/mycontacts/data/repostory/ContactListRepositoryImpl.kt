@@ -1,5 +1,6 @@
 package com.example.mycontacts.data.repostory
 
+import com.example.mycontacts.data.content_provider.contact_provider.dao.ContactProviderDao
 import com.example.mycontacts.data.database.contact_database.dao.ContactDao
 import com.example.mycontacts.domain.mapper.ContactMapper
 import com.example.mycontacts.domain.model.Contact
@@ -14,6 +15,7 @@ import javax.inject.Singleton
 class ContactListRepositoryImpl @Inject constructor(
     private val contactMapper: ContactMapper,
     private val contactDao: ContactDao,
+    private val contactProviderDao: ContactProviderDao
 ) : ContactListRepository {
 
     /*  Nested map not really good
@@ -57,4 +59,10 @@ class ContactListRepositoryImpl @Inject constructor(
         contactDao.updateContact(contactEntity)
     }
 
+    override suspend fun syncContacts() {
+        val contactList = contactProviderDao.getAllContacts()
+        contactList.forEach {
+            contactDao.addContact(it.toContactEntity())
+        }
+    }
 }

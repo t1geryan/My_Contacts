@@ -1,7 +1,5 @@
 package com.example.mycontacts.ui.contact_list_screen
 
-import android.content.DialogInterface
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.mycontacts.R
@@ -11,6 +9,7 @@ import com.example.mycontacts.ui.base_contact_list.BaseContactListViewModel
 import com.example.mycontacts.ui.contract.Action
 import com.example.mycontacts.ui.contract.HasCustomActionToolbar
 import com.example.mycontacts.ui.contract.fragmentResult
+import com.example.mycontacts.ui.contract.sideEffects
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -38,21 +37,28 @@ class ContactListFragment : BaseContactListFragment(), HasCustomActionToolbar {
             viewModel.addContact(contact)
         }
 
-        val listener = DialogInterface.OnClickListener { _, which ->
-            when (which) {
-                DialogInterface.BUTTON_POSITIVE -> (viewModel as ContactListViewModel).deleteAllContacts()
-            }
-        }
         val onAction2 = Runnable {
-            AlertDialog.Builder(requireContext()).setTitle(R.string.confirm_dialog_title)
-                .setMessage(R.string.confirm_dialog_clear_contacts_message)
-                .setPositiveButton(R.string.confirm_dialog_positive, listener)
-                .setNegativeButton(R.string.confirm_dialog_negative, listener).show()
+            sideEffects().showConfirmDialog(
+                R.string.confirm_dialog_sync_message, null
+            ) { _, _ ->
+                sideEffects().syncContacts {
+                    (viewModel as ContactListViewModel).syncContacts()
+                }
+            }
+
+        }
+        val onAction3 = Runnable {
+            sideEffects().showConfirmDialog(
+                R.string.confirm_dialog_clear_contacts_message, null
+            ) { _, _ ->
+                (viewModel as ContactListViewModel).deleteAllContacts()
+            }
         }
 
         return listOf(
             Action(R.drawable.ic_add_contact_white, R.string.add_contact, onAction1),
-            Action(R.drawable.ic_clear_white, R.string.clear_all, onAction2)
+            Action(R.drawable.ic_sync_white, R.string.sync_contacts, onAction2),
+            Action(R.drawable.ic_clear_white, R.string.clear_all, onAction3)
         )
     }
 }

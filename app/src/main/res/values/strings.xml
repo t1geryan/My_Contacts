@@ -34,6 +34,7 @@
     <string name="add_contact">Add Contact</string>
     <string name="clear_all">Clear All Contacts</string>
     <string name="next">Next</string>
+    <string name="sync_contacts">Sync Contacts</string>
 
     <!--Contact PopupMenu Item Titles-->
     <string name="change_data">Change Contact Data</string>
@@ -46,15 +47,19 @@
     <string name="open_settings">Open</string>
     <string name="close_dialog">Close</string>
     <string name="dont_ask_again">Close and don\'t ask again</string>
-    <string name="make_calls">make calls</string>
+    <string name="denied_permission_call">make calls</string>
+    <string name="denied_permission_sync_contacts">sync contacts</string>
     <string name="no_call_permission">No call permission exist</string>
+    <string name="no_read_contact_permission">No read phone contacts exist</string>
 
     <!--Confirmation Dialog-->
     <string name="confirm_dialog_title">Are you sure?</string>
     <string name="confirm_dialog_positive">Yes</string>
     <string name="confirm_dialog_negative">No</string>
     <string name="confirm_dialog_clear_contacts_message">All contacts will be deleted</string>
+    <string name="confirm_dialog_sync_message">All contacts from the phone will be added to the application</string>
 
-    <!--ExceptionMessagesToUser-->
-    <string name="cant_call">Impossible to call</string>
+    <!--ExceptionMessages-->
+    <string name="call_failed">Impossible to call</string>
+    <string name="sync_failed">Synchronization failed</string>
 </resources>

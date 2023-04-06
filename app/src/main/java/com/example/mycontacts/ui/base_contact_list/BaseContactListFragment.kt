@@ -13,7 +13,7 @@ import com.example.mycontacts.domain.model.Contact
 import com.example.mycontacts.domain.model.OnContactChangeListener
 import com.example.mycontacts.ui.contact_list_utils.ContactsAdapter
 import com.example.mycontacts.ui.contract.fragmentResult
-import com.example.mycontacts.ui.contract.sideEffectsHolder
+import com.example.mycontacts.ui.contract.sideEffects
 import com.example.mycontacts.ui.details.RecyclerViewUtility
 import com.example.mycontacts.utils.Constants
 import dagger.hilt.android.AndroidEntryPoint
@@ -59,7 +59,7 @@ abstract class BaseContactListFragment protected constructor() : Fragment() {
             }
 
             override fun onCall(contact: Contact) {
-                sideEffectsHolder().startCall(contact)
+                sideEffects().startCall(contact)
             }
 
             override fun onChangeData(contact: Contact) {

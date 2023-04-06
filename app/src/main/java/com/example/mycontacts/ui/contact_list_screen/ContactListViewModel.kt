@@ -17,6 +17,10 @@ class ContactListViewModel @Inject constructor(
         contactListRepository.deleteAllContacts()
     }
 
+    fun syncContacts() = viewModelScope.launch(Dispatchers.Default) {
+        contactListRepository.syncContacts()
+    }
+
     override suspend fun fetchCurrentContactList() {
         contactListRepository.getAllContacts().collect {
             _contacts.value = it
