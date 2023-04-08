@@ -69,6 +69,8 @@ class MainActivity : AppCompatActivity(), SideEffectsApi, FragmentResultApi {
         prepareNavController(navController)
 
         supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentCreateListener, true)
+
+        if (savedInstanceState == null) requestAllPermissions()
     }
 
     override fun onDestroy() {
@@ -78,6 +80,11 @@ class MainActivity : AppCompatActivity(), SideEffectsApi, FragmentResultApi {
     }
 
     // Permissions
+
+    private fun requestAllPermissions() {
+        val permList = arrayOf(Manifest.permission.CALL_PHONE, Manifest.permission.READ_CONTACTS)
+        requestPermission(permList, ALL_PERMISSIONS_REQUEST_CODE)
+    }
 
     override fun onRequestPermissionsResult(
         requestCode: Int, permissions: Array<out String>, grantResults: IntArray
@@ -168,13 +175,14 @@ class MainActivity : AppCompatActivity(), SideEffectsApi, FragmentResultApi {
         navController = newNavController
     }
 
+    //  SideEffectsApi implementation
+
     override fun hasPermission(permission: String): Boolean {
         return ActivityCompat.checkSelfPermission(
             this, permission
         ) == PackageManager.PERMISSION_GRANTED
     }
 
-    //  SideEffectsApi implementation
     override fun requestPermission(permList: Array<String>, requestCode: Int) {
         ActivityCompat.requestPermissions(this, permList, requestCode)
     }
@@ -188,8 +196,7 @@ class MainActivity : AppCompatActivity(), SideEffectsApi, FragmentResultApi {
         negativeButtonListener: DialogInterface.OnClickListener?,
         positiveButtonListener: DialogInterface.OnClickListener?
     ) {
-        AlertDialog.Builder(this).setTitle(R.string.confirm_dialog_title)
-            .setMessage(message)
+        AlertDialog.Builder(this).setTitle(R.string.confirm_dialog_title).setMessage(message)
             .setPositiveButton(R.string.confirm_dialog_positive, positiveButtonListener)
             .setNegativeButton(R.string.confirm_dialog_negative, negativeButtonListener).show()
     }
@@ -298,6 +305,7 @@ class MainActivity : AppCompatActivity(), SideEffectsApi, FragmentResultApi {
     companion object {
         private const val KEY_RESULT = "KEY_RESULT"
 
+        private const val ALL_PERMISSIONS_REQUEST_CODE = 0
         private const val SYNC_PERMISSION_REQUEST_CODE = 54523
         private const val CALL_PERMISSION_REQUEST_CODE = 65343
     }
