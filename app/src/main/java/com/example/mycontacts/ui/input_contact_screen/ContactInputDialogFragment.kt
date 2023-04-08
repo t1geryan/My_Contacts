@@ -1,91 +1,111 @@
 package com.example.mycontacts.ui.input_contact_screen
 
-import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
-import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.DialogFragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
 import com.example.mycontacts.R
 import com.example.mycontacts.databinding.DialogInputContactBinding
 import com.example.mycontacts.domain.model.Contact
 import com.example.mycontacts.ui.contract.fragmentResult
+import com.example.mycontacts.ui.contract.sideEffects
+import com.example.mycontacts.utils.viewModelCreator
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-class ContactInputDialogFragment : DialogFragment() {
+@AndroidEntryPoint
+class ContactInputDialogFragment : Fragment() {
 
     private lateinit var dialogBinding: DialogInputContactBinding
 
     private val args: ContactInputDialogFragmentArgs by navArgs()
 
-    private lateinit var prevContact: Contact
-    private lateinit var prevName: String
-    private lateinit var prevNumber: String
-
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        dialogBinding = DialogInputContactBinding.inflate(layoutInflater)
-
-        prevContact = getContactFromArgs()
-        prevName = savedInstanceState?.getString(ARG_NAME) ?: prevContact.name
-        prevNumber = savedInstanceState?.getString(ARG_NUMBER) ?: prevContact.number
-
-        return createDialog()
+    private val prevContact: Contact by lazy {
+        args.prevContact
     }
+
+    @Inject
+    lateinit var factory: ContactInputDialogViewModel.Factory
+
+    private val viewModel: ContactInputDialogViewModel by viewModelCreator {
+        factory.create(prevContact)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
+        dialogBinding = DialogInputContactBinding.inflate(inflater, container, false)
+
+        viewModel.photo.observe(viewLifecycleOwner) {
+            Glide.with(requireContext()).load(it).centerCrop()
+                .error(R.drawable.base_avatar_daynight).placeholder(R.drawable.base_avatar_daynight)
+                .into(dialogBinding.inputImageView)
+        }
+
+        viewModel.name.observe(viewLifecycleOwner) {
+            dialogBinding.inputNameEditText.setText(it)
+        }
+
+        viewModel.number.observe(viewLifecycleOwner) {
+            dialogBinding.inputNumberEditText.setText(it)
+        }
+
+
+        dialogBinding.inputImageView.setOnClickListener {
+            sideEffects().pickPhoto {
+                viewModel.photo.value = it
+            }
+        }
+
+        dialogBinding.confirmButton.setOnClickListener {
+            setContactInputListener()
+        }
+
+        dialogBinding.cancelButton.setOnClickListener {
+            back()
+        }
+
+        return dialogBinding.root
+    }
+
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(ARG_NAME, dialogBinding.inputNameEditText.text.toString())
-        outState.putString(ARG_NUMBER, dialogBinding.inputNumberEditText.text.toString())
+        viewModel.name.value = dialogBinding.inputNameEditText.text.toString()
+        viewModel.number.value = dialogBinding.inputNumberEditText.text.toString()
     }
 
-    private fun createDialog(): AlertDialog {
-        return AlertDialog.Builder(requireContext())
-            .setTitle(R.string.input_contact)
-            .setView(dialogBinding.root)
-            .setPositiveButton(R.string.confirm, null)
-            .setNeutralButton(R.string.cancel, null)
-            .create()
-            .apply {
-                setCanceledOnTouchOutside(false)
-                setContactInputListener(this)
-            }
-    }
+    private fun setContactInputListener() {
 
-    private fun setContactInputListener(dialog: AlertDialog) {
-        dialog.setOnShowListener {
-            dialogBinding.inputNameEditText.setText(prevName)
-            dialogBinding.inputNumberEditText.setText(prevNumber)
+        val enteredTextName = dialogBinding.inputNameEditText.text.toString()
+        val enteredTextNumber = dialogBinding.inputNumberEditText.text.toString()
 
-            dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener {
-                val enteredTextName = dialogBinding.inputNameEditText.text.toString()
-                val enteredTextNumber = dialogBinding.inputNumberEditText.text.toString()
-
-                var isBadInput = false
-                val emptyValueError = getString(R.string.empty_value)
-                if (enteredTextName.isBlank()) {
-                    dialogBinding.inputNameEditText.error = emptyValueError
-                    isBadInput = true
-                }
-                if (enteredTextNumber.isBlank()) {
-                    dialogBinding.inputNumberEditText.error = emptyValueError
-                    isBadInput = true
-                }
-
-                if (isBadInput)
-                    return@setOnClickListener
-
-                val contact = prevContact.copy(name = enteredTextName, number = enteredTextNumber)
-                fragmentResult().publishResult(contact)
-                dismiss()
-            }
+        var isBadInput = false
+        val emptyValueError = getString(R.string.empty_value)
+        if (enteredTextName.isBlank()) {
+            dialogBinding.inputNameEditText.error = emptyValueError
+            isBadInput = true
         }
+        if (enteredTextNumber.isBlank()) {
+            dialogBinding.inputNumberEditText.error = emptyValueError
+            isBadInput = true
+        }
+
+        if (isBadInput) return
+
+        val newPhoto = (viewModel.photo.value ?: "").toString()
+        val contact = prevContact.copy(
+            photo = newPhoto, name = enteredTextName, number = enteredTextNumber
+        )
+        fragmentResult().publishResult(contact)
+        back()
     }
 
-
-    private fun getContactFromArgs(): Contact = args.prevContact
-
-    companion object {
-        private const val ARG_NAME = "ARG_NAME"
-
-        private const val ARG_NUMBER = "ARG_NUMBER"
+    private fun back() {
+        findNavController().popBackStack()
     }
 }

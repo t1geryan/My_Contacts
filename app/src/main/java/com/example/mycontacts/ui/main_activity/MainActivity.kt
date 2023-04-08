@@ -14,6 +14,8 @@ import android.util.TypedValue
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.ColorInt
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
@@ -22,6 +24,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.os.bundleOf
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentResultListener
@@ -53,10 +56,16 @@ class MainActivity : AppCompatActivity(), SideEffectsApi, FragmentResultApi {
             fm: FragmentManager, f: Fragment, v: View, savedInstanceState: Bundle?
         ) {
             super.onFragmentViewCreated(fm, f, v, savedInstanceState)
-            if (f is NavHostFragment || f is TabsFragment) return
+            if (f is NavHostFragment || f is TabsFragment || f is DialogFragment) return
             changeNavController(f.findNavController())
             updateUI(f)
         }
+    }
+
+    private var currentUri: Uri? = null
+
+    val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+        currentUri = uri
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -243,6 +252,11 @@ class MainActivity : AppCompatActivity(), SideEffectsApi, FragmentResultApi {
         ) {
             block()
         }
+    }
+
+    override fun pickPhoto(callback: PhotoPickerCallback) {
+        pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        callback(currentUri)
     }
 
     // FragmentResultApi implementation

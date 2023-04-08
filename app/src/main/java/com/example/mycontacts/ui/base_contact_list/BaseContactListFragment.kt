@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.mycontacts.databinding.FragmentContactListBinding
@@ -17,6 +19,7 @@ import com.example.mycontacts.ui.contract.sideEffects
 import com.example.mycontacts.ui.details.RecyclerViewUtility
 import com.example.mycontacts.utils.Constants
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 abstract class BaseContactListFragment protected constructor() : Fragment() {
@@ -37,9 +40,12 @@ abstract class BaseContactListFragment protected constructor() : Fragment() {
         super.onCreateView(inflater, container, savedInstanceState)
         binding = FragmentContactListBinding.inflate(inflater, container, false)
 
-        lifecycleScope.launchWhenStarted {
-            viewModel.contacts.collect {
-                adapter.contacts = it
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.contacts.collect {
+                    adapter.contacts = it
+                }
             }
         }
 
@@ -67,10 +73,7 @@ abstract class BaseContactListFragment protected constructor() : Fragment() {
                 fragmentResult().listenResult(
                     Contact::class.java, viewLifecycleOwner
                 ) { newContact ->
-                    if (contact != newContact) {
-                        viewModel.deleteContact(contact)
-                        viewModel.addContact(newContact)
-                    }
+                    viewModel.updateContact(newContact)
                 }
             }
         })
@@ -90,5 +93,7 @@ abstract class BaseContactListFragment protected constructor() : Fragment() {
         child classes themselves determine how to launch the contact input dialog
         (with what direction or action)
      */
-    protected abstract fun showContactInputDialog(contact: Contact)
+    protected fun showContactInputDialog(contact: Contact) {
+        TODO("not created direction from tabs to contact input fragments yet")
+    }
 }

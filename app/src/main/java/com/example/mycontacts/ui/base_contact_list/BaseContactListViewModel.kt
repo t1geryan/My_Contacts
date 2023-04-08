@@ -36,5 +36,9 @@ abstract class BaseContactListViewModel(
         contactListRepository.changeContactFavoriteStatus(contact)
     }
 
+    fun updateContact(contact: Contact) = viewModelScope.launch(Dispatchers.Default) {
+        contactListRepository.changeContactData(contact)
+    }
+
     abstract suspend fun fetchCurrentContactList()
 }

@@ -1,11 +1,14 @@
 package com.example.mycontacts.ui.contract
 
 import android.content.DialogInterface
+import android.net.Uri
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import com.example.mycontacts.domain.model.Contact
 
 fun Fragment.sideEffects() = requireActivity() as SideEffectsApi
+
+typealias PhotoPickerCallback = (Uri?) -> Unit
 
 interface SideEffectsApi {
 
@@ -24,4 +27,6 @@ interface SideEffectsApi {
     fun startCall(contact: Contact)
 
     fun syncContacts(block: () -> Unit)
+
+    fun pickPhoto(callback: PhotoPickerCallback)
 }
