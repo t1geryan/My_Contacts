@@ -18,20 +18,17 @@ class ContactListRepositoryImpl @Inject constructor(
     private val contactProviderDao: ContactProviderDao
 ) : ContactListRepository {
 
-    /*  Nested map not really good
-        Make DAO returns Flow<ContactEntity> and collect them into ContactList?
-     */
     override suspend fun getAllContacts(): Flow<List<Contact>> = contactDao.getAllContacts().map {
         it.map { contactEntity ->
             contactMapper.entityToDomain(contactEntity)
-        }.sorted()
+        }
     }
 
     override suspend fun getFavoriteContacts(): Flow<List<Contact>> =
         contactDao.getFavoriteContacts().map {
             it.map { contactEntity ->
                 contactMapper.entityToDomain(contactEntity)
-            }.sorted()
+            }
         }
 
     override suspend fun addContact(contact: Contact) {

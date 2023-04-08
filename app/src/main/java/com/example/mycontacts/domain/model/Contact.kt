@@ -10,12 +10,4 @@ data class Contact(
     var number: String = "",
     var photo: String = "",
     var isFavorite: Boolean = false,
-) : Parcelable, Comparable<Contact> {
-    override fun compareTo(other: Contact): Int {
-        var result = 1
-        if (name.lowercase() < other.name.lowercase()) result = -1
-        else if (id == other.id) result = 0
-        return result
-    }
-
-}
+) : Parcelable
