@@ -1,4 +1,4 @@
-package com.example.mycontacts.ui
+package com.example.mycontacts.ui.ui_utils
 
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController

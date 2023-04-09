@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity(), SideEffectsApi, FragmentResultApi {
 
     private var currentUri: Uri? = null
 
-    val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+    private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
         currentUri = uri
     }
 
@@ -116,7 +116,7 @@ class MainActivity : AppCompatActivity(), SideEffectsApi, FragmentResultApi {
                     )
                 ) askUserToOpenAppSettings(
                     Constants.SHOULD_REQUEST_READ_CONTACTS_PERMISSION_PREF,
-                    R.string.no_call_permission,
+                    R.string.no_read_contact_permission,
                     R.string.denied_permission_sync_contacts
                 )
             }

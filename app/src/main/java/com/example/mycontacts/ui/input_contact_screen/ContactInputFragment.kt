@@ -9,7 +9,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.mycontacts.R
-import com.example.mycontacts.databinding.DialogInputContactBinding
+import com.example.mycontacts.databinding.FragmentInputContactBinding
 import com.example.mycontacts.domain.model.Contact
 import com.example.mycontacts.ui.contract.fragmentResult
 import com.example.mycontacts.ui.contract.sideEffects
@@ -20,7 +20,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class ContactInputFragment : Fragment() {
 
-    private lateinit var dialogBinding: DialogInputContactBinding
+    private lateinit var dialogBinding: FragmentInputContactBinding
 
     private val args: ContactInputFragmentArgs by navArgs()
 
@@ -38,21 +38,7 @@ class ContactInputFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        dialogBinding = DialogInputContactBinding.inflate(inflater, container, false)
-
-        viewModel.photo.observe(viewLifecycleOwner) {
-            Glide.with(requireContext()).load(it).centerCrop()
-                .error(R.drawable.base_avatar_daynight).placeholder(R.drawable.base_avatar_daynight)
-                .into(dialogBinding.inputImageView)
-        }
-
-        viewModel.name.observe(viewLifecycleOwner) {
-            dialogBinding.inputNameEditText.setText(it)
-        }
-
-        viewModel.number.observe(viewLifecycleOwner) {
-            dialogBinding.inputNumberEditText.setText(it)
-        }
+        dialogBinding = FragmentInputContactBinding.inflate(inflater, container, false)
 
 
         dialogBinding.inputImageView.setOnClickListener {
@@ -72,6 +58,23 @@ class ContactInputFragment : Fragment() {
         return dialogBinding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.photo.observe(viewLifecycleOwner) {
+            Glide.with(requireContext()).load(it).centerCrop()
+                .error(R.drawable.base_avatar_daynight).placeholder(R.drawable.base_avatar_daynight)
+                .into(dialogBinding.inputImageView)
+        }
+
+        viewModel.name.observe(viewLifecycleOwner) {
+            dialogBinding.inputNameEditText.setText(it)
+        }
+
+        viewModel.number.observe(viewLifecycleOwner) {
+            dialogBinding.inputNumberEditText.setText(it)
+        }
+    }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)

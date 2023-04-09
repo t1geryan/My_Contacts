@@ -16,7 +16,7 @@ import com.example.mycontacts.domain.model.OnContactChangeListener
 import com.example.mycontacts.ui.base_contact_list.adapter.ContactsAdapter
 import com.example.mycontacts.ui.contract.fragmentResult
 import com.example.mycontacts.ui.contract.sideEffects
-import com.example.mycontacts.ui.findTopLevelNavController
+import com.example.mycontacts.ui.ui_utils.findTopLevelNavController
 import com.example.mycontacts.ui.tabs_screen.TabsFragmentDirections
 import com.example.mycontacts.ui.ui_utils.RecyclerViewUtility
 import com.example.mycontacts.utils.Constants
@@ -42,14 +42,13 @@ abstract class BaseContactListFragment protected constructor() : Fragment() {
         super.onCreateView(inflater, container, savedInstanceState)
         binding = FragmentContactListBinding.inflate(inflater, container, false)
 
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.contacts.collect {
-                    adapter.contacts = it
-                }
-            }
-        }
+        binding.recyclerView.layoutManager = GridLayoutManager(
+            requireContext(), RecyclerViewUtility.calculateNoOfColumns(
+                requireContext(), Constants.CONTACTS_COLUMN_WIDTH
+            )
+        )
+        val itemAnimator = binding.recyclerView.itemAnimator
+        if (itemAnimator is DefaultItemAnimator) itemAnimator.supportsChangeAnimations = false
 
         return binding.root
     }
@@ -79,16 +78,15 @@ abstract class BaseContactListFragment protected constructor() : Fragment() {
                 }
             }
         })
-
-        binding.recyclerView.layoutManager = GridLayoutManager(
-            requireContext(), RecyclerViewUtility.calculateNoOfColumns(
-                requireContext(), Constants.CONTACTS_COLUMN_WIDTH
-            )
-        )
-        val itemAnimator = binding.recyclerView.itemAnimator
-        if (itemAnimator is DefaultItemAnimator) itemAnimator.supportsChangeAnimations = false
-
         binding.recyclerView.adapter = adapter
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.contacts.collect {
+                    adapter.contacts = it
+                }
+            }
+        }
     }
 
     /*

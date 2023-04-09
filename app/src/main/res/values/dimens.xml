@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="contacts_between_distance">4dp</dimen>
+    <dimen name="contacts_between_distance">8dp</dimen>
+    <dimen name="input_field_between_distance">10dp</dimen>
+    <dimen name="image_size">240dp</dimen>
 </resources>

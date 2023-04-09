@@ -20,13 +20,13 @@
         tools:layout="@layout/fragment_tabs">
         <action
             android:id="@+id/action_tabsFragment_to_contactInputDialogFragment"
-            app:destination="@id/contactInputDialogFragment" />
+            app:destination="@id/contactInputFragment" />
     </fragment>
     <fragment
-        android:id="@+id/contactInputDialogFragment"
+        android:id="@+id/contactInputFragment"
         android:name="com.example.mycontacts.ui.input_contact_screen.ContactInputFragment"
         android:label="@string/contact_input_title"
-        tools:layout="@layout/dialog_input_contact">
+        tools:layout="@layout/fragment_input_contact">
         <argument
             android:name="prevContact"
             app:argType="com.example.mycontacts.domain.model.Contact" />
