@@ -158,11 +158,10 @@ class MainActivity : AppCompatActivity(), SideEffectsApi, FragmentResultApi {
             val resolveInfoFlags =
                 PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_DEFAULT_ONLY.toLong())
             packageManager.resolveActivity(appSettingsIntent, resolveInfoFlags) != null
-        } else
-            @Suppress("DEPRECATION")
-            packageManager.resolveActivity(
-                appSettingsIntent, PackageManager.MATCH_DEFAULT_ONLY
-            ) != null
+        } else @Suppress("DEPRECATION")
+        packageManager.resolveActivity(
+            appSettingsIntent, PackageManager.MATCH_DEFAULT_ONLY
+        ) != null
 
         return if (isSettingsExist) appSettingsIntent else null
     }
@@ -262,14 +261,14 @@ class MainActivity : AppCompatActivity(), SideEffectsApi, FragmentResultApi {
     }
 
     // FragmentResultApi implementation
-    override fun <T : Parcelable> publishResult(result: T) {
+    override fun <T : Parcelable> publishResult(requestKey: String, result: T) {
         supportFragmentManager.setFragmentResult(
-            result.javaClass.name, bundleOf(KEY_RESULT to result)
+            requestKey, bundleOf(KEY_RESULT to result)
         )
     }
 
     override fun <T : Parcelable> listenResult(
-        clazz: Class<T>, owner: LifecycleOwner, listener: (T) -> Unit
+        requestKey: String, clazz: Class<T>, owner: LifecycleOwner, listener: (T) -> Unit
     ) {
         val fragmentResultListener = FragmentResultListener { _, bundle ->
             if (Build.VERSION.SDK_INT >= 33) {
@@ -283,7 +282,7 @@ class MainActivity : AppCompatActivity(), SideEffectsApi, FragmentResultApi {
                 )
             }
         }
-        supportFragmentManager.setFragmentResultListener(clazz.name, owner, fragmentResultListener)
+        supportFragmentManager.setFragmentResultListener(requestKey, owner, fragmentResultListener)
     }
 
     // UI

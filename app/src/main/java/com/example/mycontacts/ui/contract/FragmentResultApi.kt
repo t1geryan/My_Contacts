@@ -7,7 +7,7 @@ import androidx.lifecycle.LifecycleOwner
 fun Fragment.fragmentResult() = requireActivity() as FragmentResultApi
 
 interface FragmentResultApi {
-    fun <T : Parcelable> publishResult(result: T)
+    fun <T : Parcelable> publishResult(requestKey: String, result: T)
 
-    fun <T : Parcelable> listenResult(clazz: Class<T>, owner: LifecycleOwner, listener: (T) -> Unit)
+    fun <T : Parcelable> listenResult(requestKey : String, clazz: Class<T>, owner: LifecycleOwner, listener: (T) -> Unit)
 }

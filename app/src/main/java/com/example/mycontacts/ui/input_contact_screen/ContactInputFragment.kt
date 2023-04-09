@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.mycontacts.R
@@ -15,6 +14,7 @@ import com.example.mycontacts.databinding.FragmentInputContactBinding
 import com.example.mycontacts.domain.model.Contact
 import com.example.mycontacts.ui.contract.fragmentResult
 import com.example.mycontacts.ui.contract.sideEffects
+import com.example.mycontacts.ui.ui_utils.findTopLevelNavController
 import com.example.mycontacts.ui.ui_utils.viewModelCreator
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -28,6 +28,10 @@ class ContactInputFragment : Fragment() {
 
     private val prevContact: Contact by lazy {
         args.prevContact
+    }
+
+    private val requestKey: String by lazy {
+        args.requestKey
     }
 
     @Inject
@@ -116,7 +120,7 @@ class ContactInputFragment : Fragment() {
         val contact = prevContact.copy(
             photo = newPhoto, name = enteredTextName, number = enteredTextNumber
         )
-        fragmentResult().publishResult(contact)
+        fragmentResult().publishResult(requestKey, contact)
         back()
     }
 
@@ -127,7 +131,8 @@ class ContactInputFragment : Fragment() {
             }
         }
     }
+
     private fun back() {
-        findNavController().popBackStack()
+        findTopLevelNavController().popBackStack(R.id.tabsFragment, false)
     }
 }

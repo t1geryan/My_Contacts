@@ -16,9 +16,9 @@ import com.example.mycontacts.domain.model.OnContactChangeListener
 import com.example.mycontacts.ui.base_contact_list.adapter.ContactsAdapter
 import com.example.mycontacts.ui.contract.fragmentResult
 import com.example.mycontacts.ui.contract.sideEffects
-import com.example.mycontacts.ui.ui_utils.findTopLevelNavController
 import com.example.mycontacts.ui.tabs_screen.TabsFragmentDirections
 import com.example.mycontacts.ui.ui_utils.RecyclerViewUtility
+import com.example.mycontacts.ui.ui_utils.findTopLevelNavController
 import com.example.mycontacts.utils.Constants
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -70,12 +70,8 @@ abstract class BaseContactListFragment protected constructor() : Fragment() {
             }
 
             override fun onChangeData(contact: Contact) {
-                showContactInputDialog(contact)
-                fragmentResult().listenResult(
-                    Contact::class.java, viewLifecycleOwner
-                ) { newContact ->
-                    viewModel.updateContact(newContact)
-                }
+
+                showContactInputDialog(contact, CONTACT_CHANGE_REQ_KEY)
             }
         })
         binding.recyclerView.adapter = adapter
@@ -87,16 +83,26 @@ abstract class BaseContactListFragment protected constructor() : Fragment() {
                 }
             }
         }
+
+        fragmentResult().listenResult(
+            CONTACT_CHANGE_REQ_KEY, Contact::class.java, viewLifecycleOwner
+        ) { newContact ->
+            viewModel.updateContact(newContact)
+        }
     }
 
     /*
         use TabsFragmentDirections because BaseContactListFragment inheritors
         will be part of TabsFragment (will be placed in R.id.tabsFragmentContainer)
      */
-    protected fun showContactInputDialog(contact: Contact) {
+    protected fun showContactInputDialog(contact: Contact, requestKey: String) {
         val direction = TabsFragmentDirections.actionTabsFragmentToContactInputDialogFragment(
-            contact
+            contact, requestKey
         )
         findTopLevelNavController().navigate(direction)
+    }
+
+    companion object {
+        private const val CONTACT_CHANGE_REQ_KEY = "CONTACT_CHANGE_REQ_KEY"
     }
 }

@@ -30,5 +30,13 @@
         <argument
             android:name="prevContact"
             app:argType="com.example.mycontacts.domain.model.Contact" />
+        <action
+            android:id="@+id/action_contactInputFragment_to_tabsFragment"
+            app:destination="@id/tabsFragment"
+            app:popUpTo="@id/tabsFragment"
+            app:popUpToInclusive="false" />
+        <argument
+            android:name="requestKey"
+            app:argType="string" />
     </fragment>
 </navigation>

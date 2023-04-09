@@ -1,5 +1,7 @@
 package com.example.mycontacts.ui.contact_list_screen
 
+import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.viewModels
 import com.example.mycontacts.R
 import com.example.mycontacts.domain.model.Contact
@@ -16,12 +18,18 @@ class ContactListFragment : BaseContactListFragment(), HasCustomActionToolbar {
 
     override val viewModel: BaseContactListViewModel by viewModels<ContactListViewModel>()
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        fragmentResult().listenResult(
+            CONTACT_ADD_REQUEST_KEY, Contact::class.java, viewLifecycleOwner
+        ) { contact ->
+            viewModel.addContact(contact)
+        }
+    }
+
     override fun getCustomActionsList(): List<Action> {
         val onAction1 = Runnable {
-            showContactInputDialog(Contact())
-        }
-        fragmentResult().listenResult(Contact::class.java, viewLifecycleOwner) { contact ->
-            viewModel.addContact(contact)
+            showContactInputDialog(Contact(), CONTACT_ADD_REQUEST_KEY)
         }
 
         val onAction2 = Runnable {
@@ -47,5 +55,9 @@ class ContactListFragment : BaseContactListFragment(), HasCustomActionToolbar {
             Action(R.drawable.ic_sync_white, R.string.sync_contacts, onAction2),
             Action(R.drawable.ic_clear_white, R.string.clear_all, onAction3)
         )
+    }
+
+    companion object {
+        const val CONTACT_ADD_REQUEST_KEY = "CONTACT_ADD_REQUEST_KEY"
     }
 }
