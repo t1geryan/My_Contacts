@@ -62,11 +62,12 @@ class MainActivity : AppCompatActivity(), SideEffectsApi, FragmentResultApi {
         }
     }
 
-    private var currentUri: Uri? = null
+    private lateinit var requireCallback: PhotoPickerCallback
 
-    private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-        currentUri = uri
-    }
+    private val pickMedia =
+        registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+            requireCallback(uri)
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -157,10 +158,11 @@ class MainActivity : AppCompatActivity(), SideEffectsApi, FragmentResultApi {
             val resolveInfoFlags =
                 PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_DEFAULT_ONLY.toLong())
             packageManager.resolveActivity(appSettingsIntent, resolveInfoFlags) != null
-        } else @Suppress("DEPRECATION")
-        packageManager.resolveActivity(
-            appSettingsIntent, PackageManager.MATCH_DEFAULT_ONLY
-        ) != null
+        } else
+            @Suppress("DEPRECATION")
+            packageManager.resolveActivity(
+                appSettingsIntent, PackageManager.MATCH_DEFAULT_ONLY
+            ) != null
 
         return if (isSettingsExist) appSettingsIntent else null
     }
@@ -255,8 +257,8 @@ class MainActivity : AppCompatActivity(), SideEffectsApi, FragmentResultApi {
     }
 
     override fun pickPhoto(callback: PhotoPickerCallback) {
+        requireCallback = callback
         pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-        callback(currentUri)
     }
 
     // FragmentResultApi implementation
