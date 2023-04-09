@@ -25,10 +25,10 @@ class ContactListFragment : BaseContactListFragment(), HasCustomActionToolbar {
         }
 
         val onAction2 = Runnable {
-            sideEffects().showConfirmDialog(
-                R.string.confirm_dialog_sync_message, null
-            ) { _, _ ->
-                sideEffects().syncContacts {
+            sideEffects().syncContacts {
+                sideEffects().showConfirmDialog(
+                    R.string.confirm_dialog_sync_message, null
+                ) { _, _ ->
                     (viewModel as ContactListViewModel).syncContacts()
                 }
             }
