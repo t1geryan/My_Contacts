@@ -1,4 +1,4 @@
-package com.example.mycontacts.utils
+package com.example.mycontacts.ui.ui_utils
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels

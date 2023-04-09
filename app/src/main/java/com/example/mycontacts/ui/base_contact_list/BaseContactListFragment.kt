@@ -13,10 +13,12 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.mycontacts.databinding.FragmentContactListBinding
 import com.example.mycontacts.domain.model.Contact
 import com.example.mycontacts.domain.model.OnContactChangeListener
-import com.example.mycontacts.ui.contact_list_utils.ContactsAdapter
+import com.example.mycontacts.ui.base_contact_list.adapter.ContactsAdapter
 import com.example.mycontacts.ui.contract.fragmentResult
 import com.example.mycontacts.ui.contract.sideEffects
-import com.example.mycontacts.ui.details.RecyclerViewUtility
+import com.example.mycontacts.ui.findTopLevelNavController
+import com.example.mycontacts.ui.tabs_screen.TabsFragmentDirections
+import com.example.mycontacts.ui.ui_utils.RecyclerViewUtility
 import com.example.mycontacts.utils.Constants
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -90,10 +92,13 @@ abstract class BaseContactListFragment protected constructor() : Fragment() {
     }
 
     /*
-        child classes themselves determine how to launch the contact input dialog
-        (with what direction or action)
+        use TabsFragmentDirections because BaseContactListFragment inheritors
+        will be part of TabsFragment (will be placed in R.id.tabsFragmentContainer)
      */
     protected fun showContactInputDialog(contact: Contact) {
-        TODO("not created direction from tabs to contact input fragments yet")
+        val direction = TabsFragmentDirections.actionTabsFragmentToContactInputDialogFragment(
+            contact
+        )
+        findTopLevelNavController().navigate(direction)
     }
 }

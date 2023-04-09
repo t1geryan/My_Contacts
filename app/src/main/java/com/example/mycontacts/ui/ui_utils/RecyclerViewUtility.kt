@@ -1,4 +1,4 @@
-package com.example.mycontacts.ui.details
+package com.example.mycontacts.ui.ui_utils
 
 import android.content.Context
 import android.util.DisplayMetrics

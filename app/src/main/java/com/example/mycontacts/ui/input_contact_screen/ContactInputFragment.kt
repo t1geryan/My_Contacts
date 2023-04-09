@@ -13,25 +13,25 @@ import com.example.mycontacts.databinding.DialogInputContactBinding
 import com.example.mycontacts.domain.model.Contact
 import com.example.mycontacts.ui.contract.fragmentResult
 import com.example.mycontacts.ui.contract.sideEffects
-import com.example.mycontacts.utils.viewModelCreator
+import com.example.mycontacts.ui.ui_utils.viewModelCreator
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ContactInputDialogFragment : Fragment() {
+class ContactInputFragment : Fragment() {
 
     private lateinit var dialogBinding: DialogInputContactBinding
 
-    private val args: ContactInputDialogFragmentArgs by navArgs()
+    private val args: ContactInputFragmentArgs by navArgs()
 
     private val prevContact: Contact by lazy {
         args.prevContact
     }
 
     @Inject
-    lateinit var factory: ContactInputDialogViewModel.Factory
+    lateinit var factory: ContactInputViewModel.Factory
 
-    private val viewModel: ContactInputDialogViewModel by viewModelCreator {
+    private val viewModel: ContactInputViewModel by viewModelCreator {
         factory.create(prevContact)
     }
 

@@ -1,4 +1,4 @@
-package com.example.mycontacts.ui.contact_list_utils
+package com.example.mycontacts.ui.base_contact_list.adapter
 
 import android.view.LayoutInflater
 import android.view.Menu

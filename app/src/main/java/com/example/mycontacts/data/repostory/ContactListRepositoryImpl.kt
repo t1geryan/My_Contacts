@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
-// TODO : implement ContactListRepository members
 @Singleton
 class ContactListRepositoryImpl @Inject constructor(
     private val contactMapper: ContactMapper,

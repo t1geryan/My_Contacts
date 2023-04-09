@@ -1,4 +1,4 @@
-package com.example.mycontacts.ui.contact_list_utils
+package com.example.mycontacts.ui.base_contact_list.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import com.example.mycontacts.domain.model.Contact

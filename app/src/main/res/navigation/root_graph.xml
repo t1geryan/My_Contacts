@@ -17,15 +17,15 @@
         android:id="@+id/tabsFragment"
         android:name="com.example.mycontacts.ui.tabs_screen.TabsFragment"
         android:label="TabsFragment"
-        tools:layout="@layout/fragment_tabs" >
+        tools:layout="@layout/fragment_tabs">
         <action
             android:id="@+id/action_tabsFragment_to_contactInputDialogFragment"
             app:destination="@id/contactInputDialogFragment" />
     </fragment>
     <fragment
         android:id="@+id/contactInputDialogFragment"
-        android:name="com.example.mycontacts.ui.input_contact_screen.ContactInputDialogFragment"
-        android:label="ContactInputDialogFragment"
+        android:name="com.example.mycontacts.ui.input_contact_screen.ContactInputFragment"
+        android:label="@string/contact_input_title"
         tools:layout="@layout/dialog_input_contact">
         <argument
             android:name="prevContact"

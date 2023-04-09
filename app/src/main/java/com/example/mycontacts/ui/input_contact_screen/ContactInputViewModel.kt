@@ -9,14 +9,14 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 
-class ContactInputDialogViewModel @AssistedInject constructor(
+class ContactInputViewModel @AssistedInject constructor(
     @Assisted prevContact: Contact
 ) : ViewModel() {
-     val photo = MutableLiveData<Uri?>()
+    val photo = MutableLiveData<Uri?>()
 
-     val name = MutableLiveData<String>()
+    val name = MutableLiveData<String>()
 
-     val number = MutableLiveData<String>()
+    val number = MutableLiveData<String>()
 
     init {
         photo.value = prevContact.photo.toUri()
@@ -26,6 +26,6 @@ class ContactInputDialogViewModel @AssistedInject constructor(
 
     @AssistedFactory
     interface Factory {
-        fun create(contact: Contact) : ContactInputDialogViewModel
+        fun create(contact: Contact): ContactInputViewModel
     }
 }
