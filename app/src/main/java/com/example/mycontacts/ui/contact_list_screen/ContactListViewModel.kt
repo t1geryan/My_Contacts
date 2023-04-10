@@ -22,7 +22,7 @@ class ContactListViewModel @Inject constructor(
     }
 
     override suspend fun fetchCurrentContactList() {
-        contactListRepository.getAllContacts().collect {
+        contactListRepository.getAllContacts(false).collect {
             _contacts.value = it
         }
     }

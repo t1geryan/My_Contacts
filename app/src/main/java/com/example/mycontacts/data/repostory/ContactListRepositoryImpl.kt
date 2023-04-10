@@ -4,6 +4,7 @@ import com.example.mycontacts.data.content_provider.contact_provider.dao.Contact
 import com.example.mycontacts.data.database.contact_database.dao.ContactDao
 import com.example.mycontacts.domain.mapper.ContactMapper
 import com.example.mycontacts.domain.model.Contact
+import com.example.mycontacts.domain.model.Result
 import com.example.mycontacts.domain.repository.ContactListRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -17,16 +18,23 @@ class ContactListRepositoryImpl @Inject constructor(
     private val contactProviderDao: ContactProviderDao
 ) : ContactListRepository {
 
-    override suspend fun getAllContacts(): Flow<List<Contact>> = contactDao.getAllContacts().map {
-        it.map { contactEntity ->
-            contactMapper.entityToDomain(contactEntity)
-        }
-    }
-
-    override suspend fun getFavoriteContacts(): Flow<List<Contact>> =
-        contactDao.getFavoriteContacts().map {
-            it.map { contactEntity ->
-                contactMapper.entityToDomain(contactEntity)
+    /*  TODO #2 Если не получился TODO #1
+        Требуется рефакторинг: добавить Result.Error и Result.Loading
+        Нужно сделать это так, чтобы метод возвращал тот же Flow что получает из Dao
+        Таким образом будет организована синхронизация изменений списка
+     */
+    override suspend fun getAllContacts(onlyFavorites: Boolean): Flow<Result<List<Contact>>> =
+        if (onlyFavorites) {
+            contactDao.getFavoriteContacts()
+        } else {
+            contactDao.getAllContacts()
+        }.map {
+            if (it.isEmpty()) {
+                Result.EmptyOrNull()
+            } else {
+                Result.Success(it.map { cE ->
+                    contactMapper.entityToDomain(cE)
+                })
             }
         }
 

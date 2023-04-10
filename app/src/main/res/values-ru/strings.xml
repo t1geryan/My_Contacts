@@ -16,6 +16,11 @@
     <string name="avatar">аватар</string>
     <string name="add_to_favorites">добавить в избранное</string>
 
+    <!--Contact List Screen-->
+    <string name="empty_list_message_title">Список контактов пуст</string>
+    <string name="no_contacts_added_message">Добавьте новые контакты или синхронизируйте их с телефона</string>
+    <string name="no_favorite_contacts_message">Сделайте важные контакты избранными</string>
+
     <!--Input Contact Screen-->
     <string name="enter_contacts_name_hint">Введите Имя</string>
     <string name="enter_contacts_number_hint">Введите Номер</string>
@@ -62,4 +67,5 @@
     <!--ExceptionMessages-->
     <string name="call_failed">Невозможно осуществить звонок</string>
     <string name="sync_failed">Синхронизация неудачна</string>
+    <string name="get_contact_list_failed">Получение списка контактов неудачно</string>
 </resources>

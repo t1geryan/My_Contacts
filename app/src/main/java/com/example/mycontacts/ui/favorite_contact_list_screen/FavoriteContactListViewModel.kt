@@ -11,7 +11,7 @@ class FavoriteContactListViewModel @Inject constructor(
 ) : BaseContactListViewModel(contactListRepository) {
 
     override suspend fun fetchCurrentContactList() {
-        contactListRepository.getFavoriteContacts().collect {
+        contactListRepository.getAllContacts(true).collect {
             _contacts.value = it
         }
     }

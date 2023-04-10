@@ -16,6 +16,11 @@
     <string name="avatar">avatar</string>
     <string name="add_to_favorites">add to favorites</string>
 
+    <!--Contact List Screen-->
+    <string name="empty_list_message_title">Contact list is empty</string>
+    <string name="no_contacts_added_message">Add new contacts or sync them from your phone</string>
+    <string name="no_favorite_contacts_message">Make important contacts favorites</string>
+
     <!--Input Contact-->
     <string name="enter_contacts_name_hint">Enter Contact\'s Name</string>
     <string name="enter_contacts_number_hint">Enter Contact\'s Number</string>
@@ -62,4 +67,5 @@
     <!--ExceptionMessages-->
     <string name="call_failed">Impossible to call</string>
     <string name="sync_failed">Synchronization failed</string>
+    <string name="get_contact_list_failed">Getting contact list failed</string>
 </resources>

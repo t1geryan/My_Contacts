@@ -27,6 +27,8 @@ class ContactListFragment : BaseContactListFragment(), HasCustomActionToolbar {
         }
     }
 
+    override fun getEmptyListMessage(): Int = R.string.no_contacts_added_message
+
     override fun getCustomActionsList(): List<Action> {
         val onAction1 = Runnable {
             showContactInputDialog(Contact(), CONTACT_ADD_REQUEST_KEY)

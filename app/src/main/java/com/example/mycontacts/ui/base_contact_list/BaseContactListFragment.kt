@@ -4,15 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.mycontacts.R
 import com.example.mycontacts.databinding.FragmentContactListBinding
 import com.example.mycontacts.domain.model.Contact
 import com.example.mycontacts.domain.model.OnContactChangeListener
+import com.example.mycontacts.domain.model.Result
 import com.example.mycontacts.ui.base_contact_list.adapter.ContactsAdapter
 import com.example.mycontacts.ui.contract.fragmentResult
 import com.example.mycontacts.ui.contract.sideEffects
@@ -70,7 +73,6 @@ abstract class BaseContactListFragment protected constructor() : Fragment() {
             }
 
             override fun onChangeData(contact: Contact) {
-
                 showContactInputDialog(contact, CONTACT_CHANGE_REQ_KEY)
             }
         })
@@ -78,8 +80,8 @@ abstract class BaseContactListFragment protected constructor() : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.contacts.collect {
-                    adapter.contacts = it
+                viewModel.contacts.collect { result ->
+                    observeResult(result)
                 }
             }
         }
@@ -92,6 +94,12 @@ abstract class BaseContactListFragment protected constructor() : Fragment() {
     }
 
     /*
+        the heirs themselves will determine what message will be displayed if the list is empty
+     */
+    @StringRes
+    abstract fun getEmptyListMessage(): Int
+
+    /*
         use TabsFragmentDirections because BaseContactListFragment inheritors
         will be part of TabsFragment (will be placed in R.id.tabsFragmentContainer)
      */
@@ -100,6 +108,31 @@ abstract class BaseContactListFragment protected constructor() : Fragment() {
             contact, requestKey
         )
         findTopLevelNavController().navigate(direction)
+    }
+
+    private fun observeResult(result: Result<List<Contact>>) {
+        hideSupportingViews()
+        when (result) {
+            is Result.Loading -> binding.progressBar.visibility = View.VISIBLE
+            is Result.Success -> adapter.contacts = result.data
+            is Result.EmptyOrNull -> showEmptyListMessage(getString(getEmptyListMessage()))
+            is Result.Error -> showEmptyListMessage(
+                result.message ?: getString(R.string.get_contact_list_failed)
+            )
+        }
+    }
+
+    private fun hideSupportingViews() {
+        binding.progressBar.visibility = View.GONE
+        binding.emptyListMessageGroup.visibility = View.GONE
+    }
+
+    private fun showEmptyListMessage(message: String) {
+        // need to clear previous data (it updates automatically only if Result.isSuccess)
+        adapter.contacts = emptyList()
+
+        binding.emptyListMessageGroup.visibility = View.VISIBLE
+        binding.emptyListMessage.text = message
     }
 
     companion object {
