@@ -7,10 +7,10 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ContactDao {
 
-    @Query("SELECT * FROM contacts ORDER BY name, number")
+    @Query("SELECT * FROM contacts ORDER BY lower(name), number")
     fun getAllContacts(): Flow<List<ContactEntity>>
 
-    @Query("SELECT * FROM contacts WHERE is_favorite = 1 ORDER BY name, number")
+    @Query("SELECT * FROM contacts WHERE is_favorite = 1 ORDER BY lower(name), number")
     fun getFavoriteContacts(): Flow<List<ContactEntity>>
 
     @Query("DELETE FROM contacts WHERE id = :id")
