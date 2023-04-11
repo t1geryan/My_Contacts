@@ -19,7 +19,12 @@ class ContactInputViewModel @AssistedInject constructor(
     val number = MutableLiveData<String>()
 
     init {
-        photo.value = prevContact.photo.toUri()
+        photo.value = with(prevContact.photo) {
+            if (isNotEmpty())
+                toUri()
+            else
+                null
+        }
         name.value = prevContact.name
         number.value = prevContact.number
     }

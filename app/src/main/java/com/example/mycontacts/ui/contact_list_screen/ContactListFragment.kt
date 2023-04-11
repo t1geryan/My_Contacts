@@ -55,7 +55,7 @@ class ContactListFragment : BaseContactListFragment(), HasCustomActionToolbar {
         return listOf(
             Action(R.drawable.ic_add_contact_white, R.string.add_contact, onAction1),
             Action(R.drawable.ic_sync_white, R.string.sync_contacts, onAction2),
-            Action(R.drawable.ic_clear_white, R.string.clear_all, onAction3)
+            Action(R.drawable.ic_delete_daynight, R.string.clear_all, onAction3)
         )
     }
 

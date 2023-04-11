@@ -62,11 +62,11 @@ class MainActivity : AppCompatActivity(), SideEffectsApi, FragmentResultApi {
         }
     }
 
-    private lateinit var requireCallback: PhotoPickerCallback
+    private var requireCallback: PhotoPickerCallback? = null
 
     private val pickMedia =
         registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-            requireCallback(uri)
+            requireCallback?.invoke(uri)
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,22 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="20dp">
 
-    <ImageView
-        android:id="@+id/inputImageView"
-        android:layout_width="@dimen/image_size"
-        android:layout_height="@dimen/image_size"
-        android:layout_gravity="center"
-        android:background="?attr/selectableItemBackground"
-        android:contentDescription="@string/avatar"
+    <include
+        android:id="@+id/inputImageLayout"
+        layout="@layout/part_image_input"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toStartOf="@+id/group"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/base_avatar_daynight" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout"
@@ -25,8 +21,8 @@
         android:layout_marginStart="@dimen/input_field_between_distance"
         android:hint="@string/enter_contacts_name_hint"
 
-        app:layout_constraintStart_toEndOf="@+id/inputImageView"
-        app:layout_constraintTop_toTopOf="@+id/inputImageView"
+        app:layout_constraintStart_toEndOf="@+id/inputImageLayout"
+        app:layout_constraintTop_toTopOf="@+id/inputImageLayout"
         android:maxWidth="400dp"
         android:minWidth="250dp">
 
@@ -66,7 +62,7 @@
         android:layout_gravity="start"
         android:minWidth="100dp"
         android:text="@string/cancel"
-        app:layout_constraintBottom_toBottomOf="@+id/inputImageView"
+        app:layout_constraintBottom_toBottomOf="@+id/inputImageLayout"
         app:layout_constraintStart_toStartOf="@+id/textInputLayout2" />
 
     <Button

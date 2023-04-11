@@ -1,6 +1,7 @@
 package com.example.mycontacts.ui.input_contact_screen
 
 import android.content.Context
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,7 +23,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class ContactInputFragment : Fragment() {
 
-    private lateinit var dialogBinding: FragmentInputContactBinding
+    private lateinit var binding: FragmentInputContactBinding
 
     private val args: ContactInputFragmentArgs by navArgs()
 
@@ -57,60 +58,60 @@ class ContactInputFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        dialogBinding = FragmentInputContactBinding.inflate(inflater, container, false)
+        binding = FragmentInputContactBinding.inflate(inflater, container, false)
 
-        dialogBinding.inputImageView.setOnClickListener {
+        binding.inputImageLayout.inputImageView.setOnClickListener {
             pickPhotoIfNotNull()
         }
 
-        dialogBinding.confirmButton.setOnClickListener {
+        binding.confirmButton.setOnClickListener {
             setContactInputListener()
         }
 
-        dialogBinding.cancelButton.setOnClickListener {
+        binding.cancelButton.setOnClickListener {
             back()
         }
 
-        return dialogBinding.root
+        binding.inputImageLayout.removeImageButton.setOnClickListener {
+            removePhoto()
+        }
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.photo.observe(viewLifecycleOwner) {
-            Glide.with(requireContext()).load(it).centerCrop()
-                .error(R.drawable.base_avatar_daynight).placeholder(R.drawable.base_avatar_daynight)
-                .into(dialogBinding.inputImageView)
+        viewModel.photo.observe(viewLifecycleOwner) { uri ->
+            loadPhoto(uri)
         }
 
         viewModel.name.observe(viewLifecycleOwner) {
-            dialogBinding.inputNameEditText.setText(it)
+            binding.inputNameEditText.setText(it)
         }
 
         viewModel.number.observe(viewLifecycleOwner) {
-            dialogBinding.inputNumberEditText.setText(it)
+            binding.inputNumberEditText.setText(it)
         }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        viewModel.name.value = dialogBinding.inputNameEditText.text.toString()
-        viewModel.number.value = dialogBinding.inputNumberEditText.text.toString()
+        viewModel.name.value = binding.inputNameEditText.text.toString()
+        viewModel.number.value = binding.inputNumberEditText.text.toString()
     }
 
     private fun setContactInputListener() {
-
-        val enteredTextName = dialogBinding.inputNameEditText.text.toString()
-        val enteredTextNumber = dialogBinding.inputNumberEditText.text.toString()
+        val enteredTextName = binding.inputNameEditText.text.toString()
+        val enteredTextNumber = binding.inputNumberEditText.text.toString()
 
         var isBadInput = false
         val emptyValueError = getString(R.string.empty_value)
         if (enteredTextName.isBlank()) {
-            dialogBinding.inputNameEditText.error = emptyValueError
+            binding.inputNameEditText.error = emptyValueError
             isBadInput = true
         }
         if (enteredTextNumber.isBlank()) {
-            dialogBinding.inputNumberEditText.error = emptyValueError
+            binding.inputNumberEditText.error = emptyValueError
             isBadInput = true
         }
 
@@ -131,6 +132,20 @@ class ContactInputFragment : Fragment() {
             }
         }
     }
+
+    private fun loadPhoto(uri: Uri?) {
+        binding.inputImageLayout.removeImageButton.visibility = if (uri != null) {
+            View.VISIBLE
+        } else {
+            View.INVISIBLE
+        }
+        Glide.with(requireContext()).load(uri).centerCrop().error(R.drawable.ic_camera_daynight)
+            .placeholder(R.drawable.ic_camera_daynight).into(binding.inputImageLayout.inputImageView)
+    }
+    private fun removePhoto() {
+        viewModel.photo.value = null
+    }
+
 
     private fun back() {
         findTopLevelNavController().popBackStack(R.id.tabsFragment, false)
