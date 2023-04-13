@@ -1,6 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="20dp">
 
+    <ImageView
+        android:id="@+id/profileImageIV"
+        android:layout_width="@dimen/image_size"
+        android:layout_height="@dimen/image_size"
+        android:contentDescription="@string/profile_avatar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/base_avatar_daynight"/>
+
+    <TextView
+        android:id="@+id/profileDataTitleTV"
+        style="@style/ProfileTitleStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/profile_data"
+        app:layout_constraintEnd_toEndOf="@+id/profileImageIV"
+        app:layout_constraintStart_toStartOf="@+id/profileImageIV"
+        app:layout_constraintTop_toBottomOf="@+id/profileImageIV" />
+
+    <TextView
+        android:id="@+id/profileNameTV"
+        style="@style/ProfileMainItemStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@+id/profileDataTitleTV"
+        app:layout_constraintStart_toStartOf="@+id/profileDataTitleTV"
+        app:layout_constraintTop_toBottomOf="@+id/profileDataTitleTV"
+        tools:text="Ivan Ivanov" />
+
+    <TextView
+        android:id="@+id/profileNumberTV"
+        style="@style/ProfileItemStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@+id/profileNameTV"
+        app:layout_constraintStart_toStartOf="@+id/profileNameTV"
+        app:layout_constraintTop_toBottomOf="@+id/profileNameTV"
+        tools:text="+7 800 555-35-35" />
+
+    <TextView
+        android:id="@+id/statisticsTitleTV"
+        style="@style/ProfileTitleStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/profile_statistics"
+        app:layout_constraintEnd_toEndOf="@+id/profileNumberTV"
+        app:layout_constraintStart_toStartOf="@+id/profileNumberTV"
+        app:layout_constraintTop_toBottomOf="@+id/profileNumberTV" />
+
+    <TextView
+        android:id="@+id/contactsCountTitle"
+        style="@style/ProfileMainItemStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/profile_contacts_count"
+        app:layout_constraintStart_toStartOf="@+id/statisticsTitleTV"
+        app:layout_constraintTop_toBottomOf="@+id/statisticsTitleTV" />
+
+    <TextView
+        android:id="@+id/contactsCount"
+        style="@style/ProfileItemStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="viewEnd"
+        app:layout_constraintEnd_toEndOf="@+id/statisticsTitleTV"
+        app:layout_constraintStart_toStartOf="@+id/contactsCountTitle"
+        app:layout_constraintTop_toBottomOf="@+id/contactsCountTitle"
+        tools:text="123" />
+
+    <TextView
+        android:id="@+id/favContactsCountTitle"
+        style="@style/ProfileMainItemStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/profile_fav_contacts_count"
+        app:layout_constraintStart_toStartOf="@+id/contactsCountTitle"
+        app:layout_constraintTop_toBottomOf="@+id/contactsCount" />
+
+    <TextView
+        android:id="@+id/favContactsCount"
+        style="@style/ProfileItemStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="viewEnd"
+        app:layout_constraintEnd_toEndOf="@+id/statisticsTitleTV"
+        app:layout_constraintStart_toStartOf="@+id/favContactsCountTitle"
+        app:layout_constraintTop_toBottomOf="@+id/favContactsCountTitle"
+        tools:text="123" />
 </androidx.constraintlayout.widget.ConstraintLayout>

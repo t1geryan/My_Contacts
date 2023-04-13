@@ -5,12 +5,12 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
 import android.provider.Settings
-import android.util.TypedValue
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
@@ -38,6 +38,7 @@ import com.example.mycontacts.domain.model.Contact
 import com.example.mycontacts.ui.contract.*
 import com.example.mycontacts.ui.tabs_screen.TabsFragment
 import com.example.mycontacts.utils.Constants
+import com.google.android.material.color.MaterialColors
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -303,9 +304,9 @@ class MainActivity : AppCompatActivity(), SideEffectsApi, FragmentResultApi {
         val iconDrawable =
             DrawableCompat.wrap(ContextCompat.getDrawable(this, action.icon) ?: return)
 
-        val typedValue = TypedValue()
-        theme.resolveAttribute(com.google.android.material.R.attr.colorOnPrimary, typedValue, true)
-        @ColorInt val color = typedValue.data
+        @ColorInt val color = MaterialColors.getColor(
+            this, com.google.android.material.R.attr.colorOnPrimary, Color.BLACK
+        )
         iconDrawable.setTint(color)
 
         val menuItem = binding.materialToolbar.menu.add(action.title)

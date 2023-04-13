@@ -16,6 +16,7 @@
     <string name="avatar">аватар</string>
     <string name="add_to_favorites">добавить в избранное</string>
     <string name="remove_photo">Удалить фотографию</string>
+    <string name="profile_avatar">аватар профиля</string>
 
     <!--Contact List Screen-->
     <string name="empty_list_message_title">Список контактов пуст</string>
@@ -28,6 +29,12 @@
     <string name="confirm">Принять</string>
     <string name="cancel">Отмена</string>
     <string name="empty_value">Поле пустое!</string>
+
+    <!--Profile Screen-->
+    <string name="profile_statistics">Statistics:</string>
+    <string name="profile_contacts_count">Number of contacts:</string>
+    <string name="profile_fav_contacts_count">Number of favorite contacts:</string>
+    <string name="profile_data">Personal Data:</string>
 
     <!--OnBoarding Carousel Items-->
     <string name="onboarding1">Приложение My Contacts позволит вам хранить список своих контактов в удобном виде</string>

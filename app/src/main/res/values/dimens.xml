@@ -3,4 +3,5 @@
     <dimen name="contacts_between_distance">8dp</dimen>
     <dimen name="input_field_between_distance">10dp</dimen>
     <dimen name="image_size">240dp</dimen>
+    <dimen name="profile_between_distance">8dp</dimen>
 </resources>
