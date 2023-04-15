@@ -10,27 +10,18 @@ import javax.inject.Singleton
 class ProfilePrefHelper @Inject constructor(
     private val preferences: SharedPreferences
 ) {
-
-    fun getName(): Flow<String> = flow {
-        val name = preferences.getString(NAME_PREF, "") ?: throw IllegalStateException("NoPrefExistException")
-        emit(name)
+    fun setStringPref(key: String, value: String) {
+        preferences.edit().putString(key, value).apply()
     }
 
-    fun setName(name: String) {
-        preferences.edit().putString(NAME_PREF, name).apply()
-    }
-
-    fun getNumber(): Flow<String> = flow {
-        val number = preferences.getString(NUMBER_PREF, "") ?: throw IllegalStateException("NoPrefExistException")
-        emit(number)
-    }
-
-    fun setNumber(number: String) {
-        preferences.edit().putString(NAME_PREF, number).apply()
+    fun getStringPref(key: String) : Flow<String>  = flow {
+        val result = preferences.getString(key, "") ?: throw IllegalStateException("NoPrefExistException")
+        emit(result)
     }
 
     companion object {
         const val NAME_PREF = "NAME_PREF"
         const val NUMBER_PREF = "NUMBER_PREF"
+        const val PHOTO_PREF = "PHOTO_PREF"
     }
 }

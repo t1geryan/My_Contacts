@@ -61,7 +61,9 @@ class ContactInputFragment : Fragment() {
         binding = FragmentInputContactBinding.inflate(inflater, container, false)
 
         binding.inputImageLayout.inputImageView.setOnClickListener {
-            pickPhotoIfNotNull()
+            sideEffects().pickPhoto {
+                viewModel.photo.value = it
+            }
         }
 
         binding.confirmButton.setOnClickListener {
@@ -125,14 +127,6 @@ class ContactInputFragment : Fragment() {
         back()
     }
 
-    private fun pickPhotoIfNotNull() {
-        sideEffects().pickPhoto {
-            it?.let {
-                viewModel.photo.value = it
-            }
-        }
-    }
-
     private fun loadPhoto(uri: Uri?) {
         binding.inputImageLayout.removeImageButton.visibility = if (uri != null) {
             View.VISIBLE
@@ -140,8 +134,10 @@ class ContactInputFragment : Fragment() {
             View.INVISIBLE
         }
         Glide.with(requireContext()).load(uri).centerCrop().error(R.drawable.ic_camera_daynight)
-            .placeholder(R.drawable.ic_camera_daynight).into(binding.inputImageLayout.inputImageView)
+            .placeholder(R.drawable.ic_camera_daynight)
+            .into(binding.inputImageLayout.inputImageView)
     }
+
     private fun removePhoto() {
         viewModel.photo.value = null
     }

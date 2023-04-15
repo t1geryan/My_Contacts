@@ -4,7 +4,9 @@ import com.example.mycontacts.domain.model.Contact
 import kotlinx.coroutines.flow.Flow
 
 interface ContactListRepository {
-    suspend fun getAllContacts(onlyFavorites: Boolean): Flow<List<Contact>>
+    suspend fun getAllContacts(onlyFavorites: Boolean = false): Flow<List<Contact>>
+
+    suspend fun getContactsCount(onlyFavorites: Boolean = false): Flow<Int>
 
     suspend fun addContact(contact: Contact)
 

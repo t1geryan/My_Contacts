@@ -31,10 +31,12 @@
     <string name="empty_value">Value is empty</string>
 
     <!--Profile Screen-->
-    <string name="profile_statistics">Статистика:</string>
-    <string name="profile_contacts_count">Кол-во контактов:</string>
-    <string name="profile_fav_contacts_count">Кол-во избранных контактов:</string>
-    <string name="profile_data">Личные данные:</string>
+    <string name="profile_statistics">Statistics:</string>
+    <string name="profile_contacts_count">Number of contacts: %1$d</string>
+    <string name="profile_fav_contacts_count">Number of favorite contacts: %1$d</string>
+    <string name="profile_data">Personal Data:</string>
+    <string name="empty_name">Input your name</string>
+    <string name="empty_number">Input your number</string>
 
     <!--OnBoarding Carousel Items-->
     <string name="onboarding1">The My Contacts application will allow you to store a list of your contacts in a convenient way</string>
@@ -73,6 +75,7 @@
     <string name="confirm_dialog_sync_message">All contacts from the phone will be added to the application</string>
 
     <!--ExceptionMessages-->
+    <string name="fail">An unexpected error has occurred</string>
     <string name="call_failed">Impossible to call</string>
     <string name="sync_failed">Synchronization failed</string>
     <string name="get_contact_list_failed">Getting contact list failed</string>

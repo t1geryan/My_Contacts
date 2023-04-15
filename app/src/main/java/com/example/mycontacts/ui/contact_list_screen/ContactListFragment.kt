@@ -34,17 +34,8 @@ class ContactListFragment : BaseContactListFragment(), HasCustomActionToolbar {
             showContactInputDialog(Contact(), CONTACT_ADD_REQUEST_KEY)
         }
 
-        val onAction2 = Runnable {
-            sideEffects().syncContacts {
-                sideEffects().showConfirmDialog(
-                    R.string.confirm_dialog_sync_message, null
-                ) { _, _ ->
-                    (viewModel as ContactListViewModel).syncContacts()
-                }
-            }
 
-        }
-        val onAction3 = Runnable {
+        val onAction2 = Runnable {
             sideEffects().showConfirmDialog(
                 R.string.confirm_dialog_clear_contacts_message, null
             ) { _, _ ->
@@ -54,8 +45,7 @@ class ContactListFragment : BaseContactListFragment(), HasCustomActionToolbar {
 
         return listOf(
             Action(R.drawable.ic_add_contact_white, R.string.add_contact, onAction1),
-            Action(R.drawable.ic_sync_white, R.string.sync_contacts, onAction2),
-            Action(R.drawable.ic_delete_daynight, R.string.clear_all, onAction3)
+            Action(R.drawable.ic_delete_daynight, R.string.clear_all, onAction2)
         )
     }
 

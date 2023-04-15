@@ -8,7 +8,7 @@ import com.example.mycontacts.domain.model.Contact
 
 fun Fragment.sideEffects() = requireActivity() as SideEffectsApi
 
-typealias PhotoPickerCallback = (Uri?) -> Unit
+typealias PhotoPickerCallback = (Uri) -> Unit
 
 interface SideEffectsApi {
 

@@ -1,7 +1,7 @@
 package com.example.mycontacts.domain.model
 
-sealed class Result<T>(open val data: T? = null) {
-    class Success<T>(override val data: T) : Result<T>(data)
+sealed class Result<T> {
+    class Success<T>(val data: T) : Result<T>()
 
     class Error<T>(val message: String? = null) : Result<T>()
 

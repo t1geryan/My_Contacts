@@ -17,17 +17,17 @@ class ContactListRepositoryImpl @Inject constructor(
     private val contactProviderDao: ContactProviderDao
 ) : ContactListRepository {
 
-    override suspend fun getAllContacts(onlyFavorites: Boolean): Flow<List<Contact>> {
-        return if (onlyFavorites) {
-            contactDao.getFavoriteContacts()
-        } else {
-            contactDao.getAllContacts()
-        }.map { list ->
+    override suspend fun getAllContacts(onlyFavorites: Boolean): Flow<List<Contact>> =
+        getContacts(onlyFavorites).map { list ->
             list.map { entity ->
                 contactMapper.entityToDomain(entity)
             }
         }
-    }
+
+    override suspend fun getContactsCount(onlyFavorites: Boolean): Flow<Int> =
+        getContacts(onlyFavorites).map { list ->
+            list.size
+        }
 
     override suspend fun addContact(contact: Contact) {
         val contactEntity = contactMapper.domainToEntity(contact)
@@ -59,5 +59,11 @@ class ContactListRepositoryImpl @Inject constructor(
         contactList.forEach {
             contactDao.addContact(it.toContactEntity())
         }
+    }
+
+    private fun getContacts(onlyFavorites: Boolean) = if (onlyFavorites) {
+        contactDao.getFavoriteContacts()
+    } else {
+        contactDao.getAllContacts()
     }
 }

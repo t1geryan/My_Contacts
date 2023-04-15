@@ -67,7 +67,9 @@ class MainActivity : AppCompatActivity(), SideEffectsApi, FragmentResultApi {
 
     private val pickMedia =
         registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-            requireCallback?.invoke(uri)
+            uri?.let {
+                requireCallback?.invoke(it)
+            }
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
