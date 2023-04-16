@@ -49,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:imeOptions="actionDone"
-            android:inputType="number" />
+            android:inputType="phone|number" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
@@ -57,9 +57,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
+        android:layout_marginTop="@dimen/input_field_between_distance"
         android:minWidth="100dp"
         android:text="@string/cancel"
-        android:layout_marginTop="@dimen/input_field_between_distance"
         app:layout_constraintStart_toStartOf="@+id/textInputLayout2"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout2" />
 

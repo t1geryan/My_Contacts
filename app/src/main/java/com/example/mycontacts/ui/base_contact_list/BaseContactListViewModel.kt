@@ -1,7 +1,7 @@
 package com.example.mycontacts.ui.base_contact_list
 
 import com.example.mycontacts.domain.model.Contact
-import com.example.mycontacts.ui.ui_utils.UiState
+import com.example.mycontacts.ui.state.UiState
 import com.example.mycontacts.domain.repository.ContactListRepository
 import com.example.mycontacts.ui.base.BaseViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

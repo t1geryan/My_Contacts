@@ -5,7 +5,7 @@
     <string name="onboarding_title">Hello!</string>
     <string name="favorite_contacts_title">Favorite Contacts</string>
     <string name="profile_title">Your Profile</string>
-    <string name="contact_input_title">Input Contact</string>
+    <string name="contact_input_title">Contact Input</string>
 
     <!--Bottom Navigation Items-->
     <string name="contacts">Contacts</string>
@@ -35,8 +35,9 @@
     <string name="profile_contacts_count">Number of contacts: %1$d</string>
     <string name="profile_fav_contacts_count">Number of favorite contacts: %1$d</string>
     <string name="profile_data">Personal Data:</string>
-    <string name="empty_name">Input your name</string>
-    <string name="empty_number">Input your number</string>
+    <string name="input_name">Input your name</string>
+    <string name="input_number">Input your number</string>
+    <string name="data_saved">Data has been saved</string>
 
     <!--OnBoarding Carousel Items-->
     <string name="onboarding1">The My Contacts application will allow you to store a list of your contacts in a convenient way</string>

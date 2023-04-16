@@ -1,7 +1,7 @@
 package com.example.mycontacts.ui.base
 
 import androidx.lifecycle.ViewModel
-import com.example.mycontacts.ui.ui_utils.UiState
+import com.example.mycontacts.ui.state.UiState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

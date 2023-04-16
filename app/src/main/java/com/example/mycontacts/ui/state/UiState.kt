@@ -1,4 +1,4 @@
-package com.example.mycontacts.ui.ui_utils
+package com.example.mycontacts.ui.state
 
 sealed class UiState<T> {
     class Success<T>(val data: T) : UiState<T>()

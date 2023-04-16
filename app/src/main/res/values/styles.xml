@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="EditTextStyle">
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
@@ -16,12 +17,8 @@
         <item name="android:textSize">18sp</item>
     </style>
 
-    <style name="ProfileMainItemStyle" parent="ProfileStyle">
+    <style name="ProfileItemStyle" parent="ProfileStyle">
         <item name="android:textColor">?attr/colorOnBackground</item>
         <item name="android:textSize">16sp</item>
-    </style>
-
-    <style name="ProfileItemStyle" parent="ProfileStyle">
-        <item name="android:textSize">12sp</item>
     </style>
 </resources>

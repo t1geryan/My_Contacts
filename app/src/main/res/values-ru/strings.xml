@@ -5,7 +5,7 @@
     <string name="onboarding_title">Привет!</string>
     <string name="favorite_contacts_title">Избранные</string>
     <string name="profile_title">Ваш профиль</string>
-    <string name="contact_input_title">Ввод Контакта</string>
+    <string name="contact_input_title">Ввод контакта</string>
 
     <!--Bottom Navigation Items-->
     <string name="contacts">Контакты</string>
@@ -35,8 +35,9 @@
     <string name="profile_contacts_count">Кол-во контактов: %1$d</string>
     <string name="profile_fav_contacts_count">Кол-во избранных контактов: %1$d</string>
     <string name="profile_data">Личные данные:</string>
-    <string name="empty_name">Введите ваше имя</string>
-    <string name="empty_number">Введите свой номер</string>
+    <string name="input_name">Введите ваше имя</string>
+    <string name="input_number">Введите свой номер</string>
+    <string name="data_saved">Данные были сохранены</string>
 
     <!--OnBoarding Carousel Items-->
     <string name="onboarding1">Приложение My Contacts позволит вам хранить список своих контактов в удобном виде</string>
@@ -72,7 +73,7 @@
     <string name="confirm_dialog_positive">Да</string>
     <string name="confirm_dialog_negative">Нет</string>
     <string name="confirm_dialog_clear_contacts_message">Все контакты будут удалены</string>
-    <string name="confirm_dialog_sync_message">В приложение будут добавлены все контакты из телефона</string>
+    <string name="confirm_dialog_sync_message">В приложение будут добавлены все контакты из телефона.\nЕсли вы уже ранее синхронизировали контакты, то контакты из телефона будут обновлены.</string>
 
     <!--ExceptionMessages-->
     <string name="fail">Возникла непредвиденная ошибка</string>

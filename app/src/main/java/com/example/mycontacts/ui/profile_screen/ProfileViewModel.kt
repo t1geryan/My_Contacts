@@ -3,7 +3,7 @@ package com.example.mycontacts.ui.profile_screen
 import com.example.mycontacts.domain.repository.ContactListRepository
 import com.example.mycontacts.domain.repository.ProfileRepository
 import com.example.mycontacts.ui.base.BaseViewModel
-import com.example.mycontacts.ui.ui_utils.UiState
+import com.example.mycontacts.ui.state.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -27,7 +27,7 @@ class ProfileViewModel @Inject constructor(
 
     private val _photo = MutableStateFlow<UiState<String>>(UiState.Loading())
     val photo: StateFlow<UiState<String>>
-        get() = _number.asStateFlow()
+        get() = _photo.asStateFlow()
 
     private val _contactsCount = MutableStateFlow<UiState<Int>>(UiState.Loading())
     val contactsCount: StateFlow<UiState<Int>>

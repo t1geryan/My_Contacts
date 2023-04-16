@@ -6,18 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.bumptech.glide.Glide
 import com.example.mycontacts.R
 import com.example.mycontacts.databinding.FragmentProfileBinding
-import com.example.mycontacts.ui.ui_utils.UiState
 import com.example.mycontacts.ui.contract.Action
 import com.example.mycontacts.ui.contract.HasCustomActionToolbar
 import com.example.mycontacts.ui.contract.sideEffects
+import com.example.mycontacts.ui.state.UiState
+import com.example.mycontacts.ui.ui_utils.collectWhenStarted
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ProfileFragment : Fragment(), HasCustomActionToolbar {
@@ -30,11 +27,17 @@ class ProfileFragment : Fragment(), HasCustomActionToolbar {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentProfileBinding.inflate(inflater, container, false)
+
         binding.profileImageIV.setOnClickListener {
             sideEffects().pickPhoto { uri ->
                 viewModel.setPhotoUri(uri.toString())
             }
         }
+        binding.confirmButton.setOnClickListener {
+            sideEffects().showToast(getString(R.string.data_saved))
+            saveEnteredNameAndNumber()
+        }
+
         return binding.root
     }
 
@@ -43,15 +46,15 @@ class ProfileFragment : Fragment(), HasCustomActionToolbar {
 
         collectWhenStarted {
             viewModel.name.collect {
-                collectResult(it, getString(R.string.empty_name)) { str ->
-                    binding.profileNameTV.text = str
+                collectResult(it, "") { str ->
+                    binding.profileNameET.setText(str)
                 }
             }
         }
         collectWhenStarted {
             viewModel.number.collect {
-                collectResult(it, getString(R.string.empty_number)) { str ->
-                    binding.profileNumberTV.text = str
+                collectResult(it, "") { str ->
+                    binding.profileNumberET.setText(str)
                 }
             }
         }
@@ -79,12 +82,14 @@ class ProfileFragment : Fragment(), HasCustomActionToolbar {
         }
     }
 
-    private fun collectWhenStarted(collectBlock: suspend () -> Unit) =
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                collectBlock()
-            }
-        }
+    /*
+        saving the entered data on destroy
+        if they were not saved manually
+     */
+    override fun onDestroy() {
+        super.onDestroy()
+        saveEnteredNameAndNumber()
+    }
 
     private fun <T> collectResult(uiState: UiState<T>, emptyResult: T, showBlock: (T) -> Unit) {
         binding.progressBar.visibility = View.GONE
@@ -102,6 +107,17 @@ class ProfileFragment : Fragment(), HasCustomActionToolbar {
         .placeholder(R.drawable.base_avatar_daynight)
         .error(R.drawable.base_avatar_daynight)
         .into(binding.profileImageIV)
+
+    private fun saveEnteredNameAndNumber() {
+        with(binding.profileNameET.text.toString()) {
+            if (this != (viewModel.name.value as? UiState.Success)?.data)
+                viewModel.setName(this)
+        }
+        with(binding.profileNumberET.text.toString()) {
+            if (this != (viewModel.number.value as? UiState.Success)?.data)
+                viewModel.setNumber(this)
+        }
+    }
 
     override fun getCustomActionsList(): List<Action> {
         val onAction2 = Runnable {

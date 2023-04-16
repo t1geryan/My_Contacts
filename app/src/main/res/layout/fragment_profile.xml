@@ -1,88 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="20dp">
+    android:fillViewport="true">
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:padding="20dp">
 
-    <ImageView
-        android:id="@+id/profileImageIV"
-        android:layout_width="@dimen/image_size"
-        android:layout_height="@dimen/image_size"
-        android:background="?attr/selectableItemBackground"
-        android:contentDescription="@string/profile_avatar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/base_avatar_daynight" />
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/profileDataTitleTV"
-        style="@style/ProfileTitleStyle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/profile_data"
-        app:layout_constraintEnd_toEndOf="@+id/profileImageIV"
-        app:layout_constraintStart_toStartOf="@+id/profileImageIV"
-        app:layout_constraintTop_toBottomOf="@+id/profileImageIV" />
+        <ImageView
+            android:id="@+id/profileImageIV"
+            android:layout_width="@dimen/image_size"
+            android:layout_height="@dimen/image_size"
+            android:background="?attr/selectableItemBackground"
+            android:contentDescription="@string/profile_avatar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/base_avatar_daynight" />
 
-    <TextView
-        android:id="@+id/profileNameTV"
-        style="@style/ProfileMainItemStyle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@+id/profileDataTitleTV"
-        app:layout_constraintStart_toStartOf="@+id/profileDataTitleTV"
-        app:layout_constraintTop_toBottomOf="@+id/profileDataTitleTV"
-        tools:text="Ivan Ivanov" />
+        <TextView
+            android:id="@+id/profileDataTitleTV"
+            style="@style/ProfileTitleStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/profile_data"
+            app:layout_constraintEnd_toEndOf="@+id/profileImageIV"
+            app:layout_constraintStart_toStartOf="@+id/profileImageIV"
+            app:layout_constraintTop_toBottomOf="@+id/profileImageIV" />
 
-    <TextView
-        android:id="@+id/profileNumberTV"
-        style="@style/ProfileItemStyle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@+id/profileNameTV"
-        app:layout_constraintStart_toStartOf="@+id/profileNameTV"
-        app:layout_constraintTop_toBottomOf="@+id/profileNameTV"
-        tools:text="+7 800 555-35-35" />
+        <EditText
+            android:id="@+id/profileNameET"
+            style="@style/ProfileItemStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:autofillHints="phone"
+            android:hint="@string/input_name"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            app:layout_constraintEnd_toEndOf="@+id/profileDataTitleTV"
+            app:layout_constraintStart_toStartOf="@+id/profileDataTitleTV"
+            app:layout_constraintTop_toBottomOf="@+id/profileDataTitleTV"
+            tools:text="Ivan Ivanov" />
 
-    <TextView
-        android:id="@+id/statisticsTitleTV"
-        style="@style/ProfileTitleStyle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/profile_statistics"
-        app:layout_constraintEnd_toEndOf="@+id/profileNumberTV"
-        app:layout_constraintStart_toStartOf="@+id/profileNumberTV"
-        app:layout_constraintTop_toBottomOf="@+id/profileNumberTV" />
+        <EditText
+            android:id="@+id/profileNumberET"
+            style="@style/ProfileItemStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:autofillHints="name"
+            android:hint="@string/input_number"
+            android:imeOptions="actionDone"
+            android:inputType="phone|number"
+            app:layout_constraintEnd_toEndOf="@+id/profileNameET"
+            app:layout_constraintStart_toStartOf="@+id/profileNameET"
+            app:layout_constraintTop_toBottomOf="@+id/profileNameET"
+            tools:text="+7 800 555-35-35" />
 
-    <TextView
-        android:id="@+id/contactsCount"
-        style="@style/ProfileMainItemStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@+id/statisticsTitleTV"
-        app:layout_constraintTop_toBottomOf="@+id/statisticsTitleTV"
-        tools:text="@string/profile_contacts_count" />
+        <TextView
+            android:id="@+id/statisticsTitleTV"
+            style="@style/ProfileTitleStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/profile_statistics"
+            app:layout_constraintEnd_toEndOf="@+id/profileNumberET"
+            app:layout_constraintStart_toStartOf="@+id/profileNumberET"
+            app:layout_constraintTop_toBottomOf="@+id/confirmButton" />
 
-    <TextView
-        android:id="@+id/favContactsCount"
-        style="@style/ProfileMainItemStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@+id/contactsCount"
-        app:layout_constraintTop_toBottomOf="@+id/contactsCount"
-        tools:text="@string/profile_fav_contacts_count" />
+        <TextView
+            android:id="@+id/contactsCount"
+            style="@style/ProfileItemStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@+id/statisticsTitleTV"
+            app:layout_constraintTop_toBottomOf="@+id/statisticsTitleTV"
+            tools:text="@string/profile_contacts_count" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/favContactsCount"
+            style="@style/ProfileItemStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@+id/contactsCount"
+            app:layout_constraintTop_toBottomOf="@+id/contactsCount"
+            tools:text="@string/profile_fav_contacts_count" />
+
+        <Button
+            android:id="@+id/confirmButton"
+            style="@style/ProfileStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:maxWidth="150dp"
+            android:text="@string/confirm"
+            android:textAllCaps="false"
+            app:layout_constraintEnd_toEndOf="@+id/profileNumberET"
+            app:layout_constraintStart_toStartOf="@+id/profileNumberET"
+            app:layout_constraintTop_toBottomOf="@+id/profileNumberET" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

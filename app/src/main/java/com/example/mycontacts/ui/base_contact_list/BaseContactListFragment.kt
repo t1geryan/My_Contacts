@@ -6,25 +6,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.mycontacts.R
 import com.example.mycontacts.databinding.FragmentContactListBinding
 import com.example.mycontacts.domain.model.Contact
 import com.example.mycontacts.domain.model.OnContactChangeListener
-import com.example.mycontacts.ui.ui_utils.UiState
 import com.example.mycontacts.ui.base_contact_list.adapter.ContactsAdapter
 import com.example.mycontacts.ui.contract.fragmentResult
 import com.example.mycontacts.ui.contract.sideEffects
 import com.example.mycontacts.ui.tabs_screen.TabsFragmentDirections
 import com.example.mycontacts.ui.ui_utils.RecyclerViewUtility
+import com.example.mycontacts.ui.state.UiState
+import com.example.mycontacts.ui.ui_utils.collectWhenStarted
 import com.example.mycontacts.ui.ui_utils.findTopLevelNavController
 import com.example.mycontacts.utils.Constants
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 abstract class BaseContactListFragment protected constructor() : Fragment() {
@@ -78,11 +75,9 @@ abstract class BaseContactListFragment protected constructor() : Fragment() {
         })
         binding.recyclerView.adapter = adapter
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.contacts.collect { result ->
-                    collectResult(result)
-                }
+        collectWhenStarted {
+            viewModel.contacts.collect { result ->
+                collectResult(result)
             }
         }
 

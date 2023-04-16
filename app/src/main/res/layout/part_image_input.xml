@@ -1,23 +1,25 @@
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="wrap_content"
-    android:layout_width="wrap_content">
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <ImageView
-        android:id="@+id/inputImageView"
-        android:layout_width="@dimen/image_size"
-        android:layout_height="@dimen/image_size"
-        android:background="?attr/selectableItemBackground"
-        android:contentDescription="@string/avatar"
-        tools:src="@drawable/ic_camera_daynight"/>
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/removeImageButton"
-        android:layout_width="40dp"
-        android:layout_height="48dp"
-        android:layout_gravity="top|end"
-        android:layout_marginEnd="4dp"
-        android:src="@drawable/ic_delete_daynight"
-        android:contentDescription="@string/remove_photo" />
-</FrameLayout>
+        <ImageView
+            android:id="@+id/inputImageView"
+            android:layout_width="@dimen/image_size"
+            android:layout_height="@dimen/image_size"
+            android:background="?attr/selectableItemBackground"
+            android:contentDescription="@string/avatar"
+            tools:src="@drawable/ic_camera_daynight" />
+
+        <ImageView
+            android:id="@+id/removeImageButton"
+            android:layout_width="40dp"
+            android:layout_height="48dp"
+            android:layout_gravity="top|end"
+            android:layout_marginEnd="4dp"
+            android:contentDescription="@string/remove_photo"
+            android:src="@drawable/ic_delete_daynight" />
+    </FrameLayout>
+</merge>
