@@ -12,7 +12,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.bumptech.glide.Glide
 import com.example.mycontacts.R
 import com.example.mycontacts.databinding.FragmentProfileBinding
-import com.example.mycontacts.domain.model.Result
+import com.example.mycontacts.ui.ui_utils.UiState
 import com.example.mycontacts.ui.contract.Action
 import com.example.mycontacts.ui.contract.HasCustomActionToolbar
 import com.example.mycontacts.ui.contract.sideEffects
@@ -86,13 +86,13 @@ class ProfileFragment : Fragment(), HasCustomActionToolbar {
             }
         }
 
-    private fun <T> collectResult(result: Result<T>, emptyResult: T, showBlock: (T) -> Unit) {
+    private fun <T> collectResult(uiState: UiState<T>, emptyResult: T, showBlock: (T) -> Unit) {
         binding.progressBar.visibility = View.GONE
-        when (result) {
-            is Result.EmptyOrNull -> showBlock(emptyResult)
-            is Result.Error -> sideEffects().showToast(getString(R.string.fail))
-            is Result.Loading -> binding.progressBar.visibility = View.VISIBLE
-            is Result.Success -> showBlock(result.data)
+        when (uiState) {
+            is UiState.EmptyOrNull -> showBlock(emptyResult)
+            is UiState.Error -> sideEffects().showToast(getString(R.string.fail))
+            is UiState.Loading -> binding.progressBar.visibility = View.VISIBLE
+            is UiState.Success -> showBlock(uiState.data)
         }
     }
 

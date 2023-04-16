@@ -15,7 +15,7 @@ import com.example.mycontacts.R
 import com.example.mycontacts.databinding.FragmentContactListBinding
 import com.example.mycontacts.domain.model.Contact
 import com.example.mycontacts.domain.model.OnContactChangeListener
-import com.example.mycontacts.domain.model.Result
+import com.example.mycontacts.ui.ui_utils.UiState
 import com.example.mycontacts.ui.base_contact_list.adapter.ContactsAdapter
 import com.example.mycontacts.ui.contract.fragmentResult
 import com.example.mycontacts.ui.contract.sideEffects
@@ -81,7 +81,7 @@ abstract class BaseContactListFragment protected constructor() : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.contacts.collect { result ->
-                    observeResult(result)
+                    collectResult(result)
                 }
             }
         }
@@ -110,14 +110,14 @@ abstract class BaseContactListFragment protected constructor() : Fragment() {
         findTopLevelNavController().navigate(direction)
     }
 
-    private fun observeResult(result: Result<List<Contact>>) {
+    private fun collectResult(uiState: UiState<List<Contact>>) {
         hideSupportingViews()
-        when (result) {
-            is Result.Loading -> binding.progressBar.visibility = View.VISIBLE
-            is Result.Success -> adapter.contacts = result.data
-            is Result.EmptyOrNull -> showEmptyListMessage(getString(getEmptyListMessage()))
-            is Result.Error -> showEmptyListMessage(
-                result.message ?: getString(R.string.get_contact_list_failed)
+        when (uiState) {
+            is UiState.Loading -> binding.progressBar.visibility = View.VISIBLE
+            is UiState.Success -> adapter.contacts = uiState.data
+            is UiState.EmptyOrNull -> showEmptyListMessage(getString(getEmptyListMessage()))
+            is UiState.Error -> showEmptyListMessage(
+                uiState.message ?: getString(R.string.get_contact_list_failed)
             )
         }
     }
