@@ -26,4 +26,7 @@
 - Photo Picker
 - ...
 
+## Контакты для связи:
+##### tigeryandevelop@gmail.com
+
 
