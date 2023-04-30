@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/onBoardingFragment"
-        android:name="com.example.mycontacts.ui.onboarding_screen.OnBoardingFragment"
+        android:name="com.example.mycontacts.presenter.ui.onboarding_screen.OnBoardingFragment"
         android:label="@string/onboarding_title"
         tools:layout="@layout/fragment_onboarding">
         <action
@@ -15,7 +15,7 @@
     </fragment>
     <fragment
         android:id="@+id/tabsFragment"
-        android:name="com.example.mycontacts.ui.tabs_screen.TabsFragment"
+        android:name="com.example.mycontacts.presenter.ui.tabs_screen.TabsFragment"
         android:label="TabsFragment"
         tools:layout="@layout/fragment_tabs">
         <action
@@ -24,7 +24,7 @@
     </fragment>
     <fragment
         android:id="@+id/contactInputFragment"
-        android:name="com.example.mycontacts.ui.input_contact_screen.ContactInputFragment"
+        android:name="com.example.mycontacts.presenter.ui.input_contact_screen.ContactInputFragment"
         android:label="@string/contact_input_title"
         tools:layout="@layout/fragment_input_contact">
         <argument

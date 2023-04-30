@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/favoriteContactListFragment"
-        android:name="com.example.mycontacts.ui.favorite_contact_list_screen.FavoriteContactListFragment"
+        android:name="com.example.mycontacts.presenter.ui.favorite_contact_list_screen.FavoriteContactListFragment"
         android:label="@string/favorite_contacts_title"
         tools:layout="@layout/fragment_contact_list">
     </fragment>
