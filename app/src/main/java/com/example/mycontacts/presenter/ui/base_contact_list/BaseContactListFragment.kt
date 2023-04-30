@@ -44,7 +44,7 @@ abstract class BaseContactListFragment protected constructor() : Fragment() {
 
         binding.recyclerView.layoutManager = GridLayoutManager(
             requireContext(), RecyclerViewUtility.calculateNoOfColumns(
-                requireContext(), Constants.CONTACTS_COLUMN_WIDTH
+                requireContext(), Constants.RecyclerViewUtils.CONTACTS_COLUMN_WIDTH
             )
         )
         val itemAnimator = binding.recyclerView.itemAnimator

@@ -9,7 +9,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
-
 @Module
 @InstallIn(SingletonComponent::class)
 object SharedPreferencesModule {
@@ -19,5 +18,5 @@ object SharedPreferencesModule {
     fun provideSharedPreferences(
         @ApplicationContext context: Context
     ): SharedPreferences =
-        context.getSharedPreferences(Constants.APP_PREFERENCES, Context.MODE_PRIVATE)
+        context.getSharedPreferences(Constants.SharedPreferences.NAME, Context.MODE_PRIVATE)
 }

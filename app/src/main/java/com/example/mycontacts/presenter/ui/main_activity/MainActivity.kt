@@ -109,7 +109,7 @@ class MainActivity : AppCompatActivity(), SideEffectsApi, FragmentResultApi {
                         this, Manifest.permission.CALL_PHONE
                     )
                 ) askUserToOpenAppSettings(
-                    Constants.SHOULD_REQUEST_CALL_PERMISSION_PREF,
+                    Constants.SharedPreferences.SHOULD_REQUEST_CALL_PERMISSION_PREF,
                     R.string.no_call_permission,
                     R.string.denied_permission_call
                 )
@@ -119,7 +119,7 @@ class MainActivity : AppCompatActivity(), SideEffectsApi, FragmentResultApi {
                         this, Manifest.permission.READ_CONTACTS
                     )
                 ) askUserToOpenAppSettings(
-                    Constants.SHOULD_REQUEST_READ_CONTACTS_PERMISSION_PREF,
+                    Constants.SharedPreferences.SHOULD_REQUEST_READ_CONTACTS_PERMISSION_PREF,
                     R.string.no_read_contact_permission,
                     R.string.denied_permission_sync_contacts
                 )
@@ -171,12 +171,12 @@ class MainActivity : AppCompatActivity(), SideEffectsApi, FragmentResultApi {
     // Nav Component
 
     private fun prepareNavController(navController: NavController) {
-        val isFirstLaunch = preferences.getBoolean(Constants.FIRST_LAUNCH_PREF, true)
+        val isFirstLaunch = preferences.getBoolean(Constants.SharedPreferences.FIRST_LAUNCH_PREF, true)
 
         val graph = navController.navInflater.inflate(R.navigation.root_graph)
         graph.setStartDestination(
             if (isFirstLaunch) {
-                preferences.edit().putBoolean(Constants.FIRST_LAUNCH_PREF, false).apply()
+                preferences.edit().putBoolean(Constants.SharedPreferences.FIRST_LAUNCH_PREF, false).apply()
                 R.id.onBoardingFragment
             } else R.id.tabsFragment
         )
