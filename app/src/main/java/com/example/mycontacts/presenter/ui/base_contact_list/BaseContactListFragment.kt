@@ -77,7 +77,7 @@ abstract class BaseContactListFragment protected constructor() : Fragment() {
 
         collectWhenStarted {
             viewModel.contacts.collect { result ->
-                collectResult(result)
+                collectUiState(result)
             }
         }
 
@@ -105,7 +105,7 @@ abstract class BaseContactListFragment protected constructor() : Fragment() {
         findTopLevelNavController().navigate(direction)
     }
 
-    private fun collectResult(uiState: UiState<List<Contact>>) {
+    private fun collectUiState(uiState: UiState<List<Contact>>) {
         hideSupportingViews()
         when (uiState) {
             is UiState.Loading -> binding.progressBar.visibility = View.VISIBLE

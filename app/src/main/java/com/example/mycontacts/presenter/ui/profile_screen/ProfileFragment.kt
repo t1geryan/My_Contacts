@@ -46,35 +46,35 @@ class ProfileFragment : Fragment(), HasCustomActionToolbar {
 
         collectWhenStarted {
             viewModel.name.collect {
-                collectResult(it, "") { str ->
+                collectUiState(it, "") { str ->
                     binding.profileNameET.setText(str)
                 }
             }
         }
         collectWhenStarted {
             viewModel.number.collect {
-                collectResult(it, "") { str ->
+                collectUiState(it, "") { str ->
                     binding.profileNumberET.setText(str)
                 }
             }
         }
         collectWhenStarted {
             viewModel.photo.collect {
-                collectResult(it, "") { uriString ->
+                collectUiState(it, "") { uriString ->
                     loadProfilePhoto(uriString)
                 }
             }
         }
         collectWhenStarted {
             viewModel.contactsCount.collect {
-                collectResult(it, 0) { count ->
+                collectUiState(it, 0) { count ->
                     binding.contactsCount.text = getString(R.string.profile_contacts_count, count)
                 }
             }
         }
         collectWhenStarted {
             viewModel.favContactsCount.collect {
-                collectResult(it, 0) { count ->
+                collectUiState(it, 0) { count ->
                     binding.favContactsCount.text =
                         getString(R.string.profile_fav_contacts_count, count)
                 }
@@ -91,7 +91,7 @@ class ProfileFragment : Fragment(), HasCustomActionToolbar {
         saveEnteredNameAndNumber()
     }
 
-    private fun <T> collectResult(uiState: UiState<T>, emptyResult: T, showBlock: (T) -> Unit) {
+    private fun <T> collectUiState(uiState: UiState<T>, emptyResult: T, showBlock: (T) -> Unit) {
         binding.progressBar.visibility = View.GONE
         when (uiState) {
             is UiState.EmptyOrNull -> showBlock(emptyResult)
