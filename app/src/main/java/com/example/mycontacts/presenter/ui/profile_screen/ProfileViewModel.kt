@@ -39,19 +39,19 @@ class ProfileViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            fetchAsync(profileRepository.getName(), _name) {
+            collectAsUiState(profileRepository.getName(), _name) {
                 it.isBlank()
             }
-            fetchAsync(profileRepository.getPhoto(), _photo) {
+            collectAsUiState(profileRepository.getPhoto(), _photo) {
                 it.isBlank()
             }
-            fetchAsync(profileRepository.getNumber(), _number) {
+            collectAsUiState(profileRepository.getNumber(), _number) {
                 it.isBlank()
             }
-            fetchAsync(contactListRepository.getContactsCount(), _contactsCount) {
+            collectAsUiState(contactListRepository.getContactsCount(), _contactsCount) {
                 it == 0
             }
-            fetchAsync(contactListRepository.getContactsCount(true), _favContactsCount) {
+            collectAsUiState(contactListRepository.getContactsCount(true), _favContactsCount) {
                 it == 0
             }
         }

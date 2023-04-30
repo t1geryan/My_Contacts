@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!--App Name and Screen Titles-->
     <string name="app_name">My Contacts</string>
     <string name="contact_list_title">Contacts</string>
@@ -40,11 +40,14 @@
     <string name="data_saved">Data has been saved</string>
 
     <!--OnBoarding Carousel Items-->
-    <string name="onboarding1">The My Contacts application will allow you to store a list of your contacts in a convenient way</string>
-    <string name="onboarding2">You can add contacts manually or sync with your contacts on your phone</string>
-    <string name="onboarding3">You can add contacts to favorites</string>
-    <string name="onboarding4">You can easily make a call through this application</string>
-    <string name="onboarding5">On the Me screen you can see statistics about yourself</string>
+    <string-array name="onboarding_texts" tools:ignore="InconsistentArrays">
+        <item>The My Contacts application will allow you to store a list of your contacts in a convenient way</item>
+        <item>You can add contacts manually or sync with your contacts on your phone</item>
+        <item>You can add contacts to favorites</item>
+        <item>You can easily make a call through this application</item>
+        <item>On the Me screen you can see statistics about yourself</item>
+    </string-array>
+
 
     <!--Toolbar Custom Action Descriptions-->
     <string name="add_contact">Add Contact</string>

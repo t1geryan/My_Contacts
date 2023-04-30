@@ -12,15 +12,15 @@ import kotlinx.coroutines.launch
 abstract class BaseViewModel : ViewModel() {
     protected var viewModelScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
-    protected fun <T> fetchAsync(
-        getData: Flow<T>,
+    protected fun <T> collectAsUiState(
+        dataFlow: Flow<T>,
         stateFlow: MutableStateFlow<UiState<T>>,
-        isEmptyOrNull: (T) -> Boolean
+        checkEmptyDataBlock: (T) -> Boolean
     ) = viewModelScope.launch {
         stateFlow.value = UiState.Loading()
         try {
-            getData.collect { data ->
-                stateFlow.value = if (isEmptyOrNull(data)) {
+            dataFlow.collect { data ->
+                stateFlow.value = if (checkEmptyDataBlock(data)) {
                     UiState.EmptyOrNull()
                 } else {
                     UiState.Success(data)

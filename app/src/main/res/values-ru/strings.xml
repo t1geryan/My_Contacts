@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!--App Name and Screen Titles-->
     <string name="app_name">Мои Контакты</string>
     <string name="contact_list_title">Контакты</string>
@@ -40,11 +40,14 @@
     <string name="data_saved">Данные были сохранены</string>
 
     <!--OnBoarding Carousel Items-->
-    <string name="onboarding1">Приложение My Contacts позволит вам хранить список своих контактов в удобном виде</string>
-    <string name="onboarding2">Вы можете добавлять контакты вручную или синхронизировать со списком ваших контактов на телефоне</string>
-    <string name="onboarding3">Вы можете добавлять контакты в избранные</string>
-    <string name="onboarding4">Вы можете легко осуществить звонок через это приложение</string>
-    <string name="onboarding5">В разделе Me вы можете посмотреть статистику о себе</string>
+    <string-array name="onboarding_texts" tools:ignore="InconsistentArrays">
+        <item>Приложение My Contacts позволит вам хранить список своих контактов в удобном виде</item>
+        <item>Вы можете добавлять контакты вручную или синхронизировать со списком ваших контактов на телефоне</item>
+        <item>Вы можете добавлять контакты в избранные</item>
+        <item>Вы можете легко осуществить звонок через это приложение</item>
+        <item>В разделе Me вы можете посмотреть статистику о себе</item>
+        <item>Удачного использования!</item>
+    </string-array>
 
     <!--Toolbar Custom Action Descriptions-->
     <string name="add_contact">Добавить контакт</string>

@@ -34,15 +34,7 @@ class OnBoardingFragment : Fragment(), HasCustomActionToolbar {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val demoData = arrayListOf(
-            getString(R.string.onboarding1),
-            getString(R.string.onboarding2),
-            getString(R.string.onboarding3),
-            getString(R.string.onboarding4),
-            getString(R.string.onboarding5),
-        )
-
-        adapter = CarouselVPAdapter(demoData, ::toNextItem)
+        adapter = CarouselVPAdapter(resources.getStringArray(R.array.onboarding_texts), ::toNextItem)
 
         setupCarousel()
     }

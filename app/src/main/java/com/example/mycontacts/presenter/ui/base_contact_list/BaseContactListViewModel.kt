@@ -21,7 +21,7 @@ abstract class BaseContactListViewModel(
 
     init {
         viewModelScope.launch {
-            fetchAsync(contactListRepository.getAllContacts(isOnlyFavoriteContacts), _contacts) {
+            collectAsUiState(contactListRepository.getAllContacts(isOnlyFavoriteContacts), _contacts) {
                 it.isEmpty()
             }
         }
